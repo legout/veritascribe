@@ -1,0 +1,538 @@
+---
+title: "Configuration Reference"
+---
+
+# Configuration Reference
+
+VeritaScribe uses environment variables for configuration, providing flexibility and security for different deployment scenarios.
+
+## Configuration Overview
+
+Configuration is managed through:
+
+1. **Environment variables** (highest priority)
+2. **`.env` file** (for local development)
+3. **Default values** (built into the application)
+
+## LLM Provider Configuration
+
+VeritaScribe supports multiple LLM providers for flexibility, cost optimization, and access to different models.
+
+### Provider Selection
+
+```bash
+# Choose your LLM provider (default: openai)
+LLM_PROVIDER=openai  # or: openrouter, anthropic, custom
+```
+
+**Available Providers:**
+- **openai**: Direct OpenAI API access
+- **openrouter**: Access to 100+ models through OpenRouter
+- **anthropic**: Direct Anthropic Claude API access  
+- **custom**: OpenAI-compatible endpoints (Ollama, Azure, etc.)
+
+### OpenAI Configuration
+
+For `LLM_PROVIDER=openai`:
+
+```bash
+OPENAI_API_KEY=your_openai_api_key_here
+```
+
+**Getting an OpenAI API Key:**
+1. Visit [OpenAI Platform](https://platform.openai.com/api-keys)
+2. Sign in or create an account
+3. Click "Create new secret key"
+4. Copy the key and add it to your `.env` file
+
+### OpenRouter Configuration
+
+For `LLM_PROVIDER=openrouter` (access to 100+ models):
+
+```bash
+OPENROUTER_API_KEY=sk-or-your_openrouter_api_key_here
+```
+
+**Getting an OpenRouter API Key:**
+1. Visit [OpenRouter](https://openrouter.ai/keys)
+2. Sign up and verify your account
+3. Create a new API key
+4. Add credits or set up billing
+
+### Anthropic Configuration
+
+For `LLM_PROVIDER=anthropic` (direct Claude access):
+
+```bash
+ANTHROPIC_API_KEY=sk-ant-your_anthropic_api_key_here
+```
+
+**Getting an Anthropic API Key:**
+1. Visit [Anthropic Console](https://console.anthropic.com/)
+2. Sign up and verify your account
+3. Navigate to API Keys section
+4. Create a new key and add credits
+
+### Custom Provider Configuration
+
+For `LLM_PROVIDER=custom` (Ollama, Azure OpenAI, etc.):
+
+```bash
+OPENAI_API_KEY=your_custom_api_key
+OPENAI_BASE_URL=https://your-endpoint.com/v1
+```
+
+**Common Custom Endpoints:**
+- **Ollama**: `http://localhost:11434/v1`
+- **Azure OpenAI**: `https://your-resource.openai.azure.com/`
+- **Other providers**: Check provider documentation
+
+::: {.callout-important}
+## API Key Security
+
+- Never commit API keys to version control
+- Use environment variables in production
+- The `.env` file is already in `.gitignore`
+- Rotate keys regularly for security
+- Different providers have different key formats
+:::
+
+## Model Configuration
+
+### Provider-Specific Model Selection
+
+Each provider uses different model naming conventions:
+
+**OpenAI Provider Models:**
+```bash
+LLM_PROVIDER=openai
+DEFAULT_MODEL=gpt-4  # or: gpt-4-turbo, gpt-4o, gpt-3.5-turbo
+```
+
+**OpenRouter Provider Models:**
+```bash
+LLM_PROVIDER=openrouter
+# Note: OpenRouter models are automatically prefixed with 'openrouter/'
+DEFAULT_MODEL=anthropic/claude-3.5-sonnet    # Claude models
+# DEFAULT_MODEL=openai/gpt-4                 # OpenAI via OpenRouter
+# DEFAULT_MODEL=meta-llama/llama-3.1-70b-instruct  # Open source
+# DEFAULT_MODEL=z-ai/glm-4.5-air:free       # Free models
+```
+
+**Anthropic Provider Models:**
+```bash
+LLM_PROVIDER=anthropic
+DEFAULT_MODEL=claude-3-5-sonnet-20241022  # Latest Sonnet
+# DEFAULT_MODEL=claude-3-5-haiku-20241022  # Fast and cost-effective
+# DEFAULT_MODEL=claude-3-opus-20240229     # Highest quality
+```
+
+**Custom Provider Models:**
+```bash
+LLM_PROVIDER=custom
+DEFAULT_MODEL=llama3.1:8b  # Ollama format
+# DEFAULT_MODEL=gpt-4       # Azure OpenAI deployment name
+```
+
+### Model Recommendations by Provider
+
+**OpenAI:**
+- **Quality**: `gpt-4` - Best analysis quality
+- **Speed**: `gpt-4o-mini` - Fast and cost-effective
+- **Cost**: `gpt-3.5-turbo` - Most economical
+
+**OpenRouter:**
+- **Quality**: `anthropic/claude-3-opus` - Highest quality
+- **Speed**: `anthropic/claude-3-haiku` - Fast Claude model
+- **Cost**: `z-ai/glm-4.5-air:free` - Free model
+
+**Anthropic:**
+- **Quality**: `claude-3-opus-20240229` - Best Claude model
+- **Speed**: `claude-3-5-haiku-20241022` - Fast and efficient
+- **Cost**: `claude-3-haiku-20240307` - Most economical
+
+::: {.callout-tip}
+## Provider Comparison
+
+- **OpenAI**: Most mature, reliable API, extensive model selection
+- **OpenRouter**: Access to 100+ models, competitive pricing, free options
+- **Anthropic**: Excellent reasoning, safety-focused, direct API access
+- **Custom**: Use local models (Ollama), private deployments, cost control
+:::
+
+### Request Parameters
+
+```bash
+# Maximum tokens per LLM request (default: 2000)
+MAX_TOKENS=2000
+
+# LLM temperature for consistency (default: 0.1)
+# Range: 0.0 (deterministic) to 1.0 (creative)
+TEMPERATURE=0.1
+```
+
+::: {.callout-tip}
+## Optimizing Token Usage
+
+- Lower `MAX_TOKENS` reduces costs but may truncate analysis
+- Higher values allow more detailed analysis
+- Monitor usage with `uv run python -m veritascribe config`
+:::
+
+## Analysis Feature Configuration
+
+### Enable/Disable Analysis Types
+
+```bash
+# Grammar and linguistic analysis (default: true)
+GRAMMAR_ANALYSIS_ENABLED=true
+
+# Content plausibility checking (default: true)
+CONTENT_ANALYSIS_ENABLED=true
+
+# Citation format validation (default: true)
+CITATION_ANALYSIS_ENABLED=true
+```
+
+**Use Cases:**
+- Disable expensive analysis types for cost optimization
+- Focus on specific error types during review phases
+- Customize analysis for different document types
+
+### Error Severity Thresholds
+
+```bash
+# Threshold for high severity classification (default: 0.8)
+HIGH_SEVERITY_THRESHOLD=0.8
+
+# Threshold for medium severity classification (default: 0.5)
+MEDIUM_SEVERITY_THRESHOLD=0.5
+```
+
+Errors are classified as:
+- **High**: Score ≥ `HIGH_SEVERITY_THRESHOLD`
+- **Medium**: Score ≥ `MEDIUM_SEVERITY_THRESHOLD`  
+- **Low**: Score < `MEDIUM_SEVERITY_THRESHOLD`
+
+## Processing Configuration
+
+### Text Block Processing
+
+```bash
+# Maximum characters per analysis block (default: 2000)
+MAX_TEXT_BLOCK_SIZE=2000
+
+# Minimum characters for analysis (default: 50)
+MIN_TEXT_BLOCK_SIZE=50
+```
+
+**Optimization Guidelines:**
+
+| Document Size | Recommended MAX_TEXT_BLOCK_SIZE |
+|---------------|--------------------------------|
+| Small (< 50 pages) | 2000-3000 |
+| Medium (50-100 pages) | 1500-2000 |
+| Large (> 100 pages) | 1000-1500 |
+
+### Parallel Processing
+
+```bash
+# Enable parallel LLM requests (default: true)
+PARALLEL_PROCESSING=true
+
+# Maximum concurrent requests (default: 5)
+MAX_CONCURRENT_REQUESTS=5
+```
+
+::: {.callout-warning}
+## Rate Limiting
+
+Setting `MAX_CONCURRENT_REQUESTS` too high may trigger API rate limits. Start with 3-5 and increase gradually based on your API tier.
+:::
+
+### Retry Configuration
+
+```bash
+# Maximum retry attempts for failed requests (default: 3)
+MAX_RETRIES=3
+
+# Delay between retries in seconds (default: 1.0)
+RETRY_DELAY=1.0
+```
+
+## Output Configuration
+
+### File Output Settings
+
+```bash
+# Default output directory (default: ./analysis_output)
+OUTPUT_DIRECTORY=./analysis_output
+
+# Generate error visualization charts (default: true)
+GENERATE_VISUALIZATIONS=true
+
+# Save detailed text reports (default: true)
+SAVE_DETAILED_REPORTS=true
+```
+
+## Environment-Specific Configuration
+
+### Development Environment
+
+Create a `.env.dev` file for development settings:
+
+```bash
+# Development-specific settings
+DEFAULT_MODEL=gpt-3.5-turbo
+MAX_TOKENS=1500
+PARALLEL_PROCESSING=false
+MAX_CONCURRENT_REQUESTS=2
+GENERATE_VISUALIZATIONS=true
+```
+
+### Production Environment
+
+Set environment variables directly:
+
+```bash
+export OPENAI_API_KEY="your-production-key"
+export DEFAULT_MODEL="gpt-4"
+export MAX_TOKENS=2000
+export PARALLEL_PROCESSING=true
+export MAX_CONCURRENT_REQUESTS=10
+export OUTPUT_DIRECTORY="/app/analysis_output"
+```
+
+### Docker Configuration
+
+Example `docker-compose.yml`:
+
+```yaml
+version: '3.8'
+services:
+  veritascribe:
+    build: .
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - DEFAULT_MODEL=gpt-4-turbo
+      - MAX_TOKENS=2000
+      - PARALLEL_PROCESSING=true
+      - MAX_CONCURRENT_REQUESTS=5
+    volumes:
+      - ./analysis_output:/app/analysis_output
+```
+
+## Configuration Validation
+
+### View Current Configuration
+
+Check your current settings:
+
+```bash
+uv run python -m veritascribe config
+```
+
+### View Available Providers
+
+See all supported providers and their models:
+
+```bash
+uv run python -m veritascribe providers
+```
+
+Output example:
+```
+VeritaScribe Configuration
+┏━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Setting           ┃ Value                                                                                                    ┃ Description                                                                                                              ┃
+┡━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Default Model     │ gpt-4                                                                                                    │ LLM model for analysis                                                                                                  │
+│ Max Tokens        │ 2000                                                                                                     │ Maximum tokens per request                                                                                              │
+│ Temperature       │ 0.1                                                                                                      │ LLM temperature setting                                                                                                 │
+│ Grammar Analysis  │ ✓                                                                                                        │ Grammar checking enabled                                                                                                │
+│ Content Analysis  │ ✓                                                                                                        │ Content validation enabled                                                                                              │
+│ Citation Analysis │ ✓                                                                                                        │ Citation checking enabled                                                                                               │
+│ Parallel Process… │ ✓                                                                                                        │ Parallel LLM requests                                                                                                   │
+│ Max Concurrent    │ 5                                                                                                        │ Maximum parallel requests                                                                                               │
+│ Output Directory  │ ./analysis_output                                                                                        │ Default output location                                                                                                  │
+│ Max Retries       │ 3                                                                                                        │ LLM request retry limit                                                                                                 │
+└───────────────────┴──────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+✓ OpenAI API key is configured
+```
+
+### Test Configuration
+
+Validate your configuration with system tests:
+
+```bash
+uv run python -m veritascribe test
+```
+
+## Performance Tuning
+
+### Cost Optimization
+
+For budget-conscious usage:
+
+```bash
+DEFAULT_MODEL=gpt-3.5-turbo
+MAX_TOKENS=1500
+MAX_TEXT_BLOCK_SIZE=1500
+PARALLEL_PROCESSING=false
+MAX_CONCURRENT_REQUESTS=2
+```
+
+### Speed Optimization
+
+For faster processing:
+
+```bash
+DEFAULT_MODEL=gpt-4-turbo
+PARALLEL_PROCESSING=true
+MAX_CONCURRENT_REQUESTS=10
+MAX_RETRIES=1
+RETRY_DELAY=0.5
+```
+
+### Quality Optimization
+
+For highest quality analysis:
+
+```bash
+DEFAULT_MODEL=gpt-4
+MAX_TOKENS=3000
+TEMPERATURE=0.0
+MAX_TEXT_BLOCK_SIZE=2500
+PARALLEL_PROCESSING=true
+MAX_CONCURRENT_REQUESTS=3
+```
+
+## Troubleshooting Configuration
+
+### Common Configuration Issues
+
+**API Key Not Working**
+```bash
+# Test API key validity
+uv run python -c "
+from openai import OpenAI
+client = OpenAI()
+print('API key is valid')
+"
+```
+
+**Model Not Available**
+- Check OpenAI model availability
+- Verify your API tier supports the model
+- Try with `gpt-3.5-turbo` as fallback
+
+**Permission Errors**
+- Ensure output directory is writable
+- Check file permissions on `.env` file
+
+### Environment Variable Priority
+
+Configuration is loaded in this order (highest to lowest priority):
+
+1. **Environment variables** (e.g., `export OPENAI_API_KEY=...`)
+2. **`.env` file** in project root
+3. **Default values** in code
+
+### Debug Configuration Loading
+
+```bash
+# Show configuration details
+uv run python -c "
+from veritascribe.config import get_settings, get_dspy_config
+settings = get_settings()
+dspy_config = get_dspy_config()
+info = dspy_config.get_provider_info()
+print('Configuration loaded successfully')
+print(f'Provider: {info["provider_name"]}')
+print(f'Model: {info["formatted_model"]}')
+print(f'API Key configured: {info["api_key_configured"]}')
+"
+```
+
+## Advanced Configuration
+
+### Multi-Provider Setup Examples
+
+**Example 1: Standard OpenAI**
+```bash
+LLM_PROVIDER=openai
+OPENAI_API_KEY=sk-your-key-here
+DEFAULT_MODEL=gpt-4
+```
+
+**Example 2: OpenRouter with Claude**
+```bash
+LLM_PROVIDER=openrouter
+OPENROUTER_API_KEY=sk-or-your-key-here
+DEFAULT_MODEL=anthropic/claude-3.5-sonnet
+```
+
+**Example 3: Direct Anthropic Claude**
+```bash
+LLM_PROVIDER=anthropic
+ANTHROPIC_API_KEY=sk-ant-your-key-here
+DEFAULT_MODEL=claude-3-5-sonnet-20241022
+```
+
+**Example 4: Local Ollama**
+```bash
+LLM_PROVIDER=custom
+OPENAI_API_KEY=ollama  # Can be any value for local models
+OPENAI_BASE_URL=http://localhost:11434/v1
+DEFAULT_MODEL=llama3.1:8b
+```
+
+**Example 5: Azure OpenAI**
+```bash
+LLM_PROVIDER=custom
+OPENAI_API_KEY=your-azure-key
+OPENAI_BASE_URL=https://your-resource.openai.azure.com/
+DEFAULT_MODEL=gpt-4  # Your Azure deployment name
+```
+
+### Custom Analysis Workflows
+
+**Grammar-Only Analysis:**
+```bash
+GRAMMAR_ANALYSIS_ENABLED=true
+CONTENT_ANALYSIS_ENABLED=false
+CITATION_ANALYSIS_ENABLED=false
+```
+
+**Citation-Only Analysis:**
+```bash
+GRAMMAR_ANALYSIS_ENABLED=false
+CONTENT_ANALYSIS_ENABLED=false
+CITATION_ANALYSIS_ENABLED=true
+```
+
+### Multiple Configuration Files
+
+Create different configurations for different scenarios:
+
+```bash
+# High-quality analysis
+cp .env .env.quality
+echo "DEFAULT_MODEL=gpt-4" >> .env.quality
+echo "MAX_TOKENS=3000" >> .env.quality
+
+# Fast analysis  
+cp .env .env.fast
+echo "DEFAULT_MODEL=gpt-3.5-turbo" >> .env.fast
+echo "PARALLEL_PROCESSING=true" >> .env.fast
+
+# Cost-optimized analysis
+cp .env .env.budget
+echo "LLM_PROVIDER=openrouter" >> .env.budget
+echo "DEFAULT_MODEL=z-ai/glm-4.5-air:free" >> .env.budget
+```
+
+---
+
+*For more advanced configuration scenarios, see the [Architecture Guide](architecture.qmd).*

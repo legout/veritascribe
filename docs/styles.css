@@ -1,0 +1,376 @@
+/* Custom styles for VeritaScribe documentation */
+
+/* Color scheme */
+:root {
+  --primary-blue: #2563eb;
+  --secondary-blue: #3b82f6;
+  --accent-green: #10b981;
+  --warning-yellow: #f59e0b;
+  --error-red: #ef4444;
+  --dark-gray: #374151;
+  --light-gray: #f9fafb;
+  --border-gray: #e5e7eb;
+}
+
+/* Headers */
+h1 {
+  color: var(--primary-blue);
+  border-bottom: 3px solid var(--primary-blue);
+  padding-bottom: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+h2 {
+  color: var(--secondary-blue);
+  border-left: 4px solid var(--accent-green);
+  padding-left: 1rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+h3 {
+  color: var(--dark-gray);
+  margin-top: 1.5rem;
+  margin-bottom: 0.8rem;
+}
+
+/* Code blocks */
+pre {
+  background-color: var(--light-gray);
+  border: 1px solid var(--border-gray);
+  border-radius: 8px;
+  padding: 1rem;
+  overflow-x: auto;
+  font-size: 0.9rem;
+}
+
+code {
+  background-color: var(--light-gray);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+}
+
+pre code {
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+th {
+  background-color: var(--primary-blue);
+  color: white;
+  padding: 0.75rem;
+  text-align: left;
+  font-weight: 600;
+}
+
+td {
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--border-gray);
+}
+
+tr:nth-child(even) {
+  background-color: var(--light-gray);
+}
+
+tr:hover {
+  background-color: #f3f4f6;
+}
+
+/* Callout boxes */
+.callout {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid;
+}
+
+.callout-note {
+  background-color: #eff6ff;
+  border-left-color: var(--primary-blue);
+}
+
+.callout-tip {
+  background-color: #f0fdf4;
+  border-left-color: var(--accent-green);
+}
+
+.callout-important {
+  background-color: #fefce8;
+  border-left-color: var(--warning-yellow);
+}
+
+.callout-warning {
+  background-color: #fef2f2;
+  border-left-color: var(--error-red);
+}
+
+.callout-title {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--dark-gray);
+}
+
+/* Navigation */
+.navbar {
+  background-color: var(--primary-blue);
+  border-bottom: 3px solid var(--accent-green);
+}
+
+.navbar-brand {
+  font-weight: 700;
+  color: white !important;
+}
+
+.nav-link {
+  color: white !important;
+  font-weight: 500;
+}
+
+.nav-link:hover {
+  color: var(--accent-green) !important;
+}
+
+/* Sidebar */
+.sidebar-navigation {
+  background-color: var(--light-gray);
+  border-right: 1px solid var(--border-gray);
+}
+
+.sidebar-item {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  margin: 0.2rem;
+}
+
+.sidebar-item:hover {
+  background-color: white;
+}
+
+.sidebar-item.active {
+  background-color: var(--primary-blue);
+  color: white;
+}
+
+/* Buttons and links */
+a {
+  color: var(--primary-blue);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--secondary-blue);
+  text-decoration: underline;
+}
+
+.btn-primary {
+  background-color: var(--primary-blue);
+  border-color: var(--primary-blue);
+}
+
+.btn-primary:hover {
+  background-color: var(--secondary-blue);
+  border-color: var(--secondary-blue);
+}
+
+/* Grid system enhancements */
+.grid {
+  display: grid;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.g-col-6 {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-gray);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.g-col-6 h3 {
+  color: var(--primary-blue);
+  margin-top: 0;
+}
+
+/* Icons and emojis */
+.icon {
+  display: inline-block;
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+
+/* Command line styling */
+.command-block {
+  background-color: #1f2937;
+  color: #f9fafb;
+  padding: 1rem;
+  border-radius: 8px;
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+}
+
+.command-block .prompt {
+  color: var(--accent-green);
+}
+
+.command-block .comment {
+  color: #9ca3af;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  
+  h1 {
+    font-size: 1.5rem;
+  }
+  
+  h2 {
+    font-size: 1.3rem;
+  }
+  
+  table {
+    font-size: 0.9rem;
+  }
+  
+  .callout {
+    margin: 1rem 0;
+    padding: 0.8rem;
+  }
+}
+
+/* Print styles */
+@media print {
+  .navbar,
+  .sidebar-navigation {
+    display: none;
+  }
+  
+  body {
+    font-size: 12pt;
+    line-height: 1.4;
+  }
+  
+  h1, h2, h3 {
+    page-break-after: avoid;
+  }
+  
+  pre, .callout {
+    page-break-inside: avoid;
+  }
+}
+
+/* Syntax highlighting enhancements */
+.sourceCode {
+  background-color: var(--light-gray);
+  border-radius: 8px;
+  border: 1px solid var(--border-gray);
+}
+
+.sourceCode .kw { color: #d73a49; } /* Keywords */
+.sourceCode .dt { color: #005cc5; } /* Data types */
+.sourceCode .dv { color: #032f62; } /* Decimal values */
+.sourceCode .bn { color: #032f62; } /* Base-n integers */
+.sourceCode .fl { color: #032f62; } /* Floats */
+.sourceCode .ch { color: #032f62; } /* Characters */
+.sourceCode .st { color: #032f62; } /* Strings */
+.sourceCode .co { color: #6a737d; } /* Comments */
+.sourceCode .ot { color: #6f42c1; } /* Other tokens */
+.sourceCode .al { color: #e36209; } /* Alerts */
+.sourceCode .fu { color: #6f42c1; } /* Functions */
+.sourceCode .er { color: #cb2431; } /* Errors */
+
+/* Mermaid diagram styling */
+.mermaid {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+/* Table of contents styling */
+.toc-content {
+  background-color: var(--light-gray);
+  border: 1px solid var(--border-gray);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 2rem;
+}
+
+.toc-content h2 {
+  margin-top: 0;
+  color: var(--primary-blue);
+  border: none;
+  padding: 0;
+}
+
+.toc-content ul {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.toc-content li {
+  margin: 0.3rem 0;
+}
+
+/* Progress indicators */
+.progress {
+  width: 100%;
+  height: 6px;
+  background-color: var(--border-gray);
+  border-radius: 3px;
+  overflow: hidden;
+  margin: 1rem 0;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: var(--accent-green);
+  transition: width 0.3s ease;
+}
+
+/* Status badges */
+.badge {
+  display: inline-block;
+  padding: 0.3rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-success {
+  background-color: var(--accent-green);
+  color: white;
+}
+
+.badge-warning {
+  background-color: var(--warning-yellow);
+  color: white;
+}
+
+.badge-error {
+  background-color: var(--error-red);
+  color: white;
+}
+
+.badge-info {
+  background-color: var(--primary-blue);
+  color: white;
+}

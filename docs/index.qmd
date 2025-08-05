@@ -1,0 +1,141 @@
+---
+title: "VeritaScribe Documentation"
+subtitle: "AI-Powered Bachelor Thesis Review Tool"
+---
+
+# Welcome to VeritaScribe
+
+VeritaScribe is an intelligent document analysis system that automatically reviews PDF thesis documents for quality issues including grammar errors, content plausibility problems, and citation format inconsistencies.
+
+## What is VeritaScribe?
+
+VeritaScribe combines advanced AI language models with structured document processing to provide comprehensive academic document review. Built with modern Python tools including DSPy for LLM orchestration, Pydantic for structured data modeling, and PyMuPDF for PDF processing.
+
+## Key Features
+
+::: {.grid}
+
+::: {.g-col-6}
+### 🔍 Comprehensive Analysis
+- Grammar and linguistic error detection
+- Content plausibility validation  
+- Citation format verification
+- Error severity classification
+:::
+
+::: {.g-col-6}
+### 📊 Smart Reporting
+- Detailed error reports with locations
+- Visual analytics and charts
+- JSON data export
+- Markdown reports
+:::
+
+::: {.g-col-6}
+### ⚙️ Flexible Configuration
+- Multiple LLM model support
+- Customizable analysis parameters
+- Citation style configuration
+- Processing optimization settings
+:::
+
+::: {.g-col-6}
+### 🚀 Easy to Use
+- Command-line interface
+- Quick analysis mode
+- Demo mode for testing
+- Comprehensive error messages
+:::
+
+:::
+
+## How It Works
+
+```{mermaid}
+flowchart LR
+    A[PDF Input] --> B[Text Extraction]
+    B --> C[LLM Analysis]
+    C --> D[Error Detection]
+    D --> E[Report Generation]
+    E --> F[Visualizations]
+```
+
+1. **PDF Processing**: Extracts text while preserving layout and location information
+2. **AI Analysis**: Uses large language models to analyze content for various types of errors
+3. **Error Classification**: Categorizes and scores errors by type and severity
+4. **Report Generation**: Creates comprehensive reports and visualizations
+
+## Quick Start
+
+Get started with VeritaScribe in just a few steps:
+
+1. **Install dependencies**:
+   ```bash
+   uv sync
+   ```
+
+2. **Configure API key**:
+   ```bash
+   cp .env.example .env
+   # Edit .env to add your OpenAI API key
+   ```
+
+3. **Try the demo**:
+   ```bash
+   uv run python -m veritascribe demo
+   ```
+
+4. **Analyze your document**:
+   ```bash
+   uv run python -m veritascribe analyze your_thesis.pdf
+   ```
+
+## Error Types Detected
+
+### Grammar and Linguistics
+- Spelling mistakes and typos
+- Grammatical inconsistencies
+- Punctuation errors
+- Style and readability issues
+
+### Content Quality
+- Logical inconsistencies
+- Factual accuracy concerns
+- Argument structure problems
+- Citation-content mismatches
+
+### Citation Format
+- Incorrect citation style formatting
+- Missing or incomplete references
+- Inconsistent bibliography formatting
+- Citation accuracy issues
+
+## Architecture Overview
+
+VeritaScribe follows a modular pipeline architecture:
+
+- **Configuration Layer**: Environment-based settings management
+- **PDF Processing**: Text extraction with layout preservation
+- **LLM Analysis**: DSPy-based structured analysis modules
+- **Data Models**: Pydantic schemas for type safety
+- **Report Generation**: Multi-format output with visualizations
+
+## Next Steps
+
+- [Installation Guide](installation.qmd): Detailed setup instructions
+- [Configuration Reference](configuration.qmd): Complete configuration options
+- [Usage Guide](usage.qmd): Comprehensive usage examples
+- [API Reference](api-reference.qmd): Technical documentation
+- [Architecture Guide](architecture.qmd): System design and development
+
+## Support
+
+If you encounter issues or have questions:
+
+1. Check the [Troubleshooting Guide](troubleshooting.qmd)
+2. Run system diagnostics: `uv run python -m veritascribe test`
+3. Review configuration: `uv run python -m veritascribe config`
+
+---
+
+*VeritaScribe is designed for defensive security and academic quality assurance purposes only.*

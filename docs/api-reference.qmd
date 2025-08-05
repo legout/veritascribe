@@ -1,0 +1,687 @@
+---
+title: "API Reference"
+---
+
+# API Reference
+
+This reference covers VeritaScribe's programmatic interfaces, data models, and internal APIs for developers and advanced users.
+
+## Command Line Interface
+
+### Core Commands
+
+#### `analyze`
+
+Perform comprehensive thesis analysis.
+
+```bash
+uv run python -m veritascribe analyze [OPTIONS] PDF_PATH
+```
+
+**Arguments:**
+- `PDF_PATH` (required): Path to the PDF thesis file
+
+**Options:**
+- `--output, -o TEXT`: Output directory for reports
+- `--citation-style, -c TEXT`: Expected citation style (APA, MLA, Chicago, IEEE, Harvard)
+- `--quick, -q`: Perform quick analysis (first 10 blocks only)
+- `--no-viz`: Skip generating visualization charts
+- `--verbose, -v`: Enable verbose logging
+
+**Exit Codes:**
+- `0`: Success
+- `1`: Error (file not found, analysis failed, etc.)
+
+#### `quick`
+
+Fast analysis of document subset.
+
+```bash
+uv run python -m veritascribe quick [OPTIONS] PDF_PATH
+```
+
+**Arguments:**
+- `PDF_PATH` (required): Path to the PDF thesis file  
+
+**Options:**
+- `--blocks, -b INTEGER`: Number of text blocks to analyze (default: 5)
+
+#### `demo`
+
+Create and analyze sample document.
+
+```bash
+uv run python -m veritascribe demo
+```
+
+No arguments or options. Creates `demo_thesis.pdf` in current directory.
+
+#### `config`
+
+Display current configuration.
+
+```bash
+uv run python -m veritascribe config
+```
+
+Outputs configuration table and API key status.
+
+#### `test`
+
+Run system diagnostics.
+
+```bash
+uv run python -m veritascribe test
+```
+
+Tests configuration loading, PDF processing, and LLM connectivity.
+
+## Python API
+
+### Configuration Management
+
+#### `veritascribe.config.VeritaScribeSettings`
+
+Main configuration class using Pydantic Settings.
+
+```python
+from veritascribe.config import VeritaScribeSettings
+
+settings = VeritaScribeSettings(
+    openai_api_key="your-key-here",
+    default_model="gpt-4",
+    max_tokens=2000,
+    temperature=0.1
+)
+```
+
+**Key Fields:**
+
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `openai_api_key` | `Optional[str]` | `None` | OpenAI API key |
+| `default_model` | `str` | `"gpt-4"` | LLM model name |
+| `max_tokens` | `int` | `2000` | Max tokens per request |
+| `temperature` | `float` | `0.1` | LLM temperature |
+| `grammar_analysis_enabled` | `bool` | `True` | Enable grammar analysis |
+| `content_analysis_enabled` | `bool` | `True` | Enable content analysis |
+| `citation_analysis_enabled` | `bool` | `True` | Enable citation analysis |
+| `high_severity_threshold` | `float` | `0.8` | High severity threshold |
+| `medium_severity_threshold` | `float` | `0.5` | Medium severity threshold |
+| `max_text_block_size` | `int` | `2000` | Max chars per block |
+| `parallel_processing` | `bool` | `True` | Enable parallel processing |
+| `max_concurrent_requests` | `int` | `5` | Max concurrent requests |
+| `output_directory` | `str` | `"./analysis_output"` | Default output dir |
+| `max_retries` | `int` | `3` | Max retry attempts |
+| `retry_delay` | `float` | `1.0` | Retry delay seconds |
+
+#### Configuration Functions
+
+```python
+from veritascribe.config import (
+    load_settings,
+    get_settings,
+    initialize_system
+)
+
+# Load fresh settings
+settings = load_settings()
+
+# Get global settings instance (cached)
+settings = get_settings()
+
+# Initialize complete system
+settings, dspy_config = initialize_system()
+```
+
+### Data Models
+
+All data models use Pydantic for validation and serialization.
+
+#### `veritascribe.data_models.LocationHint`
+
+Represents the location of text or errors in the document.
+
+```python
+from veritascribe.data_models import LocationHint
+
+location = LocationHint(
+    page_number=12,
+    bounding_box_coordinates=[72, 345, 520, 365]
+)
+```
+
+**Fields:**
+- `page_number: int` - Page number (1-indexed)
+- `bounding_box_coordinates: Optional[List[float]]` - `[x1, y1, x2, y2]` coordinates
+
+#### `veritascribe.data_models.BaseError`
+
+Base class for all error types.
+
+```python
+from veritascribe.data_models import BaseError, ErrorSeverity, LocationHint
+
+error = BaseError(
+    error_type="grammar",
+    severity=ErrorSeverity.HIGH,
+    original_text="The results shows that...",
+    suggested_correction="The results show that...",
+    explanation="Subject-verb agreement error.",
+    location=LocationHint(page_number=12),
+    confidence_score=0.95
+)
+```
+
+**Fields:**
+- `error_type: str` - Type of error (grammar, citation_format, content_plausibility)
+- `severity: ErrorSeverity` - Error severity level
+- `original_text: str` - Original problematic text
+- `suggested_correction: Optional[str]` - Suggested fix
+- `explanation: str` - Explanation of the error
+- `location: LocationHint` - Error location
+- `confidence_score: float` - Confidence in error detection (0.0-1.0)
+
+#### `veritascribe.data_models.ErrorSeverity`
+
+Enumeration for error severity levels.
+
+```python
+from veritascribe.data_models import ErrorSeverity
+
+# Available values
+ErrorSeverity.LOW      # Low priority
+ErrorSeverity.MEDIUM   # Medium priority  
+ErrorSeverity.HIGH     # High priority
+```
+
+#### `veritascribe.data_models.TextBlock`
+
+Represents extracted text with layout information.
+
+```python
+from veritascribe.data_models import TextBlock
+
+block = TextBlock(
+    content="The methodology employed in this study...",
+    page_number=5,
+    bounding_box_coordinates=[72, 200, 520, 280]
+)
+```
+
+**Fields:**
+- `content: str` - Extracted text content
+- `page_number: int` - Page number (1-indexed)
+- `bounding_box_coordinates: Optional[List[float]]` - Layout coordinates
+
+#### `veritascribe.data_models.AnalysisResult`
+
+Links a text block with its detected errors.
+
+```python
+from veritascribe.data_models import AnalysisResult, TextBlock, BaseError
+
+result = AnalysisResult(
+    text_block=text_block,
+    errors=[error1, error2, error3]
+)
+```
+
+**Fields:**
+- `text_block: TextBlock` - The analyzed text block
+- `errors: List[BaseError]` - List of errors found in this block
+
+#### `veritascribe.data_models.ThesisAnalysisReport`
+
+Complete analysis report containing all results.
+
+```python
+from veritascribe.data_models import ThesisAnalysisReport
+
+report = ThesisAnalysisReport(
+    document_name="thesis.pdf",
+    total_pages=45,
+    total_words=12543,
+    total_text_blocks=87,
+    analysis_results=[result1, result2, ...],
+    total_processing_time_seconds=45.32
+)
+```
+
+**Key Fields:**
+- `document_name: str` - Name of analyzed document
+- `analysis_timestamp: datetime` - When analysis was performed
+- `total_pages: int` - Number of pages in document
+- `total_words: int` - Estimated word count
+- `total_text_blocks: int` - Number of text blocks analyzed
+- `analysis_results: List[AnalysisResult]` - All analysis results
+- `total_processing_time_seconds: float` - Processing time
+
+**Computed Properties:**
+- `total_errors: int` - Total number of errors found
+- `error_rate: float` - Errors per 1,000 words
+- `errors_by_type: Dict[str, int]` - Error counts by type
+- `errors_by_severity: Dict[str, int]` - Error counts by severity
+
+**Methods:**
+```python
+# Get errors by severity
+high_errors = report.get_high_severity_errors()
+medium_errors = report.get_medium_severity_errors()
+low_errors = report.get_low_severity_errors()
+
+# Get errors by type
+grammar_errors = report.get_errors_by_type("grammar")
+citation_errors = report.get_errors_by_type("citation_format")
+```
+
+### PDF Processing
+
+#### `veritascribe.pdf_processor.PDFProcessor`
+
+Main class for PDF text extraction.
+
+```python
+from veritascribe.pdf_processor import PDFProcessor
+
+processor = PDFProcessor()
+text_blocks = processor.extract_text_blocks_from_pdf("thesis.pdf")
+```
+
+**Methods:**
+
+```python
+def extract_text_blocks_from_pdf(
+    self, 
+    pdf_path: str
+) -> List[TextBlock]:
+    """Extract text blocks from PDF with layout information."""
+    pass
+
+def estimate_word_count(
+    self, 
+    text_blocks: List[TextBlock]
+) -> int:
+    """Estimate total word count from text blocks."""
+    pass
+```
+
+#### Utility Functions
+
+```python
+from veritascribe.pdf_processor import create_test_pdf
+
+# Create sample PDF for testing
+create_test_pdf("sample.pdf")
+```
+
+### LLM Analysis Modules
+
+#### DSPy Signatures
+
+```python
+from veritascribe.llm_modules import (
+    LinguisticAnalysisSignature,
+    ContentValidationSignature,
+    CitationAnalysisSignature
+)
+
+# Example usage (typically internal)
+import dspy
+
+linguistic_analyzer = dspy.Predict(LinguisticAnalysisSignature)
+result = linguistic_analyzer(text_chunk="The results shows...")
+```
+
+#### Analysis Modules
+
+```python
+from veritascribe.llm_modules import (
+    LinguisticAnalyzer,
+    ContentValidator,
+    CitationChecker
+)
+
+# Initialize analyzers
+linguistic = LinguisticAnalyzer()
+content = ContentValidator()
+citation = CitationChecker()
+
+# Analyze text block
+text_block = TextBlock(content="Sample text...", page_number=1)
+
+grammar_errors = linguistic.analyze(text_block)
+content_errors = content.analyze(text_block)
+citation_errors = citation.analyze(text_block, bibliography="References...")
+```
+
+### Pipeline and Orchestration
+
+#### `veritascribe.pipeline.AnalysisPipeline`
+
+Main orchestration class for analysis workflow.
+
+```python
+from veritascribe.pipeline import AnalysisPipeline
+
+pipeline = AnalysisPipeline()
+report = pipeline.analyze_thesis(
+    pdf_path="thesis.pdf",
+    output_dir="./results",
+    citation_style="APA"
+)
+```
+
+**Methods:**
+
+```python
+def analyze_thesis(
+    self,
+    pdf_path: str,
+    output_dir: str,
+    citation_style: str = "APA"
+) -> ThesisAnalysisReport:
+    """Perform complete thesis analysis."""
+    pass
+
+def quick_analyze(
+    self,
+    pdf_path: str,
+    max_blocks: int = 10
+) -> ThesisAnalysisReport:
+    """Perform quick analysis on subset of document."""
+    pass
+```
+
+#### Factory Functions
+
+```python
+from veritascribe.pipeline import (
+    create_analysis_pipeline,
+    create_quick_pipeline
+)
+
+# Create configured pipeline instances
+full_pipeline = create_analysis_pipeline()
+quick_pipeline = create_quick_pipeline()
+```
+
+### Report Generation
+
+#### `veritascribe.report_generator.ReportGenerator`
+
+Handles report generation and visualization.
+
+```python
+from veritascribe.report_generator import ReportGenerator
+
+generator = ReportGenerator()
+
+# Generate text report
+generator.generate_text_report(report, "report.md")
+
+# Export JSON data
+generator.export_json_report(report, "data.json")
+
+# Create visualizations
+viz_files = generator.visualize_errors(report, "./viz_output")
+
+# Create summary
+summary = generator.create_summary_report(report)
+```
+
+**Methods:**
+
+```python
+def generate_text_report(
+    self,
+    report: ThesisAnalysisReport,
+    output_path: str
+) -> None:
+    """Generate comprehensive Markdown report."""
+    pass
+
+def export_json_report(
+    self,
+    report: ThesisAnalysisReport,
+    output_path: str
+) -> None:
+    """Export structured JSON data."""
+    pass
+
+def visualize_errors(
+    self,
+    report: ThesisAnalysisReport,
+    output_dir: str
+) -> List[str]:
+    """Generate error visualization charts."""
+    pass
+
+def create_summary_report(
+    self,
+    report: ThesisAnalysisReport
+) -> Dict[str, Any]:
+    """Create executive summary."""
+    pass
+```
+
+## Error Handling
+
+### Exception Types
+
+VeritaScribe defines custom exceptions for different error conditions:
+
+```python
+from veritascribe.exceptions import (
+    VeritaScribeError,
+    ConfigurationError,
+    PDFProcessingError,
+    LLMAnalysisError,
+    ReportGenerationError
+)
+
+try:
+    settings = load_settings()
+except ConfigurationError as e:
+    print(f"Configuration error: {e}")
+
+try:
+    blocks = processor.extract_text_blocks_from_pdf("invalid.pdf")
+except PDFProcessingError as e:
+    print(f"PDF processing failed: {e}")
+```
+
+### Error Context
+
+Errors include contextual information for debugging:
+
+```python
+try:
+    pipeline.analyze_thesis("thesis.pdf", "./output")
+except LLMAnalysisError as e:
+    print(f"Analysis failed: {e}")
+    print(f"Block being processed: {e.context.get('text_block')}")
+    print(f"Error type: {e.context.get('analysis_type')}")
+```
+
+## Extensibility
+
+### Custom Error Types
+
+Extend the error system:
+
+```python
+from veritascribe.data_models import BaseError, ErrorSeverity, LocationHint
+
+class StyleError(BaseError):
+    """Custom error type for style issues."""
+    
+    def __init__(self, **kwargs):
+        super().__init__(
+            error_type="style",
+            **kwargs
+        )
+
+# Usage
+style_error = StyleError(
+    severity=ErrorSeverity.LOW,
+    original_text="utilise",
+    suggested_correction="utilize", 
+    explanation="Prefer American spelling",
+    location=LocationHint(page_number=10)
+)
+```
+
+### Custom Analysis Modules
+
+Create custom DSPy analysis modules:
+
+```python
+import dspy
+from veritascribe.data_models import BaseError, TextBlock
+
+class CustomAnalysisSignature(dspy.Signature):
+    """Custom analysis signature."""
+    text_chunk = dspy.InputField(desc="Text to analyze")
+    custom_errors = dspy.OutputField(desc="JSON list of custom errors")
+
+class CustomAnalyzer:
+    """Custom analysis module."""
+    
+    def __init__(self):
+        self.analyzer = dspy.Predict(CustomAnalysisSignature)
+    
+    def analyze(self, text_block: TextBlock) -> List[BaseError]:
+        result = self.analyzer(text_chunk=text_block.content)
+        # Parse result.custom_errors and return BaseError objects
+        return self._parse_errors(result.custom_errors, text_block)
+```
+
+### Configuration Extensions
+
+Add custom configuration options:
+
+```python
+from veritascribe.config import VeritaScribeSettings
+from pydantic import Field
+
+class ExtendedSettings(VeritaScribeSettings):
+    """Extended configuration with custom options."""
+    
+    custom_analysis_enabled: bool = Field(
+        default=False,
+        description="Enable custom analysis module"
+    )
+    
+    custom_threshold: float = Field(
+        default=0.7,
+        description="Custom analysis threshold"
+    )
+```
+
+## Testing Utilities
+
+### Test Helpers
+
+```python
+from veritascribe.testing import (
+    create_test_document,
+    create_test_errors,
+    mock_llm_response
+)
+
+# Create test documents
+test_pdf = create_test_document(
+    content="Sample thesis content...",
+    filename="test.pdf"
+)
+
+# Create test errors
+test_errors = create_test_errors(
+    count=5,
+    error_types=["grammar", "citation_format"]
+)
+
+# Mock LLM responses for testing
+with mock_llm_response(test_errors):
+    result = analyzer.analyze(text_block)
+```
+
+### Fixtures for Testing
+
+```python
+import pytest
+from veritascribe.testing import AnalysisFixture
+
+@pytest.fixture
+def analysis_fixture():
+    return AnalysisFixture(
+        document_pages=10,
+        error_count=5,
+        include_visualizations=True
+    )
+
+def test_analysis_pipeline(analysis_fixture):
+    report = analysis_fixture.run_analysis()
+    assert report.total_errors == 5
+```
+
+## Performance Considerations
+
+### Optimization Guidelines
+
+1. **Batch Processing**: Process multiple blocks efficiently
+2. **Caching**: Cache LLM responses when possible
+3. **Async Processing**: Use parallel processing for large documents
+4. **Memory Management**: Handle large PDFs without memory issues
+
+### Monitoring
+
+```python
+from veritascribe.monitoring import (
+    track_token_usage,
+    measure_processing_time,
+    log_api_calls
+)
+
+@track_token_usage
+@measure_processing_time
+def analyze_with_monitoring(text_block):
+    return analyzer.analyze(text_block)
+```
+
+## Security Considerations
+
+### API Key Management
+
+- Never log API keys
+- Use environment variables in production
+- Rotate keys regularly
+- Monitor usage for anomalies
+
+### Input Validation
+
+All inputs are validated using Pydantic models:
+
+```python
+from pydantic import ValidationError
+
+try:
+    settings = VeritaScribeSettings(temperature=2.0)  # Invalid
+except ValidationError as e:
+    print("Invalid temperature value")
+```
+
+### Output Sanitization
+
+Reports are sanitized to prevent injection attacks:
+
+```python
+from veritascribe.security import sanitize_output
+
+safe_content = sanitize_output(user_content)
+```
+
+---
+
+*This API reference covers the main interfaces. For implementation details, see the [Architecture Guide](architecture.qmd).*

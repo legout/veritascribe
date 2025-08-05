@@ -1,0 +1,1892 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Usage Guide – VeritaScribe</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-234273d1456647dabc34a594ac50e507.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-45a984b55c978f8c4117b5b9aec951d9.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">VeritaScribe</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./installation.html"> 
+<span class="menu-text">Installation</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./configuration.html"> 
+<span class="menu-text">Configuration</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./usage.html"> 
+<span class="menu-text">Usage Guide</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./api-reference.html"> 
+<span class="menu-text">API Reference</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./architecture.html"> 
+<span class="menu-text">Architecture</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./troubleshooting.html"> 
+<span class="menu-text">Troubleshooting</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Usage Guide</li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">VeritaScribe Documentation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./installation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Installation Guide</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./configuration.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Configuration Reference</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#usage-guide" id="toc-usage-guide" class="nav-link active" data-scroll-target="#usage-guide"><span class="header-section-number">1</span> Usage Guide</a>
+  <ul class="collapse">
+  <li><a href="#command-overview" id="toc-command-overview" class="nav-link" data-scroll-target="#command-overview"><span class="header-section-number">1.1</span> Command Overview</a></li>
+  <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started"><span class="header-section-number">1.2</span> Getting Started</a>
+  <ul class="collapse">
+  <li><a href="#try-the-demo" id="toc-try-the-demo" class="nav-link" data-scroll-target="#try-the-demo"><span class="header-section-number">1.2.1</span> 1. Try the Demo</a></li>
+  <li><a href="#quick-analysis" id="toc-quick-analysis" class="nav-link" data-scroll-target="#quick-analysis"><span class="header-section-number">1.2.2</span> 2. Quick Analysis</a></li>
+  <li><a href="#full-analysis" id="toc-full-analysis" class="nav-link" data-scroll-target="#full-analysis"><span class="header-section-number">1.2.3</span> 3. Full Analysis</a></li>
+  </ul></li>
+  <li><a href="#command-details" id="toc-command-details" class="nav-link" data-scroll-target="#command-details"><span class="header-section-number">1.3</span> Command Details</a>
+  <ul class="collapse">
+  <li><a href="#analyze---full-document-analysis" id="toc-analyze---full-document-analysis" class="nav-link" data-scroll-target="#analyze---full-document-analysis"><span class="header-section-number">1.3.1</span> <code>analyze</code> - Full Document Analysis</a></li>
+  <li><a href="#quick---fast-analysis" id="toc-quick---fast-analysis" class="nav-link" data-scroll-target="#quick---fast-analysis"><span class="header-section-number">1.3.2</span> <code>quick</code> - Fast Analysis</a></li>
+  </ul></li>
+  <li><a href="#understanding-output" id="toc-understanding-output" class="nav-link" data-scroll-target="#understanding-output"><span class="header-section-number">1.4</span> Understanding Output</a>
+  <ul class="collapse">
+  <li><a href="#console-output" id="toc-console-output" class="nav-link" data-scroll-target="#console-output"><span class="header-section-number">1.4.1</span> Console Output</a></li>
+  <li><a href="#generated-files" id="toc-generated-files" class="nav-link" data-scroll-target="#generated-files"><span class="header-section-number">1.4.2</span> Generated Files</a></li>
+  </ul></li>
+  <li><a href="#advanced-usage-patterns" id="toc-advanced-usage-patterns" class="nav-link" data-scroll-target="#advanced-usage-patterns"><span class="header-section-number">1.5</span> Advanced Usage Patterns</a>
+  <ul class="collapse">
+  <li><a href="#batch-processing" id="toc-batch-processing" class="nav-link" data-scroll-target="#batch-processing"><span class="header-section-number">1.5.1</span> Batch Processing</a></li>
+  <li><a href="#citation-style-workflows" id="toc-citation-style-workflows" class="nav-link" data-scroll-target="#citation-style-workflows"><span class="header-section-number">1.5.2</span> Citation Style Workflows</a></li>
+  <li><a href="#iterative-review-process" id="toc-iterative-review-process" class="nav-link" data-scroll-target="#iterative-review-process"><span class="header-section-number">1.5.3</span> Iterative Review Process</a></li>
+  <li><a href="#cost-management-strategies" id="toc-cost-management-strategies" class="nav-link" data-scroll-target="#cost-management-strategies"><span class="header-section-number">1.5.4</span> Cost Management Strategies</a></li>
+  </ul></li>
+  <li><a href="#working-with-results" id="toc-working-with-results" class="nav-link" data-scroll-target="#working-with-results"><span class="header-section-number">1.6</span> Working with Results</a>
+  <ul class="collapse">
+  <li><a href="#interpreting-error-severity" id="toc-interpreting-error-severity" class="nav-link" data-scroll-target="#interpreting-error-severity"><span class="header-section-number">1.6.1</span> Interpreting Error Severity</a></li>
+  <li><a href="#error-location-information" id="toc-error-location-information" class="nav-link" data-scroll-target="#error-location-information"><span class="header-section-number">1.6.2</span> Error Location Information</a></li>
+  <li><a href="#using-json-data" id="toc-using-json-data" class="nav-link" data-scroll-target="#using-json-data"><span class="header-section-number">1.6.3</span> Using JSON Data</a></li>
+  </ul></li>
+  <li><a href="#integration-with-other-tools" id="toc-integration-with-other-tools" class="nav-link" data-scroll-target="#integration-with-other-tools"><span class="header-section-number">1.7</span> Integration with Other Tools</a>
+  <ul class="collapse">
+  <li><a href="#text-editors" id="toc-text-editors" class="nav-link" data-scroll-target="#text-editors"><span class="header-section-number">1.7.1</span> Text Editors</a></li>
+  <li><a href="#citation-managers" id="toc-citation-managers" class="nav-link" data-scroll-target="#citation-managers"><span class="header-section-number">1.7.2</span> Citation Managers</a></li>
+  <li><a href="#version-control" id="toc-version-control" class="nav-link" data-scroll-target="#version-control"><span class="header-section-number">1.7.3</span> Version Control</a></li>
+  </ul></li>
+  <li><a href="#best-practices" id="toc-best-practices" class="nav-link" data-scroll-target="#best-practices"><span class="header-section-number">1.8</span> Best Practices</a>
+  <ul class="collapse">
+  <li><a href="#document-preparation" id="toc-document-preparation" class="nav-link" data-scroll-target="#document-preparation"><span class="header-section-number">1.8.1</span> Document Preparation</a></li>
+  <li><a href="#analysis-strategy" id="toc-analysis-strategy" class="nav-link" data-scroll-target="#analysis-strategy"><span class="header-section-number">1.8.2</span> Analysis Strategy</a></li>
+  <li><a href="#cost-management" id="toc-cost-management" class="nav-link" data-scroll-target="#cost-management"><span class="header-section-number">1.8.3</span> Cost Management</a></li>
+  <li><a href="#workflow-integration" id="toc-workflow-integration" class="nav-link" data-scroll-target="#workflow-integration"><span class="header-section-number">1.8.4</span> Workflow Integration</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">Usage Guide</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="usage-guide" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Usage Guide</h1>
+<p>This comprehensive guide covers all aspects of using VeritaScribe to analyze thesis documents.</p>
+<section id="command-overview" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="command-overview"><span class="header-section-number">1.1</span> Command Overview</h2>
+<p>VeritaScribe provides several commands for different use cases:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Command</th>
+<th>Purpose</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>demo</code></td>
+<td>Create and analyze sample document</td>
+<td>Testing setup</td>
+</tr>
+<tr class="even">
+<td><code>quick</code></td>
+<td>Fast analysis of document subset</td>
+<td>Quick feedback</td>
+</tr>
+<tr class="odd">
+<td><code>analyze</code></td>
+<td>Full document analysis</td>
+<td>Complete review</td>
+</tr>
+<tr class="even">
+<td><code>config</code></td>
+<td>View configuration</td>
+<td>Troubleshooting</td>
+</tr>
+<tr class="odd">
+<td><code>test</code></td>
+<td>System diagnostics</td>
+<td>Verify installation</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="getting-started" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="getting-started"><span class="header-section-number">1.2</span> Getting Started</h2>
+<section id="try-the-demo" class="level3" data-number="1.2.1">
+<h3 data-number="1.2.1" class="anchored" data-anchor-id="try-the-demo"><span class="header-section-number">1.2.1</span> 1. Try the Demo</h3>
+<p>Start with the demo to familiarize yourself with VeritaScribe:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe demo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This command will: - Create a sample thesis PDF (<code>demo_thesis.pdf</code>) - Perform quick analysis if API key is configured - Show example output and reports</p>
+</section>
+<section id="quick-analysis" class="level3" data-number="1.2.2">
+<h3 data-number="1.2.2" class="anchored" data-anchor-id="quick-analysis"><span class="header-section-number">1.2.2</span> 2. Quick Analysis</h3>
+<p>For rapid feedback on your document:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe quick your_thesis.pdf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Quick analysis: - Analyzes first 5 text blocks by default - Provides immediate feedback - Useful during writing process - Lower API costs</p>
+<p><strong>Customize block count:</strong></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe quick your_thesis.pdf <span class="at">--blocks</span> 10</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="full-analysis" class="level3" data-number="1.2.3">
+<h3 data-number="1.2.3" class="anchored" data-anchor-id="full-analysis"><span class="header-section-number">1.2.3</span> 3. Full Analysis</h3>
+<p>For comprehensive document review:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze your_thesis.pdf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This performs: - Complete document analysis - All error types detection - Detailed reporting - Visualization generation</p>
+</section>
+</section>
+<section id="command-details" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="command-details"><span class="header-section-number">1.3</span> Command Details</h2>
+<section id="analyze---full-document-analysis" class="level3" data-number="1.3.1">
+<h3 data-number="1.3.1" class="anchored" data-anchor-id="analyze---full-document-analysis"><span class="header-section-number">1.3.1</span> <code>analyze</code> - Full Document Analysis</h3>
+<p>The primary command for comprehensive thesis analysis.</p>
+<section id="basic-usage" class="level4" data-number="1.3.1.1">
+<h4 data-number="1.3.1.1" class="anchored" data-anchor-id="basic-usage"><span class="header-section-number">1.3.1.1</span> Basic Usage</h4>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze thesis.pdf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="advanced-options" class="level4" data-number="1.3.1.2">
+<h4 data-number="1.3.1.2" class="anchored" data-anchor-id="advanced-options"><span class="header-section-number">1.3.1.2</span> Advanced Options</h4>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze thesis.pdf <span class="dt">\</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">--output</span> ./results <span class="dt">\</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">--citation-style</span> APA <span class="dt">\</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">--verbose</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="options-reference" class="level4" data-number="1.3.1.3">
+<h4 data-number="1.3.1.3" class="anchored" data-anchor-id="options-reference"><span class="header-section-number">1.3.1.3</span> Options Reference</h4>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Option</th>
+<th>Short</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>--output</code></td>
+<td><code>-o</code></td>
+<td>Output directory</td>
+<td><code>./analysis_output</code></td>
+</tr>
+<tr class="even">
+<td><code>--citation-style</code></td>
+<td><code>-c</code></td>
+<td>Citation style</td>
+<td><code>APA</code></td>
+</tr>
+<tr class="odd">
+<td><code>--quick</code></td>
+<td><code>-q</code></td>
+<td>Quick mode (10 blocks)</td>
+<td><code>false</code></td>
+</tr>
+<tr class="even">
+<td><code>--no-viz</code></td>
+<td></td>
+<td>Skip visualizations</td>
+<td><code>false</code></td>
+</tr>
+<tr class="odd">
+<td><code>--verbose</code></td>
+<td><code>-v</code></td>
+<td>Verbose logging</td>
+<td><code>false</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="citation-styles-supported" class="level4" data-number="1.3.1.4">
+<h4 data-number="1.3.1.4" class="anchored" data-anchor-id="citation-styles-supported"><span class="header-section-number">1.3.1.4</span> Citation Styles Supported</h4>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># American Psychological Association</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">--citation-style</span> APA</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Modern Language Association  </span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="ex">--citation-style</span> MLA</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Chicago Manual of Style</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="ex">--citation-style</span> Chicago</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co"># IEEE format</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="ex">--citation-style</span> IEEE</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Harvard referencing</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="ex">--citation-style</span> Harvard</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="example-workflows" class="level4" data-number="1.3.1.5">
+<h4 data-number="1.3.1.5" class="anchored" data-anchor-id="example-workflows"><span class="header-section-number">1.3.1.5</span> Example Workflows</h4>
+<p><strong>Standard Analysis:</strong></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze thesis.pdf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Custom Output Location:</strong></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze thesis.pdf <span class="dt">\</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">--output</span> ~/Documents/thesis_review</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>MLA Citation Style:</strong></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze thesis.pdf <span class="dt">\</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">--citation-style</span> MLA</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Quick Full Analysis:</strong></p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze thesis.pdf <span class="at">--quick</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Analysis Without Visualizations:</strong></p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze thesis.pdf <span class="at">--no-viz</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="quick---fast-analysis" class="level3" data-number="1.3.2">
+<h3 data-number="1.3.2" class="anchored" data-anchor-id="quick---fast-analysis"><span class="header-section-number">1.3.2</span> <code>quick</code> - Fast Analysis</h3>
+<p>Ideal for iterative writing and quick feedback.</p>
+<section id="basic-usage-1" class="level4" data-number="1.3.2.1">
+<h4 data-number="1.3.2.1" class="anchored" data-anchor-id="basic-usage-1"><span class="header-section-number">1.3.2.1</span> Basic Usage</h4>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe quick thesis.pdf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="customize-analysis-scope" class="level4" data-number="1.3.2.2">
+<h4 data-number="1.3.2.2" class="anchored" data-anchor-id="customize-analysis-scope"><span class="header-section-number">1.3.2.2</span> Customize Analysis Scope</h4>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Analyze first 3 blocks</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe quick thesis.pdf <span class="at">--blocks</span> 3</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Analyze first 15 blocks  </span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe quick thesis.pdf <span class="at">--blocks</span> 15</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="when-to-use-quick-analysis" class="level4" data-number="1.3.2.3">
+<h4 data-number="1.3.2.3" class="anchored" data-anchor-id="when-to-use-quick-analysis"><span class="header-section-number">1.3.2.3</span> When to Use Quick Analysis</h4>
+<ul>
+<li><strong>During writing</strong>: Get feedback on recent sections</li>
+<li><strong>Initial review</strong>: Spot-check document quality</li>
+<li><strong>Cost management</strong>: Reduce API usage for large documents</li>
+<li><strong>Debugging</strong>: Test configuration with small sample</li>
+</ul>
+</section>
+</section>
+</section>
+<section id="understanding-output" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="understanding-output"><span class="header-section-number">1.4</span> Understanding Output</h2>
+<section id="console-output" class="level3" data-number="1.4.1">
+<h3 data-number="1.4.1" class="anchored" data-anchor-id="console-output"><span class="header-section-number">1.4.1</span> Console Output</h3>
+<p>VeritaScribe provides rich console output with progress indicators and summaries:</p>
+<pre><code>Starting analysis of: thesis.pdf
+Output directory: ./analysis_output
+
+Analyzing document... ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100%
+
+Analysis Results: thesis.pdf
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│ 📄 Pages: 45                                                                    │
+│ 📝 Words: 12,543                                                               │
+│ 🔍 Text blocks analyzed: 87                                                     │
+│ ⚠️  Total errors: 23                                                            │
+│ 📊 Error rate: 1.83 per 1,000 words                                           │
+│ ⏱️  Processing time: 45.32s                                                     │
+└─────────────────────────────────────────────────────────────────────────────────┘
+
+Errors by Type
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Type                                                                             ┃ Count                                                                            ┃ Percentage                                                                       ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Grammar                                                                          │ 12                                                                               │ 52.2%                                                                           │
+│ Citation Format                                                                  │ 7                                                                                │ 30.4%                                                                           │
+│ Content Plausibility                                                             │ 4                                                                                │ 17.4%                                                                           │
+└──────────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────────┘
+
+Severity Breakdown: 🔴 High: 3 | 🟡 Medium: 8 | 🟢 Low: 12
+
+🚨 3 high-priority issues require immediate attention!
+
+✓ Analysis completed successfully!
+
+Generated files:
+  📄 Text report: ./analysis_output/thesis_20240315_143022_report.md
+  📊 JSON data: ./analysis_output/thesis_20240315_143022_data.json
+  📈 Visualizations: ./analysis_output/thesis_20240315_143022_visualizations/
+
+Recommendation: Document shows good overall quality with some areas for improvement. Focus on addressing high-priority grammar and citation issues first.</code></pre>
+</section>
+<section id="generated-files" class="level3" data-number="1.4.2">
+<h3 data-number="1.4.2" class="anchored" data-anchor-id="generated-files"><span class="header-section-number">1.4.2</span> Generated Files</h3>
+<p>Each analysis produces several output files:</p>
+<section id="text-report-.md" class="level4" data-number="1.4.2.1">
+<h4 data-number="1.4.2.1" class="anchored" data-anchor-id="text-report-.md"><span class="header-section-number">1.4.2.1</span> 1. Text Report (<code>.md</code>)</h4>
+<p>Comprehensive Markdown report with:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># VeritaScribe Analysis Report</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>**Document:** thesis.pdf</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>**Analysis Date:** 2024-03-15 14<span class="sc">:30:</span>22</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>**Processing Time:** 45.32 seconds</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="fu">## Executive Summary</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Total Pages:** 45</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Word Count:** 12,543</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Text Blocks Analyzed:** 87</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Total Errors Found:** 23</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Error Rate:** 1.83 per 1,000 words</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="fu">## Error Summary</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="fu">### By Type</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Grammar: 12 errors (52.2%)</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Citation Format: 7 errors (30.4%)  </span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Content Plausibility: 4 errors (17.4%)</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a><span class="fu">### By Severity</span></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>High Priority: 3 errors</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Medium Priority: 8 errors</span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Low Priority: 12 errors</span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a><span class="fu">## Detailed Findings</span></span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a><span class="fu">### High Priority Issues</span></span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 1. Grammar Error (Page 12)</span></span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>**Location:** Page 12, coordinates (72, 345, 520, 365)</span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a>**Original Text:** "The results shows that..."</span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a>**Suggested Fix:** "The results show that..."</span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a>**Explanation:** Subject-verb agreement error. 'Results' is plural and requires 'show' not 'shows'.</span>
+<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 2. Citation Format Error (Page 23)</span></span>
+<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a>**Location:** Page 23, coordinates (72, 123, 520, 143)</span>
+<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>**Original Text:** "(Smith 2020)"</span>
+<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a>**Suggested Fix:** "(Smith, 2020)"</span>
+<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a>**Explanation:** APA format requires comma between author and year.</span>
+<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">... more detailed errors ...</span><span class="co">]</span></span>
+<span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a><span class="fu">## Recommendations</span></span>
+<span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Immediate Action Required:** Address 3 high-priority issues</span>
+<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Grammar Focus:** Review subject-verb agreements throughout</span>
+<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Citation Consistency:** Ensure all citations follow APA format</span>
+<span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Content Review:** Verify factual claims in identified sections</span>
+<span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-52"><a href="#cb16-52" aria-hidden="true" tabindex="-1"></a><span class="fu">## Overall Assessment</span></span>
+<span id="cb16-53"><a href="#cb16-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-54"><a href="#cb16-54" aria-hidden="true" tabindex="-1"></a>Document quality: **Good** with room for improvement.</span>
+<span id="cb16-55"><a href="#cb16-55" aria-hidden="true" tabindex="-1"></a>Recommended next steps: Focus on high-priority issues first.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="json-data-export-.json" class="level4" data-number="1.4.2.2">
+<h4 data-number="1.4.2.2" class="anchored" data-anchor-id="json-data-export-.json"><span class="header-section-number">1.4.2.2</span> 2. JSON Data Export (<code>.json</code>)</h4>
+<p>Structured data for programmatic access:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"document_name"</span><span class="fu">:</span> <span class="st">"thesis.pdf"</span><span class="fu">,</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"analysis_timestamp"</span><span class="fu">:</span> <span class="st">"2024-03-15T14:30:22.123456"</span><span class="fu">,</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"total_pages"</span><span class="fu">:</span> <span class="dv">45</span><span class="fu">,</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"total_words"</span><span class="fu">:</span> <span class="dv">12543</span><span class="fu">,</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"total_text_blocks"</span><span class="fu">:</span> <span class="dv">87</span><span class="fu">,</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"total_errors"</span><span class="fu">:</span> <span class="dv">23</span><span class="fu">,</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"error_rate"</span><span class="fu">:</span> <span class="fl">1.83</span><span class="fu">,</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"total_processing_time_seconds"</span><span class="fu">:</span> <span class="fl">45.32</span><span class="fu">,</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"errors_by_type"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"grammar"</span><span class="fu">:</span> <span class="dv">12</span><span class="fu">,</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"citation_format"</span><span class="fu">:</span> <span class="dv">7</span><span class="fu">,</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"content_plausibility"</span><span class="fu">:</span> <span class="dv">4</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">},</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"errors_by_severity"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"high"</span><span class="fu">:</span> <span class="dv">3</span><span class="fu">,</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"medium"</span><span class="fu">:</span> <span class="dv">8</span><span class="fu">,</span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"low"</span><span class="fu">:</span> <span class="dv">12</span></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">},</span></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"analysis_results"</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>      <span class="dt">"text_block"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"content"</span><span class="fu">:</span> <span class="st">"The results shows that..."</span><span class="fu">,</span></span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"page_number"</span><span class="fu">:</span> <span class="dv">12</span><span class="fu">,</span></span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"bounding_box"</span><span class="fu">:</span> <span class="ot">[</span><span class="dv">72</span><span class="ot">,</span> <span class="dv">345</span><span class="ot">,</span> <span class="dv">520</span><span class="ot">,</span> <span class="dv">365</span><span class="ot">]</span></span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>      <span class="fu">},</span></span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>      <span class="dt">"errors"</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>        <span class="fu">{</span></span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>          <span class="dt">"error_type"</span><span class="fu">:</span> <span class="st">"grammar"</span><span class="fu">,</span></span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>          <span class="dt">"severity"</span><span class="fu">:</span> <span class="st">"high"</span><span class="fu">,</span></span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>          <span class="dt">"original_text"</span><span class="fu">:</span> <span class="st">"The results shows that"</span><span class="fu">,</span></span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a>          <span class="dt">"suggested_correction"</span><span class="fu">:</span> <span class="st">"The results show that"</span><span class="fu">,</span></span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a>          <span class="dt">"explanation"</span><span class="fu">:</span> <span class="st">"Subject-verb agreement error..."</span><span class="fu">,</span></span>
+<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a>          <span class="dt">"location"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>            <span class="dt">"page_number"</span><span class="fu">:</span> <span class="dv">12</span><span class="fu">,</span></span>
+<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a>            <span class="dt">"bounding_box"</span><span class="fu">:</span> <span class="ot">[</span><span class="dv">72</span><span class="ot">,</span> <span class="dv">345</span><span class="ot">,</span> <span class="dv">520</span><span class="ot">,</span> <span class="dv">365</span><span class="ot">]</span></span>
+<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a>          <span class="fu">}</span></span>
+<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a>        <span class="fu">}</span></span>
+<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a>      <span class="ot">]</span></span>
+<span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span></span>
+<span id="cb17-42"><a href="#cb17-42" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="visualizations" class="level4" data-number="1.4.2.3">
+<h4 data-number="1.4.2.3" class="anchored" data-anchor-id="visualizations"><span class="header-section-number">1.4.2.3</span> 3. Visualizations</h4>
+<p>Charts and graphs in the visualizations directory:</p>
+<ul>
+<li><strong>Error Distribution by Type</strong> (<code>error_types.png</code>)</li>
+<li><strong>Error Density by Page</strong> (<code>error_density.png</code>)</li>
+<li><strong>Severity Breakdown</strong> (<code>severity_breakdown.png</code>)</li>
+</ul>
+</section>
+</section>
+</section>
+<section id="advanced-usage-patterns" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="advanced-usage-patterns"><span class="header-section-number">1.5</span> Advanced Usage Patterns</h2>
+<section id="batch-processing" class="level3" data-number="1.5.1">
+<h3 data-number="1.5.1" class="anchored" data-anchor-id="batch-processing"><span class="header-section-number">1.5.1</span> Batch Processing</h3>
+<p>Process multiple documents:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create script for batch processing</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="op">&gt;</span> batch_analyze.sh <span class="op">&lt;&lt; 'EOF'</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="st">#!/bin/bash</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="st">for pdf in *.pdf; do</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="st">  echo "Analyzing $pdf..."</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="st">  uv run python -m veritascribe analyze "$pdf" \</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="st">    --output "./results/$(basename "$pdf" .pdf)"</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="st">done</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="op">EOF</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> +x batch_analyze.sh</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="ex">./batch_analyze.sh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="citation-style-workflows" class="level3" data-number="1.5.2">
+<h3 data-number="1.5.2" class="anchored" data-anchor-id="citation-style-workflows"><span class="header-section-number">1.5.2</span> Citation Style Workflows</h3>
+<p>Different workflows for different academic styles:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># APA Style (Psychology, Education)</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze thesis.pdf <span class="at">--citation-style</span> APA</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co"># MLA Style (Literature, Humanities)  </span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze thesis.pdf <span class="at">--citation-style</span> MLA</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Chicago Style (History, Arts)</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze thesis.pdf <span class="at">--citation-style</span> Chicago</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="co"># IEEE Style (Engineering, Computer Science)</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze thesis.pdf <span class="at">--citation-style</span> IEEE</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="iterative-review-process" class="level3" data-number="1.5.3">
+<h3 data-number="1.5.3" class="anchored" data-anchor-id="iterative-review-process"><span class="header-section-number">1.5.3</span> Iterative Review Process</h3>
+<p>Workflow for document improvement:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: Initial quick review</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe quick draft.pdf <span class="at">--blocks</span> 10</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 2: Address major issues, then full analysis</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze draft.pdf <span class="at">--output</span> ./review_1</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 3: After revisions, re-analyze</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze revised_draft.pdf <span class="at">--output</span> ./review_2</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 4: Compare results</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="fu">diff</span> ./review_1/draft_<span class="pp">*</span>_data.json ./review_2/revised_draft_<span class="pp">*</span>_data.json</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="cost-management-strategies" class="level3" data-number="1.5.4">
+<h3 data-number="1.5.4" class="anchored" data-anchor-id="cost-management-strategies"><span class="header-section-number">1.5.4</span> Cost Management Strategies</h3>
+<p>Optimize API usage for large documents:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Strategy 1: Quick analysis first</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe quick large_thesis.pdf <span class="at">--blocks</span> 20</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Strategy 2: Disable expensive analysis types</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="va">CONTENT_ANALYSIS_ENABLED</span><span class="op">=</span>false <span class="dt">\</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze large_thesis.pdf</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Strategy 3: Use cheaper model</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="va">DEFAULT_MODEL</span><span class="op">=</span>gpt-3.5-turbo <span class="dt">\</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze large_thesis.pdf</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Strategy 4: Reduce parallel processing</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="va">MAX_CONCURRENT_REQUESTS</span><span class="op">=</span>2 <span class="dt">\</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze large_thesis.pdf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="working-with-results" class="level2" data-number="1.6">
+<h2 data-number="1.6" class="anchored" data-anchor-id="working-with-results"><span class="header-section-number">1.6</span> Working with Results</h2>
+<section id="interpreting-error-severity" class="level3" data-number="1.6.1">
+<h3 data-number="1.6.1" class="anchored" data-anchor-id="interpreting-error-severity"><span class="header-section-number">1.6.1</span> Interpreting Error Severity</h3>
+<p><strong>High Priority (Score ≥ 0.8):</strong> - Critical grammar errors - Major citation format violations - Significant factual inconsistencies - <strong>Action:</strong> Fix immediately</p>
+<p><strong>Medium Priority (Score ≥ 0.5):</strong> - Minor grammar issues - Style inconsistencies - Citation formatting preferences - <strong>Action:</strong> Review and fix as time permits</p>
+<p><strong>Low Priority (Score &lt; 0.5):</strong> - Style suggestions - Minor formatting preferences - Optional improvements - <strong>Action:</strong> Consider for polish pass</p>
+</section>
+<section id="error-location-information" class="level3" data-number="1.6.2">
+<h3 data-number="1.6.2" class="anchored" data-anchor-id="error-location-information"><span class="header-section-number">1.6.2</span> Error Location Information</h3>
+<p>Each error includes precise location data:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"location"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"page_number"</span><span class="fu">:</span> <span class="dv">12</span><span class="fu">,</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"bounding_box"</span><span class="fu">:</span> <span class="ot">[</span><span class="dv">72</span><span class="ot">,</span> <span class="dv">345</span><span class="ot">,</span> <span class="dv">520</span><span class="ot">,</span> <span class="dv">365</span><span class="ot">]</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Bounding box coordinates <code>[x1, y1, x2, y2]</code>: - <code>(x1, y1)</code>: Top-left corner - <code>(x2, y2)</code>: Bottom-right corner - Units are in PDF points (72 points = 1 inch)</p>
+</section>
+<section id="using-json-data" class="level3" data-number="1.6.3">
+<h3 data-number="1.6.3" class="anchored" data-anchor-id="using-json-data"><span class="header-section-number">1.6.3</span> Using JSON Data</h3>
+<p>Process results programmatically:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Load analysis results</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">'thesis_20240315_143022_data.json'</span>, <span class="st">'r'</span>) <span class="im">as</span> f:</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    results <span class="op">=</span> json.load(f)</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Get high-priority errors</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>high_priority <span class="op">=</span> [</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>    error <span class="cf">for</span> result <span class="kw">in</span> results[<span class="st">'analysis_results'</span>]</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> error <span class="kw">in</span> result[<span class="st">'errors'</span>]</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> error[<span class="st">'severity'</span>] <span class="op">==</span> <span class="st">'high'</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Found </span><span class="sc">{</span><span class="bu">len</span>(high_priority)<span class="sc">}</span><span class="ss"> high-priority issues"</span>)</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Group errors by type</span></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>error_types <span class="op">=</span> {}</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> result <span class="kw">in</span> results[<span class="st">'analysis_results'</span>]:</span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> error <span class="kw">in</span> result[<span class="st">'errors'</span>]:</span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>        error_type <span class="op">=</span> error[<span class="st">'error_type'</span>]</span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>        error_types[error_type] <span class="op">=</span> error_types.get(error_type, <span class="dv">0</span>) <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Error distribution:"</span>, error_types)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="integration-with-other-tools" class="level2" data-number="1.7">
+<h2 data-number="1.7" class="anchored" data-anchor-id="integration-with-other-tools"><span class="header-section-number">1.7</span> Integration with Other Tools</h2>
+<section id="text-editors" class="level3" data-number="1.7.1">
+<h3 data-number="1.7.1" class="anchored" data-anchor-id="text-editors"><span class="header-section-number">1.7.1</span> Text Editors</h3>
+<p>Import location information into editors:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate editor jump commands</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_editor_commands(json_file):</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(json_file, <span class="st">'r'</span>) <span class="im">as</span> f:</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>        results <span class="op">=</span> json.load(f)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    commands <span class="op">=</span> []</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> result <span class="kw">in</span> results[<span class="st">'analysis_results'</span>]:</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> error <span class="kw">in</span> result[<span class="st">'errors'</span>]:</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>            page <span class="op">=</span> error[<span class="st">'location'</span>][<span class="st">'page_number'</span>]</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>            text <span class="op">=</span> error[<span class="st">'original_text'</span>][:<span class="dv">50</span>]</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>            commands.append(<span class="ss">f"# Page </span><span class="sc">{</span>page<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>text<span class="sc">}</span><span class="ss">..."</span>)</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> commands</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>commands <span class="op">=</span> generate_editor_commands(<span class="st">'results.json'</span>)</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> cmd <span class="kw">in</span> commands[:<span class="dv">5</span>]:  <span class="co"># Show first 5</span></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(cmd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="citation-managers" class="level3" data-number="1.7.2">
+<h3 data-number="1.7.2" class="anchored" data-anchor-id="citation-managers"><span class="header-section-number">1.7.2</span> Citation Managers</h3>
+<p>Export citation issues for reference managers:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> export_citation_issues(json_file):</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(json_file, <span class="st">'r'</span>) <span class="im">as</span> f:</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>        results <span class="op">=</span> json.load(f)</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    citation_errors <span class="op">=</span> []</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> result <span class="kw">in</span> results[<span class="st">'analysis_results'</span>]:</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> error <span class="kw">in</span> result[<span class="st">'errors'</span>]:</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> error[<span class="st">'error_type'</span>] <span class="op">==</span> <span class="st">'citation_format'</span>:</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>                citation_errors.append({</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>                    <span class="st">'page'</span>: error[<span class="st">'location'</span>][<span class="st">'page_number'</span>],</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>                    <span class="st">'original'</span>: error[<span class="st">'original_text'</span>],</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>                    <span class="st">'suggested'</span>: error[<span class="st">'suggested_correction'</span>],</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>                    <span class="st">'explanation'</span>: error[<span class="st">'explanation'</span>]</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>                })</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> citation_errors</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="version-control" class="level3" data-number="1.7.3">
+<h3 data-number="1.7.3" class="anchored" data-anchor-id="version-control"><span class="header-section-number">1.7.3</span> Version Control</h3>
+<p>Track improvements over time:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create analysis baseline</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze thesis.pdf <span class="at">--output</span> ./baseline</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add baseline/</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Baseline thesis analysis"</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co"># After revisions</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze thesis_v2.pdf <span class="at">--output</span> ./revision_1</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add revision_1/</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"First revision analysis"</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare improvements</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> compare_analyses.py baseline/ revision_1/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="best-practices" class="level2" data-number="1.8">
+<h2 data-number="1.8" class="anchored" data-anchor-id="best-practices"><span class="header-section-number">1.8</span> Best Practices</h2>
+<section id="document-preparation" class="level3" data-number="1.8.1">
+<h3 data-number="1.8.1" class="anchored" data-anchor-id="document-preparation"><span class="header-section-number">1.8.1</span> Document Preparation</h3>
+<ol type="1">
+<li><strong>Use text-based PDFs</strong>: Avoid scanned documents when possible</li>
+<li><strong>Ensure proper formatting</strong>: Well-structured documents analyze better</li>
+<li><strong>Check PDF integrity</strong>: Corrupted files may cause issues</li>
+<li><strong>Remove passwords</strong>: Encrypted PDFs cannot be processed</li>
+</ol>
+</section>
+<section id="analysis-strategy" class="level3" data-number="1.8.2">
+<h3 data-number="1.8.2" class="anchored" data-anchor-id="analysis-strategy"><span class="header-section-number">1.8.2</span> Analysis Strategy</h3>
+<ol type="1">
+<li><strong>Start with quick analysis</strong>: Get overview before full analysis</li>
+<li><strong>Focus on high-priority issues</strong>: Address critical errors first</li>
+<li><strong>Use appropriate citation style</strong>: Match your academic field</li>
+<li><strong>Consider document size</strong>: Large documents may need configuration adjustment</li>
+</ol>
+</section>
+<section id="cost-management" class="level3" data-number="1.8.3">
+<h3 data-number="1.8.3" class="anchored" data-anchor-id="cost-management"><span class="header-section-number">1.8.3</span> Cost Management</h3>
+<ol type="1">
+<li><strong>Monitor token usage</strong>: Check costs regularly with large documents</li>
+<li><strong>Use quick mode for drafts</strong>: Full analysis for final versions</li>
+<li><strong>Adjust block size</strong>: Smaller blocks = more requests but finer analysis</li>
+<li><strong>Consider model selection</strong>: Balance quality vs.&nbsp;cost</li>
+</ol>
+</section>
+<section id="workflow-integration" class="level3" data-number="1.8.4">
+<h3 data-number="1.8.4" class="anchored" data-anchor-id="workflow-integration"><span class="header-section-number">1.8.4</span> Workflow Integration</h3>
+<ol type="1">
+<li><strong>Regular analysis</strong>: Integrate into writing routine</li>
+<li><strong>Version tracking</strong>: Keep analysis results with document versions</li>
+<li><strong>Collaborative review</strong>: Share analysis results with advisors</li>
+<li><strong>Final validation</strong>: Run full analysis before submission</li>
+</ol>
+<hr>
+<p><em>For troubleshooting common issues, see the <a href="./troubleshooting.html">Troubleshooting Guide</a>.</em></p>
+
+
+<!-- -->
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="sourceCode" id="cb27" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Usage Guide"</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="fu"># Usage Guide</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>This comprehensive guide covers all aspects of using VeritaScribe to analyze thesis documents.</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="fu">## Command Overview</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>VeritaScribe provides several commands for different use cases:</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Command <span class="pp">|</span> Purpose <span class="pp">|</span> Use Case <span class="pp">|</span></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a><span class="pp">|---------|---------|----------|</span></span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`demo`</span> <span class="pp">|</span> Create and analyze sample document <span class="pp">|</span> Testing setup <span class="pp">|</span></span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`quick`</span> <span class="pp">|</span> Fast analysis of document subset <span class="pp">|</span> Quick feedback <span class="pp">|</span></span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`analyze`</span> <span class="pp">|</span> Full document analysis <span class="pp">|</span> Complete review <span class="pp">|</span></span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`config`</span> <span class="pp">|</span> View configuration <span class="pp">|</span> Troubleshooting <span class="pp">|</span></span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`test`</span> <span class="pp">|</span> System diagnostics <span class="pp">|</span> Verify installation <span class="pp">|</span></span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a><span class="fu">## Getting Started</span></span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a><span class="fu">### 1. Try the Demo</span></span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a>Start with the demo to familiarize yourself with VeritaScribe:</span>
+<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb27-28"><a href="#cb27-28" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe demo</span>
+<span id="cb27-29"><a href="#cb27-29" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb27-30"><a href="#cb27-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-31"><a href="#cb27-31" aria-hidden="true" tabindex="-1"></a>This command will:</span>
+<span id="cb27-32"><a href="#cb27-32" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Create a sample thesis PDF (<span class="in">`demo_thesis.pdf`</span>)</span>
+<span id="cb27-33"><a href="#cb27-33" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Perform quick analysis if API key is configured</span>
+<span id="cb27-34"><a href="#cb27-34" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Show example output and reports</span>
+<span id="cb27-35"><a href="#cb27-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-36"><a href="#cb27-36" aria-hidden="true" tabindex="-1"></a><span class="fu">### 2. Quick Analysis</span></span>
+<span id="cb27-37"><a href="#cb27-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-38"><a href="#cb27-38" aria-hidden="true" tabindex="-1"></a>For rapid feedback on your document:</span>
+<span id="cb27-39"><a href="#cb27-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-40"><a href="#cb27-40" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb27-41"><a href="#cb27-41" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe quick your_thesis.pdf</span>
+<span id="cb27-42"><a href="#cb27-42" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb27-43"><a href="#cb27-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-44"><a href="#cb27-44" aria-hidden="true" tabindex="-1"></a>Quick analysis:</span>
+<span id="cb27-45"><a href="#cb27-45" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Analyzes first 5 text blocks by default</span>
+<span id="cb27-46"><a href="#cb27-46" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Provides immediate feedback</span>
+<span id="cb27-47"><a href="#cb27-47" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Useful during writing process</span>
+<span id="cb27-48"><a href="#cb27-48" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Lower API costs</span>
+<span id="cb27-49"><a href="#cb27-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-50"><a href="#cb27-50" aria-hidden="true" tabindex="-1"></a>**Customize block count:**</span>
+<span id="cb27-51"><a href="#cb27-51" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb27-52"><a href="#cb27-52" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe quick your_thesis.pdf <span class="at">--blocks</span> 10</span>
+<span id="cb27-53"><a href="#cb27-53" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb27-54"><a href="#cb27-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-55"><a href="#cb27-55" aria-hidden="true" tabindex="-1"></a><span class="fu">### 3. Full Analysis</span></span>
+<span id="cb27-56"><a href="#cb27-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-57"><a href="#cb27-57" aria-hidden="true" tabindex="-1"></a>For comprehensive document review:</span>
+<span id="cb27-58"><a href="#cb27-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-59"><a href="#cb27-59" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb27-60"><a href="#cb27-60" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze your_thesis.pdf</span>
+<span id="cb27-61"><a href="#cb27-61" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb27-62"><a href="#cb27-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-63"><a href="#cb27-63" aria-hidden="true" tabindex="-1"></a>This performs:</span>
+<span id="cb27-64"><a href="#cb27-64" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Complete document analysis</span>
+<span id="cb27-65"><a href="#cb27-65" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>All error types detection</span>
+<span id="cb27-66"><a href="#cb27-66" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Detailed reporting</span>
+<span id="cb27-67"><a href="#cb27-67" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Visualization generation</span>
+<span id="cb27-68"><a href="#cb27-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-69"><a href="#cb27-69" aria-hidden="true" tabindex="-1"></a><span class="fu">## Command Details</span></span>
+<span id="cb27-70"><a href="#cb27-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-71"><a href="#cb27-71" aria-hidden="true" tabindex="-1"></a><span class="fu">### `analyze` - Full Document Analysis</span></span>
+<span id="cb27-72"><a href="#cb27-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-73"><a href="#cb27-73" aria-hidden="true" tabindex="-1"></a>The primary command for comprehensive thesis analysis.</span>
+<span id="cb27-74"><a href="#cb27-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-75"><a href="#cb27-75" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Basic Usage</span></span>
+<span id="cb27-76"><a href="#cb27-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-77"><a href="#cb27-77" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb27-78"><a href="#cb27-78" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze thesis.pdf</span>
+<span id="cb27-79"><a href="#cb27-79" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb27-80"><a href="#cb27-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-81"><a href="#cb27-81" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Advanced Options</span></span>
+<span id="cb27-82"><a href="#cb27-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-83"><a href="#cb27-83" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb27-84"><a href="#cb27-84" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze thesis.pdf <span class="dt">\</span></span>
+<span id="cb27-85"><a href="#cb27-85" aria-hidden="true" tabindex="-1"></a>  <span class="at">--output</span> ./results <span class="dt">\</span></span>
+<span id="cb27-86"><a href="#cb27-86" aria-hidden="true" tabindex="-1"></a>  <span class="at">--citation-style</span> APA <span class="dt">\</span></span>
+<span id="cb27-87"><a href="#cb27-87" aria-hidden="true" tabindex="-1"></a>  <span class="at">--verbose</span></span>
+<span id="cb27-88"><a href="#cb27-88" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb27-89"><a href="#cb27-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-90"><a href="#cb27-90" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Options Reference</span></span>
+<span id="cb27-91"><a href="#cb27-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-92"><a href="#cb27-92" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Option <span class="pp">|</span> Short <span class="pp">|</span> Description <span class="pp">|</span> Default <span class="pp">|</span></span>
+<span id="cb27-93"><a href="#cb27-93" aria-hidden="true" tabindex="-1"></a><span class="pp">|--------|-------|-------------|---------|</span></span>
+<span id="cb27-94"><a href="#cb27-94" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`--output`</span> <span class="pp">|</span> <span class="in">`-o`</span> <span class="pp">|</span> Output directory <span class="pp">|</span> <span class="in">`./analysis_output`</span> <span class="pp">|</span></span>
+<span id="cb27-95"><a href="#cb27-95" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`--citation-style`</span> <span class="pp">|</span> <span class="in">`-c`</span> <span class="pp">|</span> Citation style <span class="pp">|</span> <span class="in">`APA`</span> <span class="pp">|</span></span>
+<span id="cb27-96"><a href="#cb27-96" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`--quick`</span> <span class="pp">|</span> <span class="in">`-q`</span> <span class="pp">|</span> Quick mode (10 blocks) <span class="pp">|</span> <span class="in">`false`</span> <span class="pp">|</span></span>
+<span id="cb27-97"><a href="#cb27-97" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`--no-viz`</span> <span class="pp">|</span> <span class="pp">|</span> Skip visualizations <span class="pp">|</span> <span class="in">`false`</span> <span class="pp">|</span></span>
+<span id="cb27-98"><a href="#cb27-98" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`--verbose`</span> <span class="pp">|</span> <span class="in">`-v`</span> <span class="pp">|</span> Verbose logging <span class="pp">|</span> <span class="in">`false`</span> <span class="pp">|</span></span>
+<span id="cb27-99"><a href="#cb27-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-100"><a href="#cb27-100" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Citation Styles Supported</span></span>
+<span id="cb27-101"><a href="#cb27-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-102"><a href="#cb27-102" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb27-103"><a href="#cb27-103" aria-hidden="true" tabindex="-1"></a><span class="co"># American Psychological Association</span></span>
+<span id="cb27-104"><a href="#cb27-104" aria-hidden="true" tabindex="-1"></a><span class="ex">--citation-style</span> APA</span>
+<span id="cb27-105"><a href="#cb27-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-106"><a href="#cb27-106" aria-hidden="true" tabindex="-1"></a><span class="co"># Modern Language Association  </span></span>
+<span id="cb27-107"><a href="#cb27-107" aria-hidden="true" tabindex="-1"></a><span class="ex">--citation-style</span> MLA</span>
+<span id="cb27-108"><a href="#cb27-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-109"><a href="#cb27-109" aria-hidden="true" tabindex="-1"></a><span class="co"># Chicago Manual of Style</span></span>
+<span id="cb27-110"><a href="#cb27-110" aria-hidden="true" tabindex="-1"></a><span class="ex">--citation-style</span> Chicago</span>
+<span id="cb27-111"><a href="#cb27-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-112"><a href="#cb27-112" aria-hidden="true" tabindex="-1"></a><span class="co"># IEEE format</span></span>
+<span id="cb27-113"><a href="#cb27-113" aria-hidden="true" tabindex="-1"></a><span class="ex">--citation-style</span> IEEE</span>
+<span id="cb27-114"><a href="#cb27-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-115"><a href="#cb27-115" aria-hidden="true" tabindex="-1"></a><span class="co"># Harvard referencing</span></span>
+<span id="cb27-116"><a href="#cb27-116" aria-hidden="true" tabindex="-1"></a><span class="ex">--citation-style</span> Harvard</span>
+<span id="cb27-117"><a href="#cb27-117" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb27-118"><a href="#cb27-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-119"><a href="#cb27-119" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Example Workflows</span></span>
+<span id="cb27-120"><a href="#cb27-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-121"><a href="#cb27-121" aria-hidden="true" tabindex="-1"></a>**Standard Analysis:**</span>
+<span id="cb27-122"><a href="#cb27-122" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb27-123"><a href="#cb27-123" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze thesis.pdf</span>
+<span id="cb27-124"><a href="#cb27-124" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb27-125"><a href="#cb27-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-126"><a href="#cb27-126" aria-hidden="true" tabindex="-1"></a>**Custom Output Location:**</span>
+<span id="cb27-127"><a href="#cb27-127" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb27-128"><a href="#cb27-128" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze thesis.pdf <span class="dt">\</span></span>
+<span id="cb27-129"><a href="#cb27-129" aria-hidden="true" tabindex="-1"></a>  <span class="at">--output</span> ~/Documents/thesis_review</span>
+<span id="cb27-130"><a href="#cb27-130" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb27-131"><a href="#cb27-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-132"><a href="#cb27-132" aria-hidden="true" tabindex="-1"></a>**MLA Citation Style:**</span>
+<span id="cb27-133"><a href="#cb27-133" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb27-134"><a href="#cb27-134" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze thesis.pdf <span class="dt">\</span></span>
+<span id="cb27-135"><a href="#cb27-135" aria-hidden="true" tabindex="-1"></a>  <span class="at">--citation-style</span> MLA</span>
+<span id="cb27-136"><a href="#cb27-136" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb27-137"><a href="#cb27-137" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-138"><a href="#cb27-138" aria-hidden="true" tabindex="-1"></a>**Quick Full Analysis:**</span>
+<span id="cb27-139"><a href="#cb27-139" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb27-140"><a href="#cb27-140" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze thesis.pdf <span class="at">--quick</span></span>
+<span id="cb27-141"><a href="#cb27-141" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb27-142"><a href="#cb27-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-143"><a href="#cb27-143" aria-hidden="true" tabindex="-1"></a>**Analysis Without Visualizations:**</span>
+<span id="cb27-144"><a href="#cb27-144" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb27-145"><a href="#cb27-145" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze thesis.pdf <span class="at">--no-viz</span></span>
+<span id="cb27-146"><a href="#cb27-146" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb27-147"><a href="#cb27-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-148"><a href="#cb27-148" aria-hidden="true" tabindex="-1"></a><span class="fu">### `quick` - Fast Analysis</span></span>
+<span id="cb27-149"><a href="#cb27-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-150"><a href="#cb27-150" aria-hidden="true" tabindex="-1"></a>Ideal for iterative writing and quick feedback.</span>
+<span id="cb27-151"><a href="#cb27-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-152"><a href="#cb27-152" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Basic Usage</span></span>
+<span id="cb27-153"><a href="#cb27-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-154"><a href="#cb27-154" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb27-155"><a href="#cb27-155" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe quick thesis.pdf</span>
+<span id="cb27-156"><a href="#cb27-156" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb27-157"><a href="#cb27-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-158"><a href="#cb27-158" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Customize Analysis Scope</span></span>
+<span id="cb27-159"><a href="#cb27-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-160"><a href="#cb27-160" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb27-161"><a href="#cb27-161" aria-hidden="true" tabindex="-1"></a><span class="co"># Analyze first 3 blocks</span></span>
+<span id="cb27-162"><a href="#cb27-162" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe quick thesis.pdf <span class="at">--blocks</span> 3</span>
+<span id="cb27-163"><a href="#cb27-163" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-164"><a href="#cb27-164" aria-hidden="true" tabindex="-1"></a><span class="co"># Analyze first 15 blocks  </span></span>
+<span id="cb27-165"><a href="#cb27-165" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe quick thesis.pdf <span class="at">--blocks</span> 15</span>
+<span id="cb27-166"><a href="#cb27-166" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb27-167"><a href="#cb27-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-168"><a href="#cb27-168" aria-hidden="true" tabindex="-1"></a><span class="fu">#### When to Use Quick Analysis</span></span>
+<span id="cb27-169"><a href="#cb27-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-170"><a href="#cb27-170" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**During writing**: Get feedback on recent sections</span>
+<span id="cb27-171"><a href="#cb27-171" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Initial review**: Spot-check document quality</span>
+<span id="cb27-172"><a href="#cb27-172" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Cost management**: Reduce API usage for large documents</span>
+<span id="cb27-173"><a href="#cb27-173" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Debugging**: Test configuration with small sample</span>
+<span id="cb27-174"><a href="#cb27-174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-175"><a href="#cb27-175" aria-hidden="true" tabindex="-1"></a><span class="fu">## Understanding Output</span></span>
+<span id="cb27-176"><a href="#cb27-176" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-177"><a href="#cb27-177" aria-hidden="true" tabindex="-1"></a><span class="fu">### Console Output</span></span>
+<span id="cb27-178"><a href="#cb27-178" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-179"><a href="#cb27-179" aria-hidden="true" tabindex="-1"></a>VeritaScribe provides rich console output with progress indicators and summaries:</span>
+<span id="cb27-180"><a href="#cb27-180" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-181"><a href="#cb27-181" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb27-182"><a href="#cb27-182" aria-hidden="true" tabindex="-1"></a><span class="in">Starting analysis of: thesis.pdf</span></span>
+<span id="cb27-183"><a href="#cb27-183" aria-hidden="true" tabindex="-1"></a><span class="in">Output directory: ./analysis_output</span></span>
+<span id="cb27-184"><a href="#cb27-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-185"><a href="#cb27-185" aria-hidden="true" tabindex="-1"></a><span class="in">Analyzing document... ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100%</span></span>
+<span id="cb27-186"><a href="#cb27-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-187"><a href="#cb27-187" aria-hidden="true" tabindex="-1"></a><span class="in">Analysis Results: thesis.pdf</span></span>
+<span id="cb27-188"><a href="#cb27-188" aria-hidden="true" tabindex="-1"></a><span class="in">┌─────────────────────────────────────────────────────────────────────────────────┐</span></span>
+<span id="cb27-189"><a href="#cb27-189" aria-hidden="true" tabindex="-1"></a><span class="in">│ 📄 Pages: 45                                                                    │</span></span>
+<span id="cb27-190"><a href="#cb27-190" aria-hidden="true" tabindex="-1"></a><span class="in">│ 📝 Words: 12,543                                                               │</span></span>
+<span id="cb27-191"><a href="#cb27-191" aria-hidden="true" tabindex="-1"></a><span class="in">│ 🔍 Text blocks analyzed: 87                                                     │</span></span>
+<span id="cb27-192"><a href="#cb27-192" aria-hidden="true" tabindex="-1"></a><span class="in">│ ⚠️  Total errors: 23                                                            │</span></span>
+<span id="cb27-193"><a href="#cb27-193" aria-hidden="true" tabindex="-1"></a><span class="in">│ 📊 Error rate: 1.83 per 1,000 words                                           │</span></span>
+<span id="cb27-194"><a href="#cb27-194" aria-hidden="true" tabindex="-1"></a><span class="in">│ ⏱️  Processing time: 45.32s                                                     │</span></span>
+<span id="cb27-195"><a href="#cb27-195" aria-hidden="true" tabindex="-1"></a><span class="in">└─────────────────────────────────────────────────────────────────────────────────┘</span></span>
+<span id="cb27-196"><a href="#cb27-196" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-197"><a href="#cb27-197" aria-hidden="true" tabindex="-1"></a><span class="in">Errors by Type</span></span>
+<span id="cb27-198"><a href="#cb27-198" aria-hidden="true" tabindex="-1"></a><span class="in">┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓</span></span>
+<span id="cb27-199"><a href="#cb27-199" aria-hidden="true" tabindex="-1"></a><span class="in">┃ Type                                                                             ┃ Count                                                                            ┃ Percentage                                                                       ┃</span></span>
+<span id="cb27-200"><a href="#cb27-200" aria-hidden="true" tabindex="-1"></a><span class="in">┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩</span></span>
+<span id="cb27-201"><a href="#cb27-201" aria-hidden="true" tabindex="-1"></a><span class="in">│ Grammar                                                                          │ 12                                                                               │ 52.2%                                                                           │</span></span>
+<span id="cb27-202"><a href="#cb27-202" aria-hidden="true" tabindex="-1"></a><span class="in">│ Citation Format                                                                  │ 7                                                                                │ 30.4%                                                                           │</span></span>
+<span id="cb27-203"><a href="#cb27-203" aria-hidden="true" tabindex="-1"></a><span class="in">│ Content Plausibility                                                             │ 4                                                                                │ 17.4%                                                                           │</span></span>
+<span id="cb27-204"><a href="#cb27-204" aria-hidden="true" tabindex="-1"></a><span class="in">└──────────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────────┘</span></span>
+<span id="cb27-205"><a href="#cb27-205" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-206"><a href="#cb27-206" aria-hidden="true" tabindex="-1"></a><span class="in">Severity Breakdown: 🔴 High: 3 | 🟡 Medium: 8 | 🟢 Low: 12</span></span>
+<span id="cb27-207"><a href="#cb27-207" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-208"><a href="#cb27-208" aria-hidden="true" tabindex="-1"></a><span class="in">🚨 3 high-priority issues require immediate attention!</span></span>
+<span id="cb27-209"><a href="#cb27-209" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-210"><a href="#cb27-210" aria-hidden="true" tabindex="-1"></a><span class="in">✓ Analysis completed successfully!</span></span>
+<span id="cb27-211"><a href="#cb27-211" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-212"><a href="#cb27-212" aria-hidden="true" tabindex="-1"></a><span class="in">Generated files:</span></span>
+<span id="cb27-213"><a href="#cb27-213" aria-hidden="true" tabindex="-1"></a><span class="in">  📄 Text report: ./analysis_output/thesis_20240315_143022_report.md</span></span>
+<span id="cb27-214"><a href="#cb27-214" aria-hidden="true" tabindex="-1"></a><span class="in">  📊 JSON data: ./analysis_output/thesis_20240315_143022_data.json</span></span>
+<span id="cb27-215"><a href="#cb27-215" aria-hidden="true" tabindex="-1"></a><span class="in">  📈 Visualizations: ./analysis_output/thesis_20240315_143022_visualizations/</span></span>
+<span id="cb27-216"><a href="#cb27-216" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-217"><a href="#cb27-217" aria-hidden="true" tabindex="-1"></a><span class="in">Recommendation: Document shows good overall quality with some areas for improvement. Focus on addressing high-priority grammar and citation issues first.</span></span>
+<span id="cb27-218"><a href="#cb27-218" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb27-219"><a href="#cb27-219" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-220"><a href="#cb27-220" aria-hidden="true" tabindex="-1"></a><span class="fu">### Generated Files</span></span>
+<span id="cb27-221"><a href="#cb27-221" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-222"><a href="#cb27-222" aria-hidden="true" tabindex="-1"></a>Each analysis produces several output files:</span>
+<span id="cb27-223"><a href="#cb27-223" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-224"><a href="#cb27-224" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 1. Text Report (`.md`)</span></span>
+<span id="cb27-225"><a href="#cb27-225" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-226"><a href="#cb27-226" aria-hidden="true" tabindex="-1"></a>Comprehensive Markdown report with:</span>
+<span id="cb27-227"><a href="#cb27-227" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-228"><a href="#cb27-228" aria-hidden="true" tabindex="-1"></a><span class="in">```markdown</span></span>
+<span id="cb27-229"><a href="#cb27-229" aria-hidden="true" tabindex="-1"></a><span class="fu"># VeritaScribe Analysis Report</span></span>
+<span id="cb27-230"><a href="#cb27-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-231"><a href="#cb27-231" aria-hidden="true" tabindex="-1"></a>**Document:** thesis.pdf</span>
+<span id="cb27-232"><a href="#cb27-232" aria-hidden="true" tabindex="-1"></a>**Analysis Date:** 2024-03-15 14<span class="sc">:30:</span>22</span>
+<span id="cb27-233"><a href="#cb27-233" aria-hidden="true" tabindex="-1"></a>**Processing Time:** 45.32 seconds</span>
+<span id="cb27-234"><a href="#cb27-234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-235"><a href="#cb27-235" aria-hidden="true" tabindex="-1"></a><span class="fu">## Executive Summary</span></span>
+<span id="cb27-236"><a href="#cb27-236" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-237"><a href="#cb27-237" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Total Pages:** 45</span>
+<span id="cb27-238"><a href="#cb27-238" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Word Count:** 12,543</span>
+<span id="cb27-239"><a href="#cb27-239" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Text Blocks Analyzed:** 87</span>
+<span id="cb27-240"><a href="#cb27-240" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Total Errors Found:** 23</span>
+<span id="cb27-241"><a href="#cb27-241" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Error Rate:** 1.83 per 1,000 words</span>
+<span id="cb27-242"><a href="#cb27-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-243"><a href="#cb27-243" aria-hidden="true" tabindex="-1"></a><span class="fu">## Error Summary</span></span>
+<span id="cb27-244"><a href="#cb27-244" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-245"><a href="#cb27-245" aria-hidden="true" tabindex="-1"></a><span class="fu">### By Type</span></span>
+<span id="cb27-246"><a href="#cb27-246" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Grammar: 12 errors (52.2%)</span>
+<span id="cb27-247"><a href="#cb27-247" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Citation Format: 7 errors (30.4%)  </span>
+<span id="cb27-248"><a href="#cb27-248" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Content Plausibility: 4 errors (17.4%)</span>
+<span id="cb27-249"><a href="#cb27-249" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-250"><a href="#cb27-250" aria-hidden="true" tabindex="-1"></a><span class="fu">### By Severity</span></span>
+<span id="cb27-251"><a href="#cb27-251" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>High Priority: 3 errors</span>
+<span id="cb27-252"><a href="#cb27-252" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Medium Priority: 8 errors</span>
+<span id="cb27-253"><a href="#cb27-253" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Low Priority: 12 errors</span>
+<span id="cb27-254"><a href="#cb27-254" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-255"><a href="#cb27-255" aria-hidden="true" tabindex="-1"></a><span class="fu">## Detailed Findings</span></span>
+<span id="cb27-256"><a href="#cb27-256" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-257"><a href="#cb27-257" aria-hidden="true" tabindex="-1"></a><span class="fu">### High Priority Issues</span></span>
+<span id="cb27-258"><a href="#cb27-258" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-259"><a href="#cb27-259" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 1. Grammar Error (Page 12)</span></span>
+<span id="cb27-260"><a href="#cb27-260" aria-hidden="true" tabindex="-1"></a>**Location:** Page 12, coordinates (72, 345, 520, 365)</span>
+<span id="cb27-261"><a href="#cb27-261" aria-hidden="true" tabindex="-1"></a>**Original Text:** "The results shows that..."</span>
+<span id="cb27-262"><a href="#cb27-262" aria-hidden="true" tabindex="-1"></a>**Suggested Fix:** "The results show that..."</span>
+<span id="cb27-263"><a href="#cb27-263" aria-hidden="true" tabindex="-1"></a>**Explanation:** Subject-verb agreement error. 'Results' is plural and requires 'show' not 'shows'.</span>
+<span id="cb27-264"><a href="#cb27-264" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-265"><a href="#cb27-265" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 2. Citation Format Error (Page 23)</span></span>
+<span id="cb27-266"><a href="#cb27-266" aria-hidden="true" tabindex="-1"></a>**Location:** Page 23, coordinates (72, 123, 520, 143)</span>
+<span id="cb27-267"><a href="#cb27-267" aria-hidden="true" tabindex="-1"></a>**Original Text:** "(Smith 2020)"</span>
+<span id="cb27-268"><a href="#cb27-268" aria-hidden="true" tabindex="-1"></a>**Suggested Fix:** "(Smith, 2020)"</span>
+<span id="cb27-269"><a href="#cb27-269" aria-hidden="true" tabindex="-1"></a>**Explanation:** APA format requires comma between author and year.</span>
+<span id="cb27-270"><a href="#cb27-270" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-271"><a href="#cb27-271" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">... more detailed errors ...</span><span class="co">]</span></span>
+<span id="cb27-272"><a href="#cb27-272" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-273"><a href="#cb27-273" aria-hidden="true" tabindex="-1"></a><span class="fu">## Recommendations</span></span>
+<span id="cb27-274"><a href="#cb27-274" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-275"><a href="#cb27-275" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Immediate Action Required:** Address 3 high-priority issues</span>
+<span id="cb27-276"><a href="#cb27-276" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Grammar Focus:** Review subject-verb agreements throughout</span>
+<span id="cb27-277"><a href="#cb27-277" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Citation Consistency:** Ensure all citations follow APA format</span>
+<span id="cb27-278"><a href="#cb27-278" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Content Review:** Verify factual claims in identified sections</span>
+<span id="cb27-279"><a href="#cb27-279" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-280"><a href="#cb27-280" aria-hidden="true" tabindex="-1"></a><span class="fu">## Overall Assessment</span></span>
+<span id="cb27-281"><a href="#cb27-281" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-282"><a href="#cb27-282" aria-hidden="true" tabindex="-1"></a>Document quality: **Good** with room for improvement.</span>
+<span id="cb27-283"><a href="#cb27-283" aria-hidden="true" tabindex="-1"></a>Recommended next steps: Focus on high-priority issues first.</span>
+<span id="cb27-284"><a href="#cb27-284" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb27-285"><a href="#cb27-285" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-286"><a href="#cb27-286" aria-hidden="true" tabindex="-1"></a><span class="in">#### 2. JSON Data Export (`.json`)</span></span>
+<span id="cb27-287"><a href="#cb27-287" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-288"><a href="#cb27-288" aria-hidden="true" tabindex="-1"></a><span class="in">Structured data for programmatic access:</span></span>
+<span id="cb27-289"><a href="#cb27-289" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-290"><a href="#cb27-290" aria-hidden="true" tabindex="-1"></a><span class="in">```json</span></span>
+<span id="cb27-291"><a href="#cb27-291" aria-hidden="true" tabindex="-1"></a><span class="in">{</span></span>
+<span id="cb27-292"><a href="#cb27-292" aria-hidden="true" tabindex="-1"></a><span class="in">  "document_name": "thesis.pdf",</span></span>
+<span id="cb27-293"><a href="#cb27-293" aria-hidden="true" tabindex="-1"></a><span class="in">  "analysis_timestamp": "2024-03-15T14:30:22.123456",</span></span>
+<span id="cb27-294"><a href="#cb27-294" aria-hidden="true" tabindex="-1"></a><span class="in">  "total_pages": 45,</span></span>
+<span id="cb27-295"><a href="#cb27-295" aria-hidden="true" tabindex="-1"></a><span class="in">  "total_words": 12543,</span></span>
+<span id="cb27-296"><a href="#cb27-296" aria-hidden="true" tabindex="-1"></a><span class="in">  "total_text_blocks": 87,</span></span>
+<span id="cb27-297"><a href="#cb27-297" aria-hidden="true" tabindex="-1"></a><span class="in">  "total_errors": 23,</span></span>
+<span id="cb27-298"><a href="#cb27-298" aria-hidden="true" tabindex="-1"></a><span class="in">  "error_rate": 1.83,</span></span>
+<span id="cb27-299"><a href="#cb27-299" aria-hidden="true" tabindex="-1"></a><span class="in">  "total_processing_time_seconds": 45.32,</span></span>
+<span id="cb27-300"><a href="#cb27-300" aria-hidden="true" tabindex="-1"></a><span class="in">  "errors_by_type": {</span></span>
+<span id="cb27-301"><a href="#cb27-301" aria-hidden="true" tabindex="-1"></a><span class="in">    "grammar": 12,</span></span>
+<span id="cb27-302"><a href="#cb27-302" aria-hidden="true" tabindex="-1"></a><span class="in">    "citation_format": 7,</span></span>
+<span id="cb27-303"><a href="#cb27-303" aria-hidden="true" tabindex="-1"></a><span class="in">    "content_plausibility": 4</span></span>
+<span id="cb27-304"><a href="#cb27-304" aria-hidden="true" tabindex="-1"></a><span class="in">  },</span></span>
+<span id="cb27-305"><a href="#cb27-305" aria-hidden="true" tabindex="-1"></a><span class="in">  "errors_by_severity": {</span></span>
+<span id="cb27-306"><a href="#cb27-306" aria-hidden="true" tabindex="-1"></a><span class="in">    "high": 3,</span></span>
+<span id="cb27-307"><a href="#cb27-307" aria-hidden="true" tabindex="-1"></a><span class="in">    "medium": 8,</span></span>
+<span id="cb27-308"><a href="#cb27-308" aria-hidden="true" tabindex="-1"></a><span class="in">    "low": 12</span></span>
+<span id="cb27-309"><a href="#cb27-309" aria-hidden="true" tabindex="-1"></a><span class="in">  },</span></span>
+<span id="cb27-310"><a href="#cb27-310" aria-hidden="true" tabindex="-1"></a><span class="in">  "analysis_results": [</span></span>
+<span id="cb27-311"><a href="#cb27-311" aria-hidden="true" tabindex="-1"></a><span class="in">    {</span></span>
+<span id="cb27-312"><a href="#cb27-312" aria-hidden="true" tabindex="-1"></a><span class="in">      "text_block": {</span></span>
+<span id="cb27-313"><a href="#cb27-313" aria-hidden="true" tabindex="-1"></a><span class="in">        "content": "The results shows that...",</span></span>
+<span id="cb27-314"><a href="#cb27-314" aria-hidden="true" tabindex="-1"></a><span class="in">        "page_number": 12,</span></span>
+<span id="cb27-315"><a href="#cb27-315" aria-hidden="true" tabindex="-1"></a><span class="in">        "bounding_box": [72, 345, 520, 365]</span></span>
+<span id="cb27-316"><a href="#cb27-316" aria-hidden="true" tabindex="-1"></a><span class="in">      },</span></span>
+<span id="cb27-317"><a href="#cb27-317" aria-hidden="true" tabindex="-1"></a><span class="in">      "errors": [</span></span>
+<span id="cb27-318"><a href="#cb27-318" aria-hidden="true" tabindex="-1"></a><span class="in">        {</span></span>
+<span id="cb27-319"><a href="#cb27-319" aria-hidden="true" tabindex="-1"></a><span class="in">          "error_type": "grammar",</span></span>
+<span id="cb27-320"><a href="#cb27-320" aria-hidden="true" tabindex="-1"></a><span class="in">          "severity": "high",</span></span>
+<span id="cb27-321"><a href="#cb27-321" aria-hidden="true" tabindex="-1"></a><span class="in">          "original_text": "The results shows that",</span></span>
+<span id="cb27-322"><a href="#cb27-322" aria-hidden="true" tabindex="-1"></a><span class="in">          "suggested_correction": "The results show that",</span></span>
+<span id="cb27-323"><a href="#cb27-323" aria-hidden="true" tabindex="-1"></a><span class="in">          "explanation": "Subject-verb agreement error...",</span></span>
+<span id="cb27-324"><a href="#cb27-324" aria-hidden="true" tabindex="-1"></a><span class="in">          "location": {</span></span>
+<span id="cb27-325"><a href="#cb27-325" aria-hidden="true" tabindex="-1"></a><span class="in">            "page_number": 12,</span></span>
+<span id="cb27-326"><a href="#cb27-326" aria-hidden="true" tabindex="-1"></a><span class="in">            "bounding_box": [72, 345, 520, 365]</span></span>
+<span id="cb27-327"><a href="#cb27-327" aria-hidden="true" tabindex="-1"></a><span class="in">          }</span></span>
+<span id="cb27-328"><a href="#cb27-328" aria-hidden="true" tabindex="-1"></a><span class="in">        }</span></span>
+<span id="cb27-329"><a href="#cb27-329" aria-hidden="true" tabindex="-1"></a><span class="in">      ]</span></span>
+<span id="cb27-330"><a href="#cb27-330" aria-hidden="true" tabindex="-1"></a><span class="in">    }</span></span>
+<span id="cb27-331"><a href="#cb27-331" aria-hidden="true" tabindex="-1"></a><span class="in">  ]</span></span>
+<span id="cb27-332"><a href="#cb27-332" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
+<span id="cb27-333"><a href="#cb27-333" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb27-334"><a href="#cb27-334" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-335"><a href="#cb27-335" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 3. Visualizations</span></span>
+<span id="cb27-336"><a href="#cb27-336" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-337"><a href="#cb27-337" aria-hidden="true" tabindex="-1"></a>Charts and graphs in the visualizations directory:</span>
+<span id="cb27-338"><a href="#cb27-338" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-339"><a href="#cb27-339" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Error Distribution by Type** (<span class="in">`error_types.png`</span>)</span>
+<span id="cb27-340"><a href="#cb27-340" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Error Density by Page** (<span class="in">`error_density.png`</span>)</span>
+<span id="cb27-341"><a href="#cb27-341" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Severity Breakdown** (<span class="in">`severity_breakdown.png`</span>)</span>
+<span id="cb27-342"><a href="#cb27-342" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-343"><a href="#cb27-343" aria-hidden="true" tabindex="-1"></a><span class="fu">## Advanced Usage Patterns</span></span>
+<span id="cb27-344"><a href="#cb27-344" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-345"><a href="#cb27-345" aria-hidden="true" tabindex="-1"></a><span class="fu">### Batch Processing</span></span>
+<span id="cb27-346"><a href="#cb27-346" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-347"><a href="#cb27-347" aria-hidden="true" tabindex="-1"></a>Process multiple documents:</span>
+<span id="cb27-348"><a href="#cb27-348" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-349"><a href="#cb27-349" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb27-350"><a href="#cb27-350" aria-hidden="true" tabindex="-1"></a><span class="co"># Create script for batch processing</span></span>
+<span id="cb27-351"><a href="#cb27-351" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="op">&gt;</span> batch_analyze.sh <span class="op">&lt;&lt; 'EOF'</span></span>
+<span id="cb27-352"><a href="#cb27-352" aria-hidden="true" tabindex="-1"></a><span class="st">#!/bin/bash</span></span>
+<span id="cb27-353"><a href="#cb27-353" aria-hidden="true" tabindex="-1"></a><span class="st">for pdf in *.pdf; do</span></span>
+<span id="cb27-354"><a href="#cb27-354" aria-hidden="true" tabindex="-1"></a><span class="st">  echo "Analyzing $pdf..."</span></span>
+<span id="cb27-355"><a href="#cb27-355" aria-hidden="true" tabindex="-1"></a><span class="st">  uv run python -m veritascribe analyze "$pdf" \</span></span>
+<span id="cb27-356"><a href="#cb27-356" aria-hidden="true" tabindex="-1"></a><span class="st">    --output "./results/$(basename "$pdf" .pdf)"</span></span>
+<span id="cb27-357"><a href="#cb27-357" aria-hidden="true" tabindex="-1"></a><span class="st">done</span></span>
+<span id="cb27-358"><a href="#cb27-358" aria-hidden="true" tabindex="-1"></a><span class="op">EOF</span></span>
+<span id="cb27-359"><a href="#cb27-359" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-360"><a href="#cb27-360" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> +x batch_analyze.sh</span>
+<span id="cb27-361"><a href="#cb27-361" aria-hidden="true" tabindex="-1"></a><span class="ex">./batch_analyze.sh</span></span>
+<span id="cb27-362"><a href="#cb27-362" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb27-363"><a href="#cb27-363" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-364"><a href="#cb27-364" aria-hidden="true" tabindex="-1"></a><span class="fu">### Citation Style Workflows</span></span>
+<span id="cb27-365"><a href="#cb27-365" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-366"><a href="#cb27-366" aria-hidden="true" tabindex="-1"></a>Different workflows for different academic styles:</span>
+<span id="cb27-367"><a href="#cb27-367" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-368"><a href="#cb27-368" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb27-369"><a href="#cb27-369" aria-hidden="true" tabindex="-1"></a><span class="co"># APA Style (Psychology, Education)</span></span>
+<span id="cb27-370"><a href="#cb27-370" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze thesis.pdf <span class="at">--citation-style</span> APA</span>
+<span id="cb27-371"><a href="#cb27-371" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-372"><a href="#cb27-372" aria-hidden="true" tabindex="-1"></a><span class="co"># MLA Style (Literature, Humanities)  </span></span>
+<span id="cb27-373"><a href="#cb27-373" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze thesis.pdf <span class="at">--citation-style</span> MLA</span>
+<span id="cb27-374"><a href="#cb27-374" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-375"><a href="#cb27-375" aria-hidden="true" tabindex="-1"></a><span class="co"># Chicago Style (History, Arts)</span></span>
+<span id="cb27-376"><a href="#cb27-376" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze thesis.pdf <span class="at">--citation-style</span> Chicago</span>
+<span id="cb27-377"><a href="#cb27-377" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-378"><a href="#cb27-378" aria-hidden="true" tabindex="-1"></a><span class="co"># IEEE Style (Engineering, Computer Science)</span></span>
+<span id="cb27-379"><a href="#cb27-379" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze thesis.pdf <span class="at">--citation-style</span> IEEE</span>
+<span id="cb27-380"><a href="#cb27-380" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb27-381"><a href="#cb27-381" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-382"><a href="#cb27-382" aria-hidden="true" tabindex="-1"></a><span class="fu">### Iterative Review Process</span></span>
+<span id="cb27-383"><a href="#cb27-383" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-384"><a href="#cb27-384" aria-hidden="true" tabindex="-1"></a>Workflow for document improvement:</span>
+<span id="cb27-385"><a href="#cb27-385" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-386"><a href="#cb27-386" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb27-387"><a href="#cb27-387" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: Initial quick review</span></span>
+<span id="cb27-388"><a href="#cb27-388" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe quick draft.pdf <span class="at">--blocks</span> 10</span>
+<span id="cb27-389"><a href="#cb27-389" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-390"><a href="#cb27-390" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 2: Address major issues, then full analysis</span></span>
+<span id="cb27-391"><a href="#cb27-391" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze draft.pdf <span class="at">--output</span> ./review_1</span>
+<span id="cb27-392"><a href="#cb27-392" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-393"><a href="#cb27-393" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 3: After revisions, re-analyze</span></span>
+<span id="cb27-394"><a href="#cb27-394" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze revised_draft.pdf <span class="at">--output</span> ./review_2</span>
+<span id="cb27-395"><a href="#cb27-395" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-396"><a href="#cb27-396" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 4: Compare results</span></span>
+<span id="cb27-397"><a href="#cb27-397" aria-hidden="true" tabindex="-1"></a><span class="fu">diff</span> ./review_1/draft_<span class="pp">*</span>_data.json ./review_2/revised_draft_<span class="pp">*</span>_data.json</span>
+<span id="cb27-398"><a href="#cb27-398" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb27-399"><a href="#cb27-399" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-400"><a href="#cb27-400" aria-hidden="true" tabindex="-1"></a><span class="fu">### Cost Management Strategies</span></span>
+<span id="cb27-401"><a href="#cb27-401" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-402"><a href="#cb27-402" aria-hidden="true" tabindex="-1"></a>Optimize API usage for large documents:</span>
+<span id="cb27-403"><a href="#cb27-403" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-404"><a href="#cb27-404" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb27-405"><a href="#cb27-405" aria-hidden="true" tabindex="-1"></a><span class="co"># Strategy 1: Quick analysis first</span></span>
+<span id="cb27-406"><a href="#cb27-406" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe quick large_thesis.pdf <span class="at">--blocks</span> 20</span>
+<span id="cb27-407"><a href="#cb27-407" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-408"><a href="#cb27-408" aria-hidden="true" tabindex="-1"></a><span class="co"># Strategy 2: Disable expensive analysis types</span></span>
+<span id="cb27-409"><a href="#cb27-409" aria-hidden="true" tabindex="-1"></a><span class="va">CONTENT_ANALYSIS_ENABLED</span><span class="op">=</span>false <span class="dt">\</span></span>
+<span id="cb27-410"><a href="#cb27-410" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze large_thesis.pdf</span>
+<span id="cb27-411"><a href="#cb27-411" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-412"><a href="#cb27-412" aria-hidden="true" tabindex="-1"></a><span class="co"># Strategy 3: Use cheaper model</span></span>
+<span id="cb27-413"><a href="#cb27-413" aria-hidden="true" tabindex="-1"></a><span class="va">DEFAULT_MODEL</span><span class="op">=</span>gpt-3.5-turbo <span class="dt">\</span></span>
+<span id="cb27-414"><a href="#cb27-414" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze large_thesis.pdf</span>
+<span id="cb27-415"><a href="#cb27-415" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-416"><a href="#cb27-416" aria-hidden="true" tabindex="-1"></a><span class="co"># Strategy 4: Reduce parallel processing</span></span>
+<span id="cb27-417"><a href="#cb27-417" aria-hidden="true" tabindex="-1"></a><span class="va">MAX_CONCURRENT_REQUESTS</span><span class="op">=</span>2 <span class="dt">\</span></span>
+<span id="cb27-418"><a href="#cb27-418" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze large_thesis.pdf</span>
+<span id="cb27-419"><a href="#cb27-419" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb27-420"><a href="#cb27-420" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-421"><a href="#cb27-421" aria-hidden="true" tabindex="-1"></a><span class="fu">## Working with Results</span></span>
+<span id="cb27-422"><a href="#cb27-422" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-423"><a href="#cb27-423" aria-hidden="true" tabindex="-1"></a><span class="fu">### Interpreting Error Severity</span></span>
+<span id="cb27-424"><a href="#cb27-424" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-425"><a href="#cb27-425" aria-hidden="true" tabindex="-1"></a>**High Priority (Score ≥ 0.8):**</span>
+<span id="cb27-426"><a href="#cb27-426" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Critical grammar errors</span>
+<span id="cb27-427"><a href="#cb27-427" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Major citation format violations</span>
+<span id="cb27-428"><a href="#cb27-428" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Significant factual inconsistencies</span>
+<span id="cb27-429"><a href="#cb27-429" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Action:** Fix immediately</span>
+<span id="cb27-430"><a href="#cb27-430" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-431"><a href="#cb27-431" aria-hidden="true" tabindex="-1"></a>**Medium Priority (Score ≥ 0.5):**</span>
+<span id="cb27-432"><a href="#cb27-432" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Minor grammar issues</span>
+<span id="cb27-433"><a href="#cb27-433" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Style inconsistencies</span>
+<span id="cb27-434"><a href="#cb27-434" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Citation formatting preferences</span>
+<span id="cb27-435"><a href="#cb27-435" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Action:** Review and fix as time permits</span>
+<span id="cb27-436"><a href="#cb27-436" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-437"><a href="#cb27-437" aria-hidden="true" tabindex="-1"></a>**Low Priority (Score &lt; 0.5):**</span>
+<span id="cb27-438"><a href="#cb27-438" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Style suggestions</span>
+<span id="cb27-439"><a href="#cb27-439" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Minor formatting preferences</span>
+<span id="cb27-440"><a href="#cb27-440" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Optional improvements</span>
+<span id="cb27-441"><a href="#cb27-441" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Action:** Consider for polish pass</span>
+<span id="cb27-442"><a href="#cb27-442" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-443"><a href="#cb27-443" aria-hidden="true" tabindex="-1"></a><span class="fu">### Error Location Information</span></span>
+<span id="cb27-444"><a href="#cb27-444" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-445"><a href="#cb27-445" aria-hidden="true" tabindex="-1"></a>Each error includes precise location data:</span>
+<span id="cb27-446"><a href="#cb27-446" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-447"><a href="#cb27-447" aria-hidden="true" tabindex="-1"></a><span class="in">```json</span></span>
+<span id="cb27-448"><a href="#cb27-448" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb27-449"><a href="#cb27-449" aria-hidden="true" tabindex="-1"></a>  <span class="st">"location"</span><span class="op">:</span> {</span>
+<span id="cb27-450"><a href="#cb27-450" aria-hidden="true" tabindex="-1"></a>    <span class="st">"page_number"</span><span class="op">:</span> <span class="dv">12</span><span class="op">,</span></span>
+<span id="cb27-451"><a href="#cb27-451" aria-hidden="true" tabindex="-1"></a>    <span class="st">"bounding_box"</span><span class="op">:</span> [<span class="dv">72</span><span class="op">,</span> <span class="dv">345</span><span class="op">,</span> <span class="dv">520</span><span class="op">,</span> <span class="dv">365</span>]</span>
+<span id="cb27-452"><a href="#cb27-452" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb27-453"><a href="#cb27-453" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb27-454"><a href="#cb27-454" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb27-455"><a href="#cb27-455" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-456"><a href="#cb27-456" aria-hidden="true" tabindex="-1"></a>Bounding box coordinates <span class="in">`[x1, y1, x2, y2]`</span>:</span>
+<span id="cb27-457"><a href="#cb27-457" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`(x1, y1)`</span>: Top-left corner</span>
+<span id="cb27-458"><a href="#cb27-458" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`(x2, y2)`</span>: Bottom-right corner</span>
+<span id="cb27-459"><a href="#cb27-459" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Units are in PDF points (72 points = 1 inch)</span>
+<span id="cb27-460"><a href="#cb27-460" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-461"><a href="#cb27-461" aria-hidden="true" tabindex="-1"></a><span class="fu">### Using JSON Data</span></span>
+<span id="cb27-462"><a href="#cb27-462" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-463"><a href="#cb27-463" aria-hidden="true" tabindex="-1"></a>Process results programmatically:</span>
+<span id="cb27-464"><a href="#cb27-464" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-465"><a href="#cb27-465" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb27-466"><a href="#cb27-466" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb27-467"><a href="#cb27-467" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-468"><a href="#cb27-468" aria-hidden="true" tabindex="-1"></a><span class="co"># Load analysis results</span></span>
+<span id="cb27-469"><a href="#cb27-469" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">'thesis_20240315_143022_data.json'</span>, <span class="st">'r'</span>) <span class="im">as</span> f:</span>
+<span id="cb27-470"><a href="#cb27-470" aria-hidden="true" tabindex="-1"></a>    results <span class="op">=</span> json.load(f)</span>
+<span id="cb27-471"><a href="#cb27-471" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-472"><a href="#cb27-472" aria-hidden="true" tabindex="-1"></a><span class="co"># Get high-priority errors</span></span>
+<span id="cb27-473"><a href="#cb27-473" aria-hidden="true" tabindex="-1"></a>high_priority <span class="op">=</span> [</span>
+<span id="cb27-474"><a href="#cb27-474" aria-hidden="true" tabindex="-1"></a>    error <span class="cf">for</span> result <span class="kw">in</span> results[<span class="st">'analysis_results'</span>]</span>
+<span id="cb27-475"><a href="#cb27-475" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> error <span class="kw">in</span> result[<span class="st">'errors'</span>]</span>
+<span id="cb27-476"><a href="#cb27-476" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> error[<span class="st">'severity'</span>] <span class="op">==</span> <span class="st">'high'</span></span>
+<span id="cb27-477"><a href="#cb27-477" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb27-478"><a href="#cb27-478" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-479"><a href="#cb27-479" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Found </span><span class="sc">{</span><span class="bu">len</span>(high_priority)<span class="sc">}</span><span class="ss"> high-priority issues"</span>)</span>
+<span id="cb27-480"><a href="#cb27-480" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-481"><a href="#cb27-481" aria-hidden="true" tabindex="-1"></a><span class="co"># Group errors by type</span></span>
+<span id="cb27-482"><a href="#cb27-482" aria-hidden="true" tabindex="-1"></a>error_types <span class="op">=</span> {}</span>
+<span id="cb27-483"><a href="#cb27-483" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> result <span class="kw">in</span> results[<span class="st">'analysis_results'</span>]:</span>
+<span id="cb27-484"><a href="#cb27-484" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> error <span class="kw">in</span> result[<span class="st">'errors'</span>]:</span>
+<span id="cb27-485"><a href="#cb27-485" aria-hidden="true" tabindex="-1"></a>        error_type <span class="op">=</span> error[<span class="st">'error_type'</span>]</span>
+<span id="cb27-486"><a href="#cb27-486" aria-hidden="true" tabindex="-1"></a>        error_types[error_type] <span class="op">=</span> error_types.get(error_type, <span class="dv">0</span>) <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb27-487"><a href="#cb27-487" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-488"><a href="#cb27-488" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Error distribution:"</span>, error_types)</span>
+<span id="cb27-489"><a href="#cb27-489" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb27-490"><a href="#cb27-490" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-491"><a href="#cb27-491" aria-hidden="true" tabindex="-1"></a><span class="fu">## Integration with Other Tools</span></span>
+<span id="cb27-492"><a href="#cb27-492" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-493"><a href="#cb27-493" aria-hidden="true" tabindex="-1"></a><span class="fu">### Text Editors</span></span>
+<span id="cb27-494"><a href="#cb27-494" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-495"><a href="#cb27-495" aria-hidden="true" tabindex="-1"></a>Import location information into editors:</span>
+<span id="cb27-496"><a href="#cb27-496" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-497"><a href="#cb27-497" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb27-498"><a href="#cb27-498" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate editor jump commands</span></span>
+<span id="cb27-499"><a href="#cb27-499" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_editor_commands(json_file):</span>
+<span id="cb27-500"><a href="#cb27-500" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(json_file, <span class="st">'r'</span>) <span class="im">as</span> f:</span>
+<span id="cb27-501"><a href="#cb27-501" aria-hidden="true" tabindex="-1"></a>        results <span class="op">=</span> json.load(f)</span>
+<span id="cb27-502"><a href="#cb27-502" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb27-503"><a href="#cb27-503" aria-hidden="true" tabindex="-1"></a>    commands <span class="op">=</span> []</span>
+<span id="cb27-504"><a href="#cb27-504" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> result <span class="kw">in</span> results[<span class="st">'analysis_results'</span>]:</span>
+<span id="cb27-505"><a href="#cb27-505" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> error <span class="kw">in</span> result[<span class="st">'errors'</span>]:</span>
+<span id="cb27-506"><a href="#cb27-506" aria-hidden="true" tabindex="-1"></a>            page <span class="op">=</span> error[<span class="st">'location'</span>][<span class="st">'page_number'</span>]</span>
+<span id="cb27-507"><a href="#cb27-507" aria-hidden="true" tabindex="-1"></a>            text <span class="op">=</span> error[<span class="st">'original_text'</span>][:<span class="dv">50</span>]</span>
+<span id="cb27-508"><a href="#cb27-508" aria-hidden="true" tabindex="-1"></a>            commands.append(<span class="ss">f"# Page </span><span class="sc">{</span>page<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>text<span class="sc">}</span><span class="ss">..."</span>)</span>
+<span id="cb27-509"><a href="#cb27-509" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb27-510"><a href="#cb27-510" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> commands</span>
+<span id="cb27-511"><a href="#cb27-511" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-512"><a href="#cb27-512" aria-hidden="true" tabindex="-1"></a>commands <span class="op">=</span> generate_editor_commands(<span class="st">'results.json'</span>)</span>
+<span id="cb27-513"><a href="#cb27-513" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> cmd <span class="kw">in</span> commands[:<span class="dv">5</span>]:  <span class="co"># Show first 5</span></span>
+<span id="cb27-514"><a href="#cb27-514" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(cmd)</span>
+<span id="cb27-515"><a href="#cb27-515" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb27-516"><a href="#cb27-516" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-517"><a href="#cb27-517" aria-hidden="true" tabindex="-1"></a><span class="fu">### Citation Managers</span></span>
+<span id="cb27-518"><a href="#cb27-518" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-519"><a href="#cb27-519" aria-hidden="true" tabindex="-1"></a>Export citation issues for reference managers:</span>
+<span id="cb27-520"><a href="#cb27-520" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-521"><a href="#cb27-521" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb27-522"><a href="#cb27-522" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> export_citation_issues(json_file):</span>
+<span id="cb27-523"><a href="#cb27-523" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(json_file, <span class="st">'r'</span>) <span class="im">as</span> f:</span>
+<span id="cb27-524"><a href="#cb27-524" aria-hidden="true" tabindex="-1"></a>        results <span class="op">=</span> json.load(f)</span>
+<span id="cb27-525"><a href="#cb27-525" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb27-526"><a href="#cb27-526" aria-hidden="true" tabindex="-1"></a>    citation_errors <span class="op">=</span> []</span>
+<span id="cb27-527"><a href="#cb27-527" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> result <span class="kw">in</span> results[<span class="st">'analysis_results'</span>]:</span>
+<span id="cb27-528"><a href="#cb27-528" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> error <span class="kw">in</span> result[<span class="st">'errors'</span>]:</span>
+<span id="cb27-529"><a href="#cb27-529" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> error[<span class="st">'error_type'</span>] <span class="op">==</span> <span class="st">'citation_format'</span>:</span>
+<span id="cb27-530"><a href="#cb27-530" aria-hidden="true" tabindex="-1"></a>                citation_errors.append({</span>
+<span id="cb27-531"><a href="#cb27-531" aria-hidden="true" tabindex="-1"></a>                    <span class="st">'page'</span>: error[<span class="st">'location'</span>][<span class="st">'page_number'</span>],</span>
+<span id="cb27-532"><a href="#cb27-532" aria-hidden="true" tabindex="-1"></a>                    <span class="st">'original'</span>: error[<span class="st">'original_text'</span>],</span>
+<span id="cb27-533"><a href="#cb27-533" aria-hidden="true" tabindex="-1"></a>                    <span class="st">'suggested'</span>: error[<span class="st">'suggested_correction'</span>],</span>
+<span id="cb27-534"><a href="#cb27-534" aria-hidden="true" tabindex="-1"></a>                    <span class="st">'explanation'</span>: error[<span class="st">'explanation'</span>]</span>
+<span id="cb27-535"><a href="#cb27-535" aria-hidden="true" tabindex="-1"></a>                })</span>
+<span id="cb27-536"><a href="#cb27-536" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb27-537"><a href="#cb27-537" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> citation_errors</span>
+<span id="cb27-538"><a href="#cb27-538" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb27-539"><a href="#cb27-539" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-540"><a href="#cb27-540" aria-hidden="true" tabindex="-1"></a><span class="fu">### Version Control</span></span>
+<span id="cb27-541"><a href="#cb27-541" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-542"><a href="#cb27-542" aria-hidden="true" tabindex="-1"></a>Track improvements over time:</span>
+<span id="cb27-543"><a href="#cb27-543" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-544"><a href="#cb27-544" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb27-545"><a href="#cb27-545" aria-hidden="true" tabindex="-1"></a><span class="co"># Create analysis baseline</span></span>
+<span id="cb27-546"><a href="#cb27-546" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze thesis.pdf <span class="at">--output</span> ./baseline</span>
+<span id="cb27-547"><a href="#cb27-547" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add baseline/</span>
+<span id="cb27-548"><a href="#cb27-548" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Baseline thesis analysis"</span></span>
+<span id="cb27-549"><a href="#cb27-549" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-550"><a href="#cb27-550" aria-hidden="true" tabindex="-1"></a><span class="co"># After revisions</span></span>
+<span id="cb27-551"><a href="#cb27-551" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze thesis_v2.pdf <span class="at">--output</span> ./revision_1</span>
+<span id="cb27-552"><a href="#cb27-552" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add revision_1/</span>
+<span id="cb27-553"><a href="#cb27-553" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"First revision analysis"</span></span>
+<span id="cb27-554"><a href="#cb27-554" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-555"><a href="#cb27-555" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare improvements</span></span>
+<span id="cb27-556"><a href="#cb27-556" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> compare_analyses.py baseline/ revision_1/</span>
+<span id="cb27-557"><a href="#cb27-557" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb27-558"><a href="#cb27-558" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-559"><a href="#cb27-559" aria-hidden="true" tabindex="-1"></a><span class="fu">## Best Practices</span></span>
+<span id="cb27-560"><a href="#cb27-560" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-561"><a href="#cb27-561" aria-hidden="true" tabindex="-1"></a><span class="fu">### Document Preparation</span></span>
+<span id="cb27-562"><a href="#cb27-562" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-563"><a href="#cb27-563" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Use text-based PDFs**: Avoid scanned documents when possible</span>
+<span id="cb27-564"><a href="#cb27-564" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Ensure proper formatting**: Well-structured documents analyze better</span>
+<span id="cb27-565"><a href="#cb27-565" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Check PDF integrity**: Corrupted files may cause issues</span>
+<span id="cb27-566"><a href="#cb27-566" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Remove passwords**: Encrypted PDFs cannot be processed</span>
+<span id="cb27-567"><a href="#cb27-567" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-568"><a href="#cb27-568" aria-hidden="true" tabindex="-1"></a><span class="fu">### Analysis Strategy</span></span>
+<span id="cb27-569"><a href="#cb27-569" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-570"><a href="#cb27-570" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Start with quick analysis**: Get overview before full analysis</span>
+<span id="cb27-571"><a href="#cb27-571" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Focus on high-priority issues**: Address critical errors first</span>
+<span id="cb27-572"><a href="#cb27-572" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Use appropriate citation style**: Match your academic field</span>
+<span id="cb27-573"><a href="#cb27-573" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Consider document size**: Large documents may need configuration adjustment</span>
+<span id="cb27-574"><a href="#cb27-574" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-575"><a href="#cb27-575" aria-hidden="true" tabindex="-1"></a><span class="fu">### Cost Management</span></span>
+<span id="cb27-576"><a href="#cb27-576" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-577"><a href="#cb27-577" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Monitor token usage**: Check costs regularly with large documents</span>
+<span id="cb27-578"><a href="#cb27-578" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Use quick mode for drafts**: Full analysis for final versions</span>
+<span id="cb27-579"><a href="#cb27-579" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Adjust block size**: Smaller blocks = more requests but finer analysis</span>
+<span id="cb27-580"><a href="#cb27-580" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Consider model selection**: Balance quality vs. cost</span>
+<span id="cb27-581"><a href="#cb27-581" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-582"><a href="#cb27-582" aria-hidden="true" tabindex="-1"></a><span class="fu">### Workflow Integration</span></span>
+<span id="cb27-583"><a href="#cb27-583" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-584"><a href="#cb27-584" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Regular analysis**: Integrate into writing routine</span>
+<span id="cb27-585"><a href="#cb27-585" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Version tracking**: Keep analysis results with document versions</span>
+<span id="cb27-586"><a href="#cb27-586" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Collaborative review**: Share analysis results with advisors</span>
+<span id="cb27-587"><a href="#cb27-587" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Final validation**: Run full analysis before submission</span>
+<span id="cb27-588"><a href="#cb27-588" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-589"><a href="#cb27-589" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb27-590"><a href="#cb27-590" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-591"><a href="#cb27-591" aria-hidden="true" tabindex="-1"></a>*For troubleshooting common issues, see the [Troubleshooting Guide](troubleshooting.qmd).*</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

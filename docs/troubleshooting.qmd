@@ -1,0 +1,854 @@
+---
+title: "Troubleshooting Guide"
+---
+
+# Troubleshooting Guide
+
+This guide helps you diagnose and resolve common issues with VeritaScribe.
+
+## Quick Diagnostic Commands
+
+Before diving into specific issues, run these diagnostic commands:
+
+```bash
+# Check system status
+uv run python -m veritascribe test
+
+# View current configuration
+uv run python -m veritascribe config
+
+# View available providers
+uv run python -m veritascribe providers
+
+# Try demo analysis
+uv run python -m veritascribe demo
+```
+
+## Installation Issues
+
+### uv not found
+
+**Problem:** `uv: command not found`
+
+**Solutions:**
+
+1. **Install uv:**
+   ```bash
+   # macOS/Linux
+   curl -LsSf https://astral.sh/uv/install.sh | sh
+   
+   # Windows PowerShell
+   powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+   
+   # Alternative: pip install
+   pip install uv
+   ```
+
+2. **Restart terminal** after installation
+
+3. **Check PATH:**
+   ```bash
+   echo $PATH | grep -o "[^:]*uv[^:]*"
+   ```
+
+### Python version issues
+
+**Problem:** `Python 3.13+ required but found 3.x.x`
+
+**Solutions:**
+
+1. **Check available Python versions:**
+   ```bash
+   python --version
+   python3 --version
+   python3.13 --version
+   ```
+
+2. **Install Python 3.13:**
+   ```bash
+   # macOS with Homebrew
+   brew install python@3.13
+   
+   # Ubuntu/Debian
+   sudo add-apt-repository ppa:deadsnakes/ppa
+   sudo apt update && sudo apt install python3.13
+   ```
+
+3. **Use specific Python version:**
+   ```bash
+   uv python install 3.13
+   uv venv --python 3.13
+   ```
+
+### Dependency installation failures
+
+**Problem:** `uv sync` fails with compilation errors
+
+**Solutions:**
+
+1. **Update uv:**
+   ```bash
+   uv self update
+   ```
+
+2. **Clear cache:**
+   ```bash
+   uv cache clean
+   ```
+
+3. **Install system dependencies:**
+   ```bash
+   # macOS
+   xcode-select --install
+   
+   # Ubuntu/Debian
+   sudo apt update
+   sudo apt install build-essential python3-dev
+   
+   # CentOS/RHEL
+   sudo yum groupinstall "Development Tools"
+   sudo yum install python3-devel
+   ```
+
+4. **Use pre-compiled wheels:**
+   ```bash
+   uv sync --only-binary=all
+   ```
+
+### Permission denied errors
+
+**Problem:** Permission errors during installation
+
+**Solutions:**
+
+1. **Don't use sudo with uv:**
+   ```bash
+   # Wrong
+   sudo uv sync
+   
+   # Correct
+   uv sync
+   ```
+
+2. **Fix directory permissions:**
+   ```bash
+   # macOS/Linux
+   sudo chown -R $(whoami) ~/.local/share/uv
+   ```
+
+3. **Use virtual environment:**
+   ```bash
+   uv venv venv
+   source venv/bin/activate  # Linux/macOS
+   # or
+   venv\Scripts\activate     # Windows
+   ```
+
+## Configuration Issues
+
+### API Key Problems
+
+**Problem:** `API key is required for analysis` or provider-specific errors
+
+**Diagnosis:**
+```bash
+# Check if .env file exists
+ls -la .env
+
+# Check current provider configuration
+uv run python -m veritascribe config
+
+# Check environment variables for your provider
+echo $OPENAI_API_KEY      # For OpenAI or custom
+echo $OPENROUTER_API_KEY  # For OpenRouter
+echo $ANTHROPIC_API_KEY   # For Anthropic
+
+# Test API key validity (adjust for your provider)
+uv run python -c "
+from veritascribe.config import get_settings, get_dspy_config
+try:
+    settings = get_settings()
+    dspy_config = get_dspy_config()
+    lm = dspy_config.initialize_llm()
+    print('✓ API key and provider configuration valid')
+except Exception as e:
+    print(f'✗ Configuration error: {e}')
+"
+```
+
+**Solutions:**
+
+1. **Create .env file:**
+   ```bash
+   cp .env.example .env
+   # Edit .env and configure your chosen provider
+   ```
+
+2. **Provider-specific setup:**
+
+   **OpenAI:**
+   ```bash
+   LLM_PROVIDER=openai
+   OPENAI_API_KEY=sk-your-key-here  # Starts with 'sk-', 51+ chars
+   ```
+   
+   **OpenRouter:**
+   ```bash
+   LLM_PROVIDER=openrouter
+   OPENROUTER_API_KEY=sk-or-your-key-here  # Starts with 'sk-or-'
+   ```
+   
+   **Anthropic:**
+   ```bash
+   LLM_PROVIDER=anthropic
+   ANTHROPIC_API_KEY=sk-ant-your-key-here  # Starts with 'sk-ant-'
+   ```
+   
+   **Custom/Local:**
+   ```bash
+   LLM_PROVIDER=custom
+   OPENAI_API_KEY=any-value-for-local
+   OPENAI_BASE_URL=http://localhost:11434/v1
+   ```
+
+3. **Set environment variables directly:**
+   ```bash
+   # For OpenRouter example
+   export LLM_PROVIDER=openrouter
+   export OPENROUTER_API_KEY="your-key-here"
+   uv run python -m veritascribe config
+   ```
+
+4. **Check API key status and billing:**
+   - **OpenAI**: [Platform Dashboard](https://platform.openai.com/api-keys)
+   - **OpenRouter**: [Dashboard](https://openrouter.ai/keys)
+   - **Anthropic**: [Console](https://console.anthropic.com/)
+   - Verify key permissions and billing/credit status
+
+### Model availability issues
+
+**Problem:** `Model 'model-name' not available` or model formatting errors
+
+**Diagnosis:**
+```bash
+# Check current provider and model configuration
+uv run python -m veritascribe config
+
+# View available providers and their models
+uv run python -m veritascribe providers
+
+# Test model formatting
+uv run python -c "
+from veritascribe.config import get_settings
+settings = get_settings()
+formatted = settings.format_model_name()
+print(f'Provider: {settings.llm_provider}')
+print(f'Original model: {settings.default_model}')
+print(f'Formatted model: {formatted}')
+"
+```
+
+**Solutions:**
+
+1. **Use provider-specific model names:**
+   
+   **OpenAI:**
+   ```bash
+   DEFAULT_MODEL=gpt-4  # or gpt-3.5-turbo, gpt-4-turbo
+   ```
+   
+   **OpenRouter (automatically prefixed):**
+   ```bash
+   DEFAULT_MODEL=anthropic/claude-3.5-sonnet
+   # DEFAULT_MODEL=openai/gpt-4
+   # DEFAULT_MODEL=z-ai/glm-4.5-air:free
+   ```
+   
+   **Anthropic:**
+   ```bash
+   DEFAULT_MODEL=claude-3-5-sonnet-20241022
+   # DEFAULT_MODEL=claude-3-haiku-20240307
+   ```
+   
+   **Custom:**
+   ```bash
+   DEFAULT_MODEL=llama3.1:8b  # Ollama format
+   # DEFAULT_MODEL=gpt-4      # Azure deployment name
+   ```
+
+2. **Check provider-specific availability:**
+   - **OpenAI**: [Usage Dashboard](https://platform.openai.com/usage)
+   - **OpenRouter**: [Model List](https://openrouter.ai/models)
+   - **Anthropic**: [Console](https://console.anthropic.com/)
+   - **Local**: Check your model availability
+
+3. **Try fallback models:**
+   ```bash
+   # Safe fallback for each provider
+   # OpenAI
+   DEFAULT_MODEL=gpt-3.5-turbo
+   
+   # OpenRouter  
+   DEFAULT_MODEL=z-ai/glm-4.5-air:free
+   
+   # Anthropic
+   DEFAULT_MODEL=claude-3-haiku-20240307
+   ```
+
+### Configuration loading errors
+
+**Problem:** `Failed to load configuration`
+
+**Diagnosis:**
+```bash
+# Check .env file format
+cat .env | grep -E "^[A-Z_]+=.*$"
+
+# Validate configuration
+uv run python -c "
+from veritascribe.config import load_settings
+try:
+    settings = load_settings()
+    print('✓ Configuration valid')
+except Exception as e:
+    print(f'✗ Configuration error: {e}')
+"
+```
+
+**Solutions:**
+
+1. **Fix .env format:**
+   ```bash
+   # Correct format
+   OPENAI_API_KEY=sk-your-key-here
+   DEFAULT_MODEL=gpt-4
+   
+   # Wrong format (quotes, spaces)
+   OPENAI_API_KEY = "sk-your-key-here"
+   ```
+
+2. **Check file encoding:**
+   ```bash
+   file .env
+   # Should show UTF-8 encoding
+   ```
+
+3. **Reset to defaults:**
+   ```bash
+   cp .env.example .env
+   # Edit with minimal required settings
+   ```
+
+## PDF Processing Issues
+
+### PDF file not found
+
+**Problem:** `Error: PDF file not found`
+
+**Solutions:**
+
+1. **Check file path:**
+   ```bash
+   # Use absolute path
+   uv run python -m veritascribe analyze /full/path/to/thesis.pdf
+   
+   # Or relative from current directory
+   ls -la *.pdf
+   uv run python -m veritascribe analyze ./thesis.pdf
+   ```
+
+2. **Verify file permissions:**
+   ```bash
+   ls -la thesis.pdf
+   # Should show read permissions
+   ```
+
+3. **Check file extension:**
+   ```bash
+   file thesis.pdf
+   # Should show "PDF document"
+   ```
+
+### PDF processing failures
+
+**Problem:** `No text blocks extracted` or `PDF processing failed`
+
+**Diagnosis:**
+```bash
+# Test PDF with simple extraction
+uv run python -c "
+import fitz
+try:
+    doc = fitz.open('thesis.pdf')
+    text = doc[0].get_text()
+    print(f'✓ Extracted {len(text)} characters from first page')
+    doc.close()
+except Exception as e:
+    print(f'✗ PDF error: {e}')
+"
+```
+
+**Solutions:**
+
+1. **Check PDF type:**
+   ```bash
+   # Text-based PDFs work best
+   pdfinfo thesis.pdf | grep -E "(Pages|Producer|Creator)"
+   ```
+
+2. **Try different PDF:**
+   ```bash
+   # Test with demo PDF
+   uv run python -m veritascribe demo
+   ```
+
+3. **Handle password-protected PDFs:**
+   ```bash
+   # Remove password first
+   qpdf --password=PASSWORD --decrypt input.pdf output.pdf
+   ```
+
+4. **Convert scanned PDFs:**
+   ```bash
+   # Use OCR tools first
+   ocrmypdf input.pdf output.pdf
+   ```
+
+### Memory issues with large PDFs
+
+**Problem:** `Out of memory` or slow processing
+
+**Solutions:**
+
+1. **Reduce block size:**
+   ```bash
+   MAX_TEXT_BLOCK_SIZE=1000 uv run python -m veritascribe analyze large.pdf
+   ```
+
+2. **Disable parallel processing:**
+   ```bash
+   PARALLEL_PROCESSING=false uv run python -m veritascribe analyze large.pdf
+   ```
+
+3. **Use quick analysis:**
+   ```bash
+   uv run python -m veritascribe quick large.pdf --blocks 20
+   ```
+
+4. **Split large documents:**
+   ```bash
+   # Split PDF into smaller parts
+   pdftk input.pdf burst output page_%02d.pdf
+   ```
+
+## Analysis Issues
+
+### LLM request failures
+
+**Problem:** `Analysis modules failed`, timeout errors, or provider-specific issues
+
+**Diagnosis:**
+```bash
+# Test LLM connectivity for your provider
+uv run python -c "
+from veritascribe.config import get_settings, get_dspy_config
+
+try:
+    settings = get_settings()
+    dspy_config = get_dspy_config()
+    print(f'Provider: {settings.llm_provider}')
+    print(f'Model: {settings.format_model_name()}')
+    
+    lm = dspy_config.initialize_llm()
+    response = lm('Test prompt: Say "Hello VeritaScribe"')
+    print('✓ LLM connection working')
+    print(f'Response: {response}')
+except Exception as e:
+    print(f'✗ LLM error: {e}')
+    import traceback
+    traceback.print_exc()
+"
+```
+
+**Solutions:**
+
+1. **Reduce concurrency:**
+   ```bash
+   MAX_CONCURRENT_REQUESTS=2 uv run python -m veritascribe analyze thesis.pdf
+   ```
+
+2. **Increase timeout/retries:**
+   ```bash
+   MAX_RETRIES=5 RETRY_DELAY=2.0 uv run python -m veritascribe analyze thesis.pdf
+   ```
+
+3. **Check rate limits:**
+   - Visit [OpenAI Usage](https://platform.openai.com/usage)
+   - Verify you haven't hit rate limits
+   - Consider upgrading API tier
+
+4. **Try different models by provider:**
+   ```bash
+   # OpenAI - use simpler model
+   DEFAULT_MODEL=gpt-3.5-turbo uv run python -m veritascribe analyze thesis.pdf
+   
+   # OpenRouter - try free model
+   LLM_PROVIDER=openrouter DEFAULT_MODEL=z-ai/glm-4.5-air:free uv run python -m veritascribe analyze thesis.pdf
+   
+   # Anthropic - use fastest model
+   LLM_PROVIDER=anthropic DEFAULT_MODEL=claude-3-haiku-20240307 uv run python -m veritascribe analyze thesis.pdf
+   ```
+
+5. **Check provider-specific rate limits:**
+   - **OpenAI**: [Rate limits page](https://platform.openai.com/docs/guides/rate-limits)
+   - **OpenRouter**: [Usage dashboard](https://openrouter.ai/activity)
+   - **Anthropic**: [Rate limits](https://docs.anthropic.com/claude/reference/rate-limits)
+
+### Malformed LLM responses
+
+**Problem:** `JSON parsing error` or invalid responses
+
+**Solutions:**
+
+1. **Enable verbose logging:**
+   ```bash
+   uv run python -m veritascribe analyze thesis.pdf --verbose
+   ```
+
+2. **Reduce temperature:**
+   ```bash
+   TEMPERATURE=0.0 uv run python -m veritascribe analyze thesis.pdf
+   ```
+
+3. **Check token limits:**
+   ```bash
+   MAX_TOKENS=1500 uv run python -m veritascribe analyze thesis.pdf
+   ```
+
+### High API costs
+
+**Problem:** Unexpected high token usage
+
+**Solutions:**
+
+1. **Monitor usage:**
+   ```bash
+   # Check configuration
+   uv run python -m veritascribe config
+   ```
+
+2. **Optimize settings by provider:**
+   ```bash
+   # OpenAI cost optimization
+   LLM_PROVIDER=openai
+   DEFAULT_MODEL=gpt-3.5-turbo
+   MAX_TOKENS=1500
+   
+   # OpenRouter free model
+   LLM_PROVIDER=openrouter
+   DEFAULT_MODEL=z-ai/glm-4.5-air:free
+   
+   # Anthropic cost optimization
+   LLM_PROVIDER=anthropic
+   DEFAULT_MODEL=claude-3-haiku-20240307
+   
+   # Local model (no API costs)
+   LLM_PROVIDER=custom
+   OPENAI_BASE_URL=http://localhost:11434/v1
+   DEFAULT_MODEL=llama3.1:8b
+   
+   # General optimizations
+   MAX_TEXT_BLOCK_SIZE=1000
+   PARALLEL_PROCESSING=false
+   ```
+
+3. **Use quick analysis:**
+   ```bash
+   uv run python -m veritascribe quick thesis.pdf --blocks 10
+   ```
+
+4. **Disable analysis types:**
+   ```bash
+   CONTENT_ANALYSIS_ENABLED=false uv run python -m veritascribe analyze thesis.pdf
+   ```
+
+## Output Issues
+
+### Report generation failures
+
+**Problem:** `Report generation failed` or missing output files
+
+**Solutions:**
+
+1. **Check output directory permissions:**
+   ```bash
+   mkdir -p ./analysis_output
+   chmod 755 ./analysis_output
+   ```
+
+2. **Specify output directory:**
+   ```bash
+   uv run python -m veritascribe analyze thesis.pdf --output ~/Documents/analysis
+   ```
+
+3. **Disable problematic outputs:**
+   ```bash
+   # Skip visualizations if matplotlib issues
+   uv run python -m veritascribe analyze thesis.pdf --no-viz
+   ```
+
+### Visualization errors
+
+**Problem:** Chart generation fails
+
+**Solutions:**
+
+1. **Install GUI backend:**
+   ```bash
+   # macOS
+   brew install python-tk
+   
+   # Ubuntu/Debian
+   sudo apt install python3-tk
+   ```
+
+2. **Use headless backend:**
+   ```bash
+   uv run python -c "
+   import matplotlib
+   matplotlib.use('Agg')
+   import matplotlib.pyplot as plt
+   print('✓ Matplotlib working')
+   "
+   ```
+
+3. **Skip visualizations:**
+   ```bash
+   GENERATE_VISUALIZATIONS=false uv run python -m veritascribe analyze thesis.pdf
+   ```
+
+## Performance Issues
+
+### Slow analysis
+
+**Problem:** Analysis takes too long
+
+**Diagnosis:**
+```bash
+# Profile analysis
+time uv run python -m veritascribe quick thesis.pdf --blocks 5
+```
+
+**Solutions:**
+
+1. **Enable parallel processing:**
+   ```bash
+   PARALLEL_PROCESSING=true MAX_CONCURRENT_REQUESTS=5
+   ```
+
+2. **Use faster model:**
+   ```bash
+   DEFAULT_MODEL=gpt-3.5-turbo
+   ```
+
+3. **Reduce analysis scope:**
+   ```bash
+   # Disable expensive analysis
+   CONTENT_ANALYSIS_ENABLED=false
+   ```
+
+4. **Optimize block size:**
+   ```bash
+   MAX_TEXT_BLOCK_SIZE=1500
+   ```
+
+### Memory usage issues
+
+**Problem:** High memory consumption
+
+**Solutions:**
+
+1. **Monitor memory:**
+   ```bash
+   # Use memory profiler
+   pip install memory-profiler
+   mprof run uv run python -m veritascribe analyze thesis.pdf
+   mprof plot
+   ```
+
+2. **Reduce batch size:**
+   ```bash
+   MAX_CONCURRENT_REQUESTS=2
+   ```
+
+3. **Clear cache:**
+   ```bash
+   # Clear Python cache
+   find . -name "*.pyc" -delete
+   find . -name "__pycache__" -delete
+   ```
+
+## Network Issues
+
+### Connection timeouts
+
+**Problem:** `Connection timeout` or network errors
+
+**Solutions:**
+
+1. **Check internet connectivity:**
+   ```bash
+   curl -I https://api.openai.com/v1/models
+   ```
+
+2. **Configure proxy (if needed):**
+   ```bash
+   export HTTPS_PROXY=http://proxy.company.com:8080
+   export HTTP_PROXY=http://proxy.company.com:8080
+   ```
+
+3. **Increase timeout:**
+   ```bash
+   # Configure longer timeouts in requests
+   REQUESTS_TIMEOUT=60
+   ```
+
+### Firewall issues
+
+**Problem:** Requests blocked by firewall
+
+**Solutions:**
+
+1. **Whitelist OpenAI domains:**
+   - `api.openai.com`
+   - `openai.com`
+
+2. **Check corporate policies:**
+   - Contact IT about OpenAI API access
+   - Consider VPN if needed
+
+3. **Test with curl:**
+   ```bash
+   curl -H "Authorization: Bearer $OPENAI_API_KEY" \
+        https://api.openai.com/v1/models
+   ```
+
+## Getting Help
+
+### Enable Debug Logging
+
+For any issue, enable verbose logging:
+
+```bash
+# Enable debug output
+uv run python -m veritascribe analyze thesis.pdf --verbose
+
+# Python logging
+PYTHONPATH=. python -c "
+import logging
+logging.basicConfig(level=logging.DEBUG)
+from veritascribe.main import main
+main()
+"
+```
+
+### Collect System Information
+
+```bash
+# System info script
+cat > debug_info.sh << 'EOF'
+#!/bin/bash
+echo "=== System Information ==="
+uname -a
+python --version
+uv --version
+
+echo -e "\n=== VeritaScribe Configuration ==="
+uv run python -m veritascribe config
+
+echo -e "\n=== Environment Variables ==="
+env | grep -E "(OPENAI|PYTHON|UV)" | sort
+
+echo -e "\n=== System Tests ==="
+uv run python -m veritascribe test
+
+echo -e "\n=== Dependencies ==="
+uv tree
+EOF
+
+chmod +x debug_info.sh
+./debug_info.sh > debug_info.txt
+```
+
+### Create Minimal Reproduction
+
+```bash
+# Create minimal test case
+cat > minimal_test.py << 'EOF'
+#!/usr/bin/env python3
+"""Minimal reproduction script."""
+
+from veritascribe.config import load_settings
+from veritascribe.pdf_processor import PDFProcessor
+from veritascribe.pipeline import create_quick_pipeline
+
+def main():
+    try:
+        # Test configuration
+        print("Testing configuration...")
+        settings = load_settings()
+        print(f"✓ Config loaded, model: {settings.default_model}")
+        
+        # Test PDF processing
+        print("Testing PDF processing...")
+        processor = PDFProcessor()
+        # Add your test PDF here
+        
+        # Test analysis
+        print("Testing analysis...")
+        pipeline = create_quick_pipeline()
+        # Add your test case here
+        
+        print("✓ All tests passed")
+        
+    except Exception as e:
+        print(f"✗ Error: {e}")
+        import traceback
+        traceback.print_exc()
+
+if __name__ == "__main__":
+    main()
+EOF
+
+uv run python minimal_test.py
+```
+
+### Common Error Patterns
+
+| Error Message | Likely Cause | Quick Fix |
+|---------------|--------------|-----------|
+| `uv: command not found` | uv not installed | Install uv |
+| `API key is required` | Missing API key | Set provider-specific API key |
+| `LLM Provider NOT provided` | Missing provider prefix | Check model formatting |
+| `PDF file not found` | Wrong file path | Check file path |
+| `No text blocks extracted` | Scanned PDF | Use OCR first |
+| `Connection timeout` | Network issue | Check connectivity |
+| `Rate limit exceeded` | Too many requests | Reduce concurrency |
+| `Model not available` | Wrong model name | Check provider models |
+| `JSON parsing error` | Malformed LLM response | Reduce temperature |
+| `Permission denied` | File permissions | Check file access |
+| `Out of memory` | Large document | Reduce block size |
+
+### When to Seek Help
+
+Create an issue on the project repository with:
+
+1. **Error message** and full traceback
+2. **System information** from debug script
+3. **Minimal reproduction** case
+4. **Steps taken** to resolve the issue
+5. **Expected vs. actual** behavior
+
+---
+
+*If none of these solutions work, please create an issue with detailed information about your environment and the specific error you're encountering.*

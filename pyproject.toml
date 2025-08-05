@@ -1,14 +1,28 @@
 [project]
 name = "veritascribe"
 version = "0.1.0"
-description = "Add your description here"
+description = "AI-powered bachelor thesis review tool for automated quality analysis"
 readme = "README.md"
 authors = [
     { name = "legout", email = "ligno.blades@gmail.com" }
 ]
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "dspy>=2.6.27",
+    "matplotlib>=3.10.5",
+    "openai>=1.98.0",
+    "pydantic>=2.11.7",
+    "pydantic-settings>=2.10.1",
+    "pymupdf>=1.26.3",
+    "python-dotenv>=1.1.1",
+    "typer>=0.16.0",
+    "rich>=13.0.0",
+    "azure-identity>=1.23.1",
+]
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[project.scripts]
+veritascribe = "veritascribe.main:main"

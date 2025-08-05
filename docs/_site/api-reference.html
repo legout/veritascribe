@@ -1,0 +1,2064 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>API Reference – VeritaScribe</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-234273d1456647dabc34a594ac50e507.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-45a984b55c978f8c4117b5b9aec951d9.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">VeritaScribe</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./installation.html"> 
+<span class="menu-text">Installation</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./configuration.html"> 
+<span class="menu-text">Configuration</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./usage.html"> 
+<span class="menu-text">Usage Guide</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./api-reference.html"> 
+<span class="menu-text">API Reference</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./architecture.html"> 
+<span class="menu-text">Architecture</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./troubleshooting.html"> 
+<span class="menu-text">Troubleshooting</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">API Reference</li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">VeritaScribe Documentation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./installation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Installation Guide</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./configuration.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Configuration Reference</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#api-reference" id="toc-api-reference" class="nav-link active" data-scroll-target="#api-reference"><span class="header-section-number">1</span> API Reference</a>
+  <ul class="collapse">
+  <li><a href="#command-line-interface" id="toc-command-line-interface" class="nav-link" data-scroll-target="#command-line-interface"><span class="header-section-number">1.1</span> Command Line Interface</a>
+  <ul class="collapse">
+  <li><a href="#core-commands" id="toc-core-commands" class="nav-link" data-scroll-target="#core-commands"><span class="header-section-number">1.1.1</span> Core Commands</a></li>
+  </ul></li>
+  <li><a href="#python-api" id="toc-python-api" class="nav-link" data-scroll-target="#python-api"><span class="header-section-number">1.2</span> Python API</a>
+  <ul class="collapse">
+  <li><a href="#configuration-management" id="toc-configuration-management" class="nav-link" data-scroll-target="#configuration-management"><span class="header-section-number">1.2.1</span> Configuration Management</a></li>
+  <li><a href="#data-models" id="toc-data-models" class="nav-link" data-scroll-target="#data-models"><span class="header-section-number">1.2.2</span> Data Models</a></li>
+  <li><a href="#pdf-processing" id="toc-pdf-processing" class="nav-link" data-scroll-target="#pdf-processing"><span class="header-section-number">1.2.3</span> PDF Processing</a></li>
+  <li><a href="#llm-analysis-modules" id="toc-llm-analysis-modules" class="nav-link" data-scroll-target="#llm-analysis-modules"><span class="header-section-number">1.2.4</span> LLM Analysis Modules</a></li>
+  <li><a href="#pipeline-and-orchestration" id="toc-pipeline-and-orchestration" class="nav-link" data-scroll-target="#pipeline-and-orchestration"><span class="header-section-number">1.2.5</span> Pipeline and Orchestration</a></li>
+  <li><a href="#report-generation" id="toc-report-generation" class="nav-link" data-scroll-target="#report-generation"><span class="header-section-number">1.2.6</span> Report Generation</a></li>
+  </ul></li>
+  <li><a href="#error-handling" id="toc-error-handling" class="nav-link" data-scroll-target="#error-handling"><span class="header-section-number">1.3</span> Error Handling</a>
+  <ul class="collapse">
+  <li><a href="#exception-types" id="toc-exception-types" class="nav-link" data-scroll-target="#exception-types"><span class="header-section-number">1.3.1</span> Exception Types</a></li>
+  <li><a href="#error-context" id="toc-error-context" class="nav-link" data-scroll-target="#error-context"><span class="header-section-number">1.3.2</span> Error Context</a></li>
+  </ul></li>
+  <li><a href="#extensibility" id="toc-extensibility" class="nav-link" data-scroll-target="#extensibility"><span class="header-section-number">1.4</span> Extensibility</a>
+  <ul class="collapse">
+  <li><a href="#custom-error-types" id="toc-custom-error-types" class="nav-link" data-scroll-target="#custom-error-types"><span class="header-section-number">1.4.1</span> Custom Error Types</a></li>
+  <li><a href="#custom-analysis-modules" id="toc-custom-analysis-modules" class="nav-link" data-scroll-target="#custom-analysis-modules"><span class="header-section-number">1.4.2</span> Custom Analysis Modules</a></li>
+  <li><a href="#configuration-extensions" id="toc-configuration-extensions" class="nav-link" data-scroll-target="#configuration-extensions"><span class="header-section-number">1.4.3</span> Configuration Extensions</a></li>
+  </ul></li>
+  <li><a href="#testing-utilities" id="toc-testing-utilities" class="nav-link" data-scroll-target="#testing-utilities"><span class="header-section-number">1.5</span> Testing Utilities</a>
+  <ul class="collapse">
+  <li><a href="#test-helpers" id="toc-test-helpers" class="nav-link" data-scroll-target="#test-helpers"><span class="header-section-number">1.5.1</span> Test Helpers</a></li>
+  <li><a href="#fixtures-for-testing" id="toc-fixtures-for-testing" class="nav-link" data-scroll-target="#fixtures-for-testing"><span class="header-section-number">1.5.2</span> Fixtures for Testing</a></li>
+  </ul></li>
+  <li><a href="#performance-considerations" id="toc-performance-considerations" class="nav-link" data-scroll-target="#performance-considerations"><span class="header-section-number">1.6</span> Performance Considerations</a>
+  <ul class="collapse">
+  <li><a href="#optimization-guidelines" id="toc-optimization-guidelines" class="nav-link" data-scroll-target="#optimization-guidelines"><span class="header-section-number">1.6.1</span> Optimization Guidelines</a></li>
+  <li><a href="#monitoring" id="toc-monitoring" class="nav-link" data-scroll-target="#monitoring"><span class="header-section-number">1.6.2</span> Monitoring</a></li>
+  </ul></li>
+  <li><a href="#security-considerations" id="toc-security-considerations" class="nav-link" data-scroll-target="#security-considerations"><span class="header-section-number">1.7</span> Security Considerations</a>
+  <ul class="collapse">
+  <li><a href="#api-key-management" id="toc-api-key-management" class="nav-link" data-scroll-target="#api-key-management"><span class="header-section-number">1.7.1</span> API Key Management</a></li>
+  <li><a href="#input-validation" id="toc-input-validation" class="nav-link" data-scroll-target="#input-validation"><span class="header-section-number">1.7.2</span> Input Validation</a></li>
+  <li><a href="#output-sanitization" id="toc-output-sanitization" class="nav-link" data-scroll-target="#output-sanitization"><span class="header-section-number">1.7.3</span> Output Sanitization</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">API Reference</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="api-reference" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> API Reference</h1>
+<p>This reference covers VeritaScribe’s programmatic interfaces, data models, and internal APIs for developers and advanced users.</p>
+<section id="command-line-interface" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="command-line-interface"><span class="header-section-number">1.1</span> Command Line Interface</h2>
+<section id="core-commands" class="level3" data-number="1.1.1">
+<h3 data-number="1.1.1" class="anchored" data-anchor-id="core-commands"><span class="header-section-number">1.1.1</span> Core Commands</h3>
+<section id="analyze" class="level4" data-number="1.1.1.1">
+<h4 data-number="1.1.1.1" class="anchored" data-anchor-id="analyze"><span class="header-section-number">1.1.1.1</span> <code>analyze</code></h4>
+<p>Perform comprehensive thesis analysis.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze <span class="pp">[</span><span class="ss">OPTIONS</span><span class="pp">]</span> PDF_PATH</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Arguments:</strong> - <code>PDF_PATH</code> (required): Path to the PDF thesis file</p>
+<p><strong>Options:</strong> - <code>--output, -o TEXT</code>: Output directory for reports - <code>--citation-style, -c TEXT</code>: Expected citation style (APA, MLA, Chicago, IEEE, Harvard) - <code>--quick, -q</code>: Perform quick analysis (first 10 blocks only) - <code>--no-viz</code>: Skip generating visualization charts - <code>--verbose, -v</code>: Enable verbose logging</p>
+<p><strong>Exit Codes:</strong> - <code>0</code>: Success - <code>1</code>: Error (file not found, analysis failed, etc.)</p>
+</section>
+<section id="quick" class="level4" data-number="1.1.1.2">
+<h4 data-number="1.1.1.2" class="anchored" data-anchor-id="quick"><span class="header-section-number">1.1.1.2</span> <code>quick</code></h4>
+<p>Fast analysis of document subset.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe quick <span class="pp">[</span><span class="ss">OPTIONS</span><span class="pp">]</span> PDF_PATH</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Arguments:</strong> - <code>PDF_PATH</code> (required): Path to the PDF thesis file</p>
+<p><strong>Options:</strong> - <code>--blocks, -b INTEGER</code>: Number of text blocks to analyze (default: 5)</p>
+</section>
+<section id="demo" class="level4" data-number="1.1.1.3">
+<h4 data-number="1.1.1.3" class="anchored" data-anchor-id="demo"><span class="header-section-number">1.1.1.3</span> <code>demo</code></h4>
+<p>Create and analyze sample document.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe demo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>No arguments or options. Creates <code>demo_thesis.pdf</code> in current directory.</p>
+</section>
+<section id="config" class="level4" data-number="1.1.1.4">
+<h4 data-number="1.1.1.4" class="anchored" data-anchor-id="config"><span class="header-section-number">1.1.1.4</span> <code>config</code></h4>
+<p>Display current configuration.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe config</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Outputs configuration table and API key status.</p>
+</section>
+<section id="test" class="level4" data-number="1.1.1.5">
+<h4 data-number="1.1.1.5" class="anchored" data-anchor-id="test"><span class="header-section-number">1.1.1.5</span> <code>test</code></h4>
+<p>Run system diagnostics.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe test</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Tests configuration loading, PDF processing, and LLM connectivity.</p>
+</section>
+</section>
+</section>
+<section id="python-api" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="python-api"><span class="header-section-number">1.2</span> Python API</h2>
+<section id="configuration-management" class="level3" data-number="1.2.1">
+<h3 data-number="1.2.1" class="anchored" data-anchor-id="configuration-management"><span class="header-section-number">1.2.1</span> Configuration Management</h3>
+<section id="veritascribe.config.veritascribesettings" class="level4" data-number="1.2.1.1">
+<h4 data-number="1.2.1.1" class="anchored" data-anchor-id="veritascribe.config.veritascribesettings"><span class="header-section-number">1.2.1.1</span> <code>veritascribe.config.VeritaScribeSettings</code></h4>
+<p>Main configuration class using Pydantic Settings.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.config <span class="im">import</span> VeritaScribeSettings</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>settings <span class="op">=</span> VeritaScribeSettings(</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    openai_api_key<span class="op">=</span><span class="st">"your-key-here"</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    default_model<span class="op">=</span><span class="st">"gpt-4"</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    max_tokens<span class="op">=</span><span class="dv">2000</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    temperature<span class="op">=</span><span class="fl">0.1</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Key Fields:</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 17%">
+<col style="width: 25%">
+<col style="width: 37%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>openai_api_key</code></td>
+<td><code>Optional[str]</code></td>
+<td><code>None</code></td>
+<td>OpenAI API key</td>
+</tr>
+<tr class="even">
+<td><code>default_model</code></td>
+<td><code>str</code></td>
+<td><code>"gpt-4"</code></td>
+<td>LLM model name</td>
+</tr>
+<tr class="odd">
+<td><code>max_tokens</code></td>
+<td><code>int</code></td>
+<td><code>2000</code></td>
+<td>Max tokens per request</td>
+</tr>
+<tr class="even">
+<td><code>temperature</code></td>
+<td><code>float</code></td>
+<td><code>0.1</code></td>
+<td>LLM temperature</td>
+</tr>
+<tr class="odd">
+<td><code>grammar_analysis_enabled</code></td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+<td>Enable grammar analysis</td>
+</tr>
+<tr class="even">
+<td><code>content_analysis_enabled</code></td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+<td>Enable content analysis</td>
+</tr>
+<tr class="odd">
+<td><code>citation_analysis_enabled</code></td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+<td>Enable citation analysis</td>
+</tr>
+<tr class="even">
+<td><code>high_severity_threshold</code></td>
+<td><code>float</code></td>
+<td><code>0.8</code></td>
+<td>High severity threshold</td>
+</tr>
+<tr class="odd">
+<td><code>medium_severity_threshold</code></td>
+<td><code>float</code></td>
+<td><code>0.5</code></td>
+<td>Medium severity threshold</td>
+</tr>
+<tr class="even">
+<td><code>max_text_block_size</code></td>
+<td><code>int</code></td>
+<td><code>2000</code></td>
+<td>Max chars per block</td>
+</tr>
+<tr class="odd">
+<td><code>parallel_processing</code></td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+<td>Enable parallel processing</td>
+</tr>
+<tr class="even">
+<td><code>max_concurrent_requests</code></td>
+<td><code>int</code></td>
+<td><code>5</code></td>
+<td>Max concurrent requests</td>
+</tr>
+<tr class="odd">
+<td><code>output_directory</code></td>
+<td><code>str</code></td>
+<td><code>"./analysis_output"</code></td>
+<td>Default output dir</td>
+</tr>
+<tr class="even">
+<td><code>max_retries</code></td>
+<td><code>int</code></td>
+<td><code>3</code></td>
+<td>Max retry attempts</td>
+</tr>
+<tr class="odd">
+<td><code>retry_delay</code></td>
+<td><code>float</code></td>
+<td><code>1.0</code></td>
+<td>Retry delay seconds</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="configuration-functions" class="level4" data-number="1.2.1.2">
+<h4 data-number="1.2.1.2" class="anchored" data-anchor-id="configuration-functions"><span class="header-section-number">1.2.1.2</span> Configuration Functions</h4>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.config <span class="im">import</span> (</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    load_settings,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    get_settings,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    initialize_system</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Load fresh settings</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>settings <span class="op">=</span> load_settings()</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Get global settings instance (cached)</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>settings <span class="op">=</span> get_settings()</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize complete system</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>settings, dspy_config <span class="op">=</span> initialize_system()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="data-models" class="level3" data-number="1.2.2">
+<h3 data-number="1.2.2" class="anchored" data-anchor-id="data-models"><span class="header-section-number">1.2.2</span> Data Models</h3>
+<p>All data models use Pydantic for validation and serialization.</p>
+<section id="veritascribe.data_models.locationhint" class="level4" data-number="1.2.2.1">
+<h4 data-number="1.2.2.1" class="anchored" data-anchor-id="veritascribe.data_models.locationhint"><span class="header-section-number">1.2.2.1</span> <code>veritascribe.data_models.LocationHint</code></h4>
+<p>Represents the location of text or errors in the document.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.data_models <span class="im">import</span> LocationHint</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>location <span class="op">=</span> LocationHint(</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    page_number<span class="op">=</span><span class="dv">12</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    bounding_box_coordinates<span class="op">=</span>[<span class="dv">72</span>, <span class="dv">345</span>, <span class="dv">520</span>, <span class="dv">365</span>]</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Fields:</strong> - <code>page_number: int</code> - Page number (1-indexed) - <code>bounding_box_coordinates: Optional[List[float]]</code> - <code>[x1, y1, x2, y2]</code> coordinates</p>
+</section>
+<section id="veritascribe.data_models.baseerror" class="level4" data-number="1.2.2.2">
+<h4 data-number="1.2.2.2" class="anchored" data-anchor-id="veritascribe.data_models.baseerror"><span class="header-section-number">1.2.2.2</span> <code>veritascribe.data_models.BaseError</code></h4>
+<p>Base class for all error types.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.data_models <span class="im">import</span> BaseError, ErrorSeverity, LocationHint</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>error <span class="op">=</span> BaseError(</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    error_type<span class="op">=</span><span class="st">"grammar"</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    severity<span class="op">=</span>ErrorSeverity.HIGH,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    original_text<span class="op">=</span><span class="st">"The results shows that..."</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    suggested_correction<span class="op">=</span><span class="st">"The results show that..."</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    explanation<span class="op">=</span><span class="st">"Subject-verb agreement error."</span>,</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    location<span class="op">=</span>LocationHint(page_number<span class="op">=</span><span class="dv">12</span>),</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    confidence_score<span class="op">=</span><span class="fl">0.95</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Fields:</strong> - <code>error_type: str</code> - Type of error (grammar, citation_format, content_plausibility) - <code>severity: ErrorSeverity</code> - Error severity level - <code>original_text: str</code> - Original problematic text - <code>suggested_correction: Optional[str]</code> - Suggested fix - <code>explanation: str</code> - Explanation of the error - <code>location: LocationHint</code> - Error location - <code>confidence_score: float</code> - Confidence in error detection (0.0-1.0)</p>
+</section>
+<section id="veritascribe.data_models.errorseverity" class="level4" data-number="1.2.2.3">
+<h4 data-number="1.2.2.3" class="anchored" data-anchor-id="veritascribe.data_models.errorseverity"><span class="header-section-number">1.2.2.3</span> <code>veritascribe.data_models.ErrorSeverity</code></h4>
+<p>Enumeration for error severity levels.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.data_models <span class="im">import</span> ErrorSeverity</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Available values</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>ErrorSeverity.LOW      <span class="co"># Low priority</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>ErrorSeverity.MEDIUM   <span class="co"># Medium priority  </span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>ErrorSeverity.HIGH     <span class="co"># High priority</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="veritascribe.data_models.textblock" class="level4" data-number="1.2.2.4">
+<h4 data-number="1.2.2.4" class="anchored" data-anchor-id="veritascribe.data_models.textblock"><span class="header-section-number">1.2.2.4</span> <code>veritascribe.data_models.TextBlock</code></h4>
+<p>Represents extracted text with layout information.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.data_models <span class="im">import</span> TextBlock</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>block <span class="op">=</span> TextBlock(</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    content<span class="op">=</span><span class="st">"The methodology employed in this study..."</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    page_number<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    bounding_box_coordinates<span class="op">=</span>[<span class="dv">72</span>, <span class="dv">200</span>, <span class="dv">520</span>, <span class="dv">280</span>]</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Fields:</strong> - <code>content: str</code> - Extracted text content - <code>page_number: int</code> - Page number (1-indexed) - <code>bounding_box_coordinates: Optional[List[float]]</code> - Layout coordinates</p>
+</section>
+<section id="veritascribe.data_models.analysisresult" class="level4" data-number="1.2.2.5">
+<h4 data-number="1.2.2.5" class="anchored" data-anchor-id="veritascribe.data_models.analysisresult"><span class="header-section-number">1.2.2.5</span> <code>veritascribe.data_models.AnalysisResult</code></h4>
+<p>Links a text block with its detected errors.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.data_models <span class="im">import</span> AnalysisResult, TextBlock, BaseError</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> AnalysisResult(</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    text_block<span class="op">=</span>text_block,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    errors<span class="op">=</span>[error1, error2, error3]</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Fields:</strong> - <code>text_block: TextBlock</code> - The analyzed text block - <code>errors: List[BaseError]</code> - List of errors found in this block</p>
+</section>
+<section id="veritascribe.data_models.thesisanalysisreport" class="level4" data-number="1.2.2.6">
+<h4 data-number="1.2.2.6" class="anchored" data-anchor-id="veritascribe.data_models.thesisanalysisreport"><span class="header-section-number">1.2.2.6</span> <code>veritascribe.data_models.ThesisAnalysisReport</code></h4>
+<p>Complete analysis report containing all results.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.data_models <span class="im">import</span> ThesisAnalysisReport</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>report <span class="op">=</span> ThesisAnalysisReport(</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    document_name<span class="op">=</span><span class="st">"thesis.pdf"</span>,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    total_pages<span class="op">=</span><span class="dv">45</span>,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    total_words<span class="op">=</span><span class="dv">12543</span>,</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    total_text_blocks<span class="op">=</span><span class="dv">87</span>,</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    analysis_results<span class="op">=</span>[result1, result2, ...],</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    total_processing_time_seconds<span class="op">=</span><span class="fl">45.32</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Key Fields:</strong> - <code>document_name: str</code> - Name of analyzed document - <code>analysis_timestamp: datetime</code> - When analysis was performed - <code>total_pages: int</code> - Number of pages in document - <code>total_words: int</code> - Estimated word count - <code>total_text_blocks: int</code> - Number of text blocks analyzed - <code>analysis_results: List[AnalysisResult]</code> - All analysis results - <code>total_processing_time_seconds: float</code> - Processing time</p>
+<p><strong>Computed Properties:</strong> - <code>total_errors: int</code> - Total number of errors found - <code>error_rate: float</code> - Errors per 1,000 words - <code>errors_by_type: Dict[str, int]</code> - Error counts by type - <code>errors_by_severity: Dict[str, int]</code> - Error counts by severity</p>
+<p><strong>Methods:</strong></p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get errors by severity</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>high_errors <span class="op">=</span> report.get_high_severity_errors()</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>medium_errors <span class="op">=</span> report.get_medium_severity_errors()</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>low_errors <span class="op">=</span> report.get_low_severity_errors()</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Get errors by type</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>grammar_errors <span class="op">=</span> report.get_errors_by_type(<span class="st">"grammar"</span>)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>citation_errors <span class="op">=</span> report.get_errors_by_type(<span class="st">"citation_format"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="pdf-processing" class="level3" data-number="1.2.3">
+<h3 data-number="1.2.3" class="anchored" data-anchor-id="pdf-processing"><span class="header-section-number">1.2.3</span> PDF Processing</h3>
+<section id="veritascribe.pdf_processor.pdfprocessor" class="level4" data-number="1.2.3.1">
+<h4 data-number="1.2.3.1" class="anchored" data-anchor-id="veritascribe.pdf_processor.pdfprocessor"><span class="header-section-number">1.2.3.1</span> <code>veritascribe.pdf_processor.PDFProcessor</code></h4>
+<p>Main class for PDF text extraction.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.pdf_processor <span class="im">import</span> PDFProcessor</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>processor <span class="op">=</span> PDFProcessor()</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>text_blocks <span class="op">=</span> processor.extract_text_blocks_from_pdf(<span class="st">"thesis.pdf"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Methods:</strong></p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extract_text_blocks_from_pdf(</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>, </span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    pdf_path: <span class="bu">str</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> List[TextBlock]:</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Extract text blocks from PDF with layout information."""</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> estimate_word_count(</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>, </span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    text_blocks: List[TextBlock]</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Estimate total word count from text blocks."""</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="utility-functions" class="level4" data-number="1.2.3.2">
+<h4 data-number="1.2.3.2" class="anchored" data-anchor-id="utility-functions"><span class="header-section-number">1.2.3.2</span> Utility Functions</h4>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.pdf_processor <span class="im">import</span> create_test_pdf</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create sample PDF for testing</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>create_test_pdf(<span class="st">"sample.pdf"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="llm-analysis-modules" class="level3" data-number="1.2.4">
+<h3 data-number="1.2.4" class="anchored" data-anchor-id="llm-analysis-modules"><span class="header-section-number">1.2.4</span> LLM Analysis Modules</h3>
+<section id="dspy-signatures" class="level4" data-number="1.2.4.1">
+<h4 data-number="1.2.4.1" class="anchored" data-anchor-id="dspy-signatures"><span class="header-section-number">1.2.4.1</span> DSPy Signatures</h4>
+<div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.llm_modules <span class="im">import</span> (</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    LinguisticAnalysisSignature,</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    ContentValidationSignature,</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    CitationAnalysisSignature</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Example usage (typically internal)</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> dspy</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>linguistic_analyzer <span class="op">=</span> dspy.Predict(LinguisticAnalysisSignature)</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> linguistic_analyzer(text_chunk<span class="op">=</span><span class="st">"The results shows..."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="analysis-modules" class="level4" data-number="1.2.4.2">
+<h4 data-number="1.2.4.2" class="anchored" data-anchor-id="analysis-modules"><span class="header-section-number">1.2.4.2</span> Analysis Modules</h4>
+<div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.llm_modules <span class="im">import</span> (</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    LinguisticAnalyzer,</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    ContentValidator,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    CitationChecker</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize analyzers</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>linguistic <span class="op">=</span> LinguisticAnalyzer()</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>content <span class="op">=</span> ContentValidator()</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>citation <span class="op">=</span> CitationChecker()</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Analyze text block</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>text_block <span class="op">=</span> TextBlock(content<span class="op">=</span><span class="st">"Sample text..."</span>, page_number<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>grammar_errors <span class="op">=</span> linguistic.analyze(text_block)</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>content_errors <span class="op">=</span> content.analyze(text_block)</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>citation_errors <span class="op">=</span> citation.analyze(text_block, bibliography<span class="op">=</span><span class="st">"References..."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="pipeline-and-orchestration" class="level3" data-number="1.2.5">
+<h3 data-number="1.2.5" class="anchored" data-anchor-id="pipeline-and-orchestration"><span class="header-section-number">1.2.5</span> Pipeline and Orchestration</h3>
+<section id="veritascribe.pipeline.analysispipeline" class="level4" data-number="1.2.5.1">
+<h4 data-number="1.2.5.1" class="anchored" data-anchor-id="veritascribe.pipeline.analysispipeline"><span class="header-section-number">1.2.5.1</span> <code>veritascribe.pipeline.AnalysisPipeline</code></h4>
+<p>Main orchestration class for analysis workflow.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.pipeline <span class="im">import</span> AnalysisPipeline</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>pipeline <span class="op">=</span> AnalysisPipeline()</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>report <span class="op">=</span> pipeline.analyze_thesis(</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    pdf_path<span class="op">=</span><span class="st">"thesis.pdf"</span>,</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    output_dir<span class="op">=</span><span class="st">"./results"</span>,</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    citation_style<span class="op">=</span><span class="st">"APA"</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Methods:</strong></p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> analyze_thesis(</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>,</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    pdf_path: <span class="bu">str</span>,</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    output_dir: <span class="bu">str</span>,</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    citation_style: <span class="bu">str</span> <span class="op">=</span> <span class="st">"APA"</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> ThesisAnalysisReport:</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Perform complete thesis analysis."""</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> quick_analyze(</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>,</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>    pdf_path: <span class="bu">str</span>,</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    max_blocks: <span class="bu">int</span> <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> ThesisAnalysisReport:</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Perform quick analysis on subset of document."""</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="factory-functions" class="level4" data-number="1.2.5.2">
+<h4 data-number="1.2.5.2" class="anchored" data-anchor-id="factory-functions"><span class="header-section-number">1.2.5.2</span> Factory Functions</h4>
+<div class="sourceCode" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.pipeline <span class="im">import</span> (</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    create_analysis_pipeline,</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    create_quick_pipeline</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Create configured pipeline instances</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>full_pipeline <span class="op">=</span> create_analysis_pipeline()</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>quick_pipeline <span class="op">=</span> create_quick_pipeline()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="report-generation" class="level3" data-number="1.2.6">
+<h3 data-number="1.2.6" class="anchored" data-anchor-id="report-generation"><span class="header-section-number">1.2.6</span> Report Generation</h3>
+<section id="veritascribe.report_generator.reportgenerator" class="level4" data-number="1.2.6.1">
+<h4 data-number="1.2.6.1" class="anchored" data-anchor-id="veritascribe.report_generator.reportgenerator"><span class="header-section-number">1.2.6.1</span> <code>veritascribe.report_generator.ReportGenerator</code></h4>
+<p>Handles report generation and visualization.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.report_generator <span class="im">import</span> ReportGenerator</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>generator <span class="op">=</span> ReportGenerator()</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate text report</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>generator.generate_text_report(report, <span class="st">"report.md"</span>)</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Export JSON data</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>generator.export_json_report(report, <span class="st">"data.json"</span>)</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Create visualizations</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>viz_files <span class="op">=</span> generator.visualize_errors(report, <span class="st">"./viz_output"</span>)</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Create summary</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>summary <span class="op">=</span> generator.create_summary_report(report)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Methods:</strong></p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_text_report(</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>,</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    report: ThesisAnalysisReport,</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    output_path: <span class="bu">str</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Generate comprehensive Markdown report."""</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> export_json_report(</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>,</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    report: ThesisAnalysisReport,</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    output_path: <span class="bu">str</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Export structured JSON data."""</span></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> visualize_errors(</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>,</span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>    report: ThesisAnalysisReport,</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>    output_dir: <span class="bu">str</span></span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> List[<span class="bu">str</span>]:</span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Generate error visualization charts."""</span></span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> create_summary_report(</span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>,</span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>    report: ThesisAnalysisReport</span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Dict[<span class="bu">str</span>, Any]:</span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Create executive summary."""</span></span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+</section>
+<section id="error-handling" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="error-handling"><span class="header-section-number">1.3</span> Error Handling</h2>
+<section id="exception-types" class="level3" data-number="1.3.1">
+<h3 data-number="1.3.1" class="anchored" data-anchor-id="exception-types"><span class="header-section-number">1.3.1</span> Exception Types</h3>
+<p>VeritaScribe defines custom exceptions for different error conditions:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.exceptions <span class="im">import</span> (</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    VeritaScribeError,</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    ConfigurationError,</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    PDFProcessingError,</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    LLMAnalysisError,</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    ReportGenerationError</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>    settings <span class="op">=</span> load_settings()</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> ConfigurationError <span class="im">as</span> e:</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Configuration error: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>    blocks <span class="op">=</span> processor.extract_text_blocks_from_pdf(<span class="st">"invalid.pdf"</span>)</span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> PDFProcessingError <span class="im">as</span> e:</span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"PDF processing failed: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="error-context" class="level3" data-number="1.3.2">
+<h3 data-number="1.3.2" class="anchored" data-anchor-id="error-context"><span class="header-section-number">1.3.2</span> Error Context</h3>
+<p>Errors include contextual information for debugging:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    pipeline.analyze_thesis(<span class="st">"thesis.pdf"</span>, <span class="st">"./output"</span>)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> LLMAnalysisError <span class="im">as</span> e:</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Analysis failed: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Block being processed: </span><span class="sc">{</span>e<span class="sc">.</span>context<span class="sc">.</span>get(<span class="st">'text_block'</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Error type: </span><span class="sc">{</span>e<span class="sc">.</span>context<span class="sc">.</span>get(<span class="st">'analysis_type'</span>)<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="extensibility" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="extensibility"><span class="header-section-number">1.4</span> Extensibility</h2>
+<section id="custom-error-types" class="level3" data-number="1.4.1">
+<h3 data-number="1.4.1" class="anchored" data-anchor-id="custom-error-types"><span class="header-section-number">1.4.1</span> Custom Error Types</h3>
+<p>Extend the error system:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.data_models <span class="im">import</span> BaseError, ErrorSeverity, LocationHint</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> StyleError(BaseError):</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Custom error type for style issues."""</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, <span class="op">**</span>kwargs):</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>            error_type<span class="op">=</span><span class="st">"style"</span>,</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>            <span class="op">**</span>kwargs</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Usage</span></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>style_error <span class="op">=</span> StyleError(</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>    severity<span class="op">=</span>ErrorSeverity.LOW,</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>    original_text<span class="op">=</span><span class="st">"utilise"</span>,</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>    suggested_correction<span class="op">=</span><span class="st">"utilize"</span>, </span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>    explanation<span class="op">=</span><span class="st">"Prefer American spelling"</span>,</span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>    location<span class="op">=</span>LocationHint(page_number<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="custom-analysis-modules" class="level3" data-number="1.4.2">
+<h3 data-number="1.4.2" class="anchored" data-anchor-id="custom-analysis-modules"><span class="header-section-number">1.4.2</span> Custom Analysis Modules</h3>
+<p>Create custom DSPy analysis modules:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> dspy</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.data_models <span class="im">import</span> BaseError, TextBlock</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> CustomAnalysisSignature(dspy.Signature):</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Custom analysis signature."""</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    text_chunk <span class="op">=</span> dspy.InputField(desc<span class="op">=</span><span class="st">"Text to analyze"</span>)</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>    custom_errors <span class="op">=</span> dspy.OutputField(desc<span class="op">=</span><span class="st">"JSON list of custom errors"</span>)</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> CustomAnalyzer:</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Custom analysis module."""</span></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.analyzer <span class="op">=</span> dspy.Predict(CustomAnalysisSignature)</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> analyze(<span class="va">self</span>, text_block: TextBlock) <span class="op">-&gt;</span> List[BaseError]:</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>        result <span class="op">=</span> <span class="va">self</span>.analyzer(text_chunk<span class="op">=</span>text_block.content)</span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Parse result.custom_errors and return BaseError objects</span></span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>._parse_errors(result.custom_errors, text_block)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="configuration-extensions" class="level3" data-number="1.4.3">
+<h3 data-number="1.4.3" class="anchored" data-anchor-id="configuration-extensions"><span class="header-section-number">1.4.3</span> Configuration Extensions</h3>
+<p>Add custom configuration options:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.config <span class="im">import</span> VeritaScribeSettings</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pydantic <span class="im">import</span> Field</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ExtendedSettings(VeritaScribeSettings):</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Extended configuration with custom options."""</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>    custom_analysis_enabled: <span class="bu">bool</span> <span class="op">=</span> Field(</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>        default<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>        description<span class="op">=</span><span class="st">"Enable custom analysis module"</span></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>    custom_threshold: <span class="bu">float</span> <span class="op">=</span> Field(</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>        default<span class="op">=</span><span class="fl">0.7</span>,</span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>        description<span class="op">=</span><span class="st">"Custom analysis threshold"</span></span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="testing-utilities" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="testing-utilities"><span class="header-section-number">1.5</span> Testing Utilities</h2>
+<section id="test-helpers" class="level3" data-number="1.5.1">
+<h3 data-number="1.5.1" class="anchored" data-anchor-id="test-helpers"><span class="header-section-number">1.5.1</span> Test Helpers</h3>
+<div class="sourceCode" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.testing <span class="im">import</span> (</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    create_test_document,</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    create_test_errors,</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    mock_llm_response</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Create test documents</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>test_pdf <span class="op">=</span> create_test_document(</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>    content<span class="op">=</span><span class="st">"Sample thesis content..."</span>,</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>    filename<span class="op">=</span><span class="st">"test.pdf"</span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Create test errors</span></span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>test_errors <span class="op">=</span> create_test_errors(</span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>    count<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>    error_types<span class="op">=</span>[<span class="st">"grammar"</span>, <span class="st">"citation_format"</span>]</span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Mock LLM responses for testing</span></span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> mock_llm_response(test_errors):</span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> analyzer.analyze(text_block)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="fixtures-for-testing" class="level3" data-number="1.5.2">
+<h3 data-number="1.5.2" class="anchored" data-anchor-id="fixtures-for-testing"><span class="header-section-number">1.5.2</span> Fixtures for Testing</h3>
+<div class="sourceCode" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.testing <span class="im">import</span> AnalysisFixture</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.fixture</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> analysis_fixture():</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> AnalysisFixture(</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>        document_pages<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>        error_count<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>        include_visualizations<span class="op">=</span><span class="va">True</span></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_analysis_pipeline(analysis_fixture):</span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>    report <span class="op">=</span> analysis_fixture.run_analysis()</span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> report.total_errors <span class="op">==</span> <span class="dv">5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="performance-considerations" class="level2" data-number="1.6">
+<h2 data-number="1.6" class="anchored" data-anchor-id="performance-considerations"><span class="header-section-number">1.6</span> Performance Considerations</h2>
+<section id="optimization-guidelines" class="level3" data-number="1.6.1">
+<h3 data-number="1.6.1" class="anchored" data-anchor-id="optimization-guidelines"><span class="header-section-number">1.6.1</span> Optimization Guidelines</h3>
+<ol type="1">
+<li><strong>Batch Processing</strong>: Process multiple blocks efficiently</li>
+<li><strong>Caching</strong>: Cache LLM responses when possible</li>
+<li><strong>Async Processing</strong>: Use parallel processing for large documents</li>
+<li><strong>Memory Management</strong>: Handle large PDFs without memory issues</li>
+</ol>
+</section>
+<section id="monitoring" class="level3" data-number="1.6.2">
+<h3 data-number="1.6.2" class="anchored" data-anchor-id="monitoring"><span class="header-section-number">1.6.2</span> Monitoring</h3>
+<div class="sourceCode" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.monitoring <span class="im">import</span> (</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    track_token_usage,</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    measure_processing_time,</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>    log_api_calls</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="at">@track_token_usage</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a><span class="at">@measure_processing_time</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> analyze_with_monitoring(text_block):</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> analyzer.analyze(text_block)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="security-considerations" class="level2" data-number="1.7">
+<h2 data-number="1.7" class="anchored" data-anchor-id="security-considerations"><span class="header-section-number">1.7</span> Security Considerations</h2>
+<section id="api-key-management" class="level3" data-number="1.7.1">
+<h3 data-number="1.7.1" class="anchored" data-anchor-id="api-key-management"><span class="header-section-number">1.7.1</span> API Key Management</h3>
+<ul>
+<li>Never log API keys</li>
+<li>Use environment variables in production</li>
+<li>Rotate keys regularly</li>
+<li>Monitor usage for anomalies</li>
+</ul>
+</section>
+<section id="input-validation" class="level3" data-number="1.7.2">
+<h3 data-number="1.7.2" class="anchored" data-anchor-id="input-validation"><span class="header-section-number">1.7.2</span> Input Validation</h3>
+<p>All inputs are validated using Pydantic models:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pydantic <span class="im">import</span> ValidationError</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>    settings <span class="op">=</span> VeritaScribeSettings(temperature<span class="op">=</span><span class="fl">2.0</span>)  <span class="co"># Invalid</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> ValidationError <span class="im">as</span> e:</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Invalid temperature value"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="output-sanitization" class="level3" data-number="1.7.3">
+<h3 data-number="1.7.3" class="anchored" data-anchor-id="output-sanitization"><span class="header-section-number">1.7.3</span> Output Sanitization</h3>
+<p>Reports are sanitized to prevent injection attacks:</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.security <span class="im">import</span> sanitize_output</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>safe_content <span class="op">=</span> sanitize_output(user_content)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+<p><em>This API reference covers the main interfaces. For implementation details, see the <a href="./architecture.html">Architecture Guide</a>.</em></p>
+
+
+<!-- -->
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="sourceCode" id="cb35" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "API Reference"</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="fu"># API Reference</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>This reference covers VeritaScribe's programmatic interfaces, data models, and internal APIs for developers and advanced users.</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a><span class="fu">## Command Line Interface</span></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a><span class="fu">### Core Commands</span></span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a><span class="fu">#### `analyze`</span></span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>Perform comprehensive thesis analysis.</span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe analyze <span class="pp">[</span><span class="ss">OPTIONS</span><span class="pp">]</span> PDF_PATH</span>
+<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-20"><a href="#cb35-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-21"><a href="#cb35-21" aria-hidden="true" tabindex="-1"></a>**Arguments:**</span>
+<span id="cb35-22"><a href="#cb35-22" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`PDF_PATH`</span> (required): Path to the PDF thesis file</span>
+<span id="cb35-23"><a href="#cb35-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-24"><a href="#cb35-24" aria-hidden="true" tabindex="-1"></a>**Options:**</span>
+<span id="cb35-25"><a href="#cb35-25" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`--output, -o TEXT`</span>: Output directory for reports</span>
+<span id="cb35-26"><a href="#cb35-26" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`--citation-style, -c TEXT`</span>: Expected citation style (APA, MLA, Chicago, IEEE, Harvard)</span>
+<span id="cb35-27"><a href="#cb35-27" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`--quick, -q`</span>: Perform quick analysis (first 10 blocks only)</span>
+<span id="cb35-28"><a href="#cb35-28" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`--no-viz`</span>: Skip generating visualization charts</span>
+<span id="cb35-29"><a href="#cb35-29" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`--verbose, -v`</span>: Enable verbose logging</span>
+<span id="cb35-30"><a href="#cb35-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-31"><a href="#cb35-31" aria-hidden="true" tabindex="-1"></a>**Exit Codes:**</span>
+<span id="cb35-32"><a href="#cb35-32" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`0`</span>: Success</span>
+<span id="cb35-33"><a href="#cb35-33" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`1`</span>: Error (file not found, analysis failed, etc.)</span>
+<span id="cb35-34"><a href="#cb35-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-35"><a href="#cb35-35" aria-hidden="true" tabindex="-1"></a><span class="fu">#### `quick`</span></span>
+<span id="cb35-36"><a href="#cb35-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-37"><a href="#cb35-37" aria-hidden="true" tabindex="-1"></a>Fast analysis of document subset.</span>
+<span id="cb35-38"><a href="#cb35-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-39"><a href="#cb35-39" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb35-40"><a href="#cb35-40" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe quick <span class="pp">[</span><span class="ss">OPTIONS</span><span class="pp">]</span> PDF_PATH</span>
+<span id="cb35-41"><a href="#cb35-41" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-42"><a href="#cb35-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-43"><a href="#cb35-43" aria-hidden="true" tabindex="-1"></a>**Arguments:**</span>
+<span id="cb35-44"><a href="#cb35-44" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`PDF_PATH`</span> (required): Path to the PDF thesis file  </span>
+<span id="cb35-45"><a href="#cb35-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-46"><a href="#cb35-46" aria-hidden="true" tabindex="-1"></a>**Options:**</span>
+<span id="cb35-47"><a href="#cb35-47" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`--blocks, -b INTEGER`</span>: Number of text blocks to analyze (default: 5)</span>
+<span id="cb35-48"><a href="#cb35-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-49"><a href="#cb35-49" aria-hidden="true" tabindex="-1"></a><span class="fu">#### `demo`</span></span>
+<span id="cb35-50"><a href="#cb35-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-51"><a href="#cb35-51" aria-hidden="true" tabindex="-1"></a>Create and analyze sample document.</span>
+<span id="cb35-52"><a href="#cb35-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-53"><a href="#cb35-53" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb35-54"><a href="#cb35-54" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe demo</span>
+<span id="cb35-55"><a href="#cb35-55" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-56"><a href="#cb35-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-57"><a href="#cb35-57" aria-hidden="true" tabindex="-1"></a>No arguments or options. Creates <span class="in">`demo_thesis.pdf`</span> in current directory.</span>
+<span id="cb35-58"><a href="#cb35-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-59"><a href="#cb35-59" aria-hidden="true" tabindex="-1"></a><span class="fu">#### `config`</span></span>
+<span id="cb35-60"><a href="#cb35-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-61"><a href="#cb35-61" aria-hidden="true" tabindex="-1"></a>Display current configuration.</span>
+<span id="cb35-62"><a href="#cb35-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-63"><a href="#cb35-63" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb35-64"><a href="#cb35-64" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe config</span>
+<span id="cb35-65"><a href="#cb35-65" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-66"><a href="#cb35-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-67"><a href="#cb35-67" aria-hidden="true" tabindex="-1"></a>Outputs configuration table and API key status.</span>
+<span id="cb35-68"><a href="#cb35-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-69"><a href="#cb35-69" aria-hidden="true" tabindex="-1"></a><span class="fu">#### `test`</span></span>
+<span id="cb35-70"><a href="#cb35-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-71"><a href="#cb35-71" aria-hidden="true" tabindex="-1"></a>Run system diagnostics.</span>
+<span id="cb35-72"><a href="#cb35-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-73"><a href="#cb35-73" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb35-74"><a href="#cb35-74" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-m</span> veritascribe test</span>
+<span id="cb35-75"><a href="#cb35-75" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-76"><a href="#cb35-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-77"><a href="#cb35-77" aria-hidden="true" tabindex="-1"></a>Tests configuration loading, PDF processing, and LLM connectivity.</span>
+<span id="cb35-78"><a href="#cb35-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-79"><a href="#cb35-79" aria-hidden="true" tabindex="-1"></a><span class="fu">## Python API</span></span>
+<span id="cb35-80"><a href="#cb35-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-81"><a href="#cb35-81" aria-hidden="true" tabindex="-1"></a><span class="fu">### Configuration Management</span></span>
+<span id="cb35-82"><a href="#cb35-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-83"><a href="#cb35-83" aria-hidden="true" tabindex="-1"></a><span class="fu">#### `veritascribe.config.VeritaScribeSettings`</span></span>
+<span id="cb35-84"><a href="#cb35-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-85"><a href="#cb35-85" aria-hidden="true" tabindex="-1"></a>Main configuration class using Pydantic Settings.</span>
+<span id="cb35-86"><a href="#cb35-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-87"><a href="#cb35-87" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb35-88"><a href="#cb35-88" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.config <span class="im">import</span> VeritaScribeSettings</span>
+<span id="cb35-89"><a href="#cb35-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-90"><a href="#cb35-90" aria-hidden="true" tabindex="-1"></a>settings <span class="op">=</span> VeritaScribeSettings(</span>
+<span id="cb35-91"><a href="#cb35-91" aria-hidden="true" tabindex="-1"></a>    openai_api_key<span class="op">=</span><span class="st">"your-key-here"</span>,</span>
+<span id="cb35-92"><a href="#cb35-92" aria-hidden="true" tabindex="-1"></a>    default_model<span class="op">=</span><span class="st">"gpt-4"</span>,</span>
+<span id="cb35-93"><a href="#cb35-93" aria-hidden="true" tabindex="-1"></a>    max_tokens<span class="op">=</span><span class="dv">2000</span>,</span>
+<span id="cb35-94"><a href="#cb35-94" aria-hidden="true" tabindex="-1"></a>    temperature<span class="op">=</span><span class="fl">0.1</span></span>
+<span id="cb35-95"><a href="#cb35-95" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb35-96"><a href="#cb35-96" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-97"><a href="#cb35-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-98"><a href="#cb35-98" aria-hidden="true" tabindex="-1"></a>**Key Fields:**</span>
+<span id="cb35-99"><a href="#cb35-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-100"><a href="#cb35-100" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Field <span class="pp">|</span> Type <span class="pp">|</span> Default <span class="pp">|</span> Description <span class="pp">|</span></span>
+<span id="cb35-101"><a href="#cb35-101" aria-hidden="true" tabindex="-1"></a><span class="pp">|-------|------|---------|-------------|</span></span>
+<span id="cb35-102"><a href="#cb35-102" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`openai_api_key`</span> <span class="pp">|</span> <span class="in">`Optional[str]`</span> <span class="pp">|</span> <span class="in">`None`</span> <span class="pp">|</span> OpenAI API key <span class="pp">|</span></span>
+<span id="cb35-103"><a href="#cb35-103" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`default_model`</span> <span class="pp">|</span> <span class="in">`str`</span> <span class="pp">|</span> <span class="in">`"gpt-4"`</span> <span class="pp">|</span> LLM model name <span class="pp">|</span></span>
+<span id="cb35-104"><a href="#cb35-104" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`max_tokens`</span> <span class="pp">|</span> <span class="in">`int`</span> <span class="pp">|</span> <span class="in">`2000`</span> <span class="pp">|</span> Max tokens per request <span class="pp">|</span></span>
+<span id="cb35-105"><a href="#cb35-105" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`temperature`</span> <span class="pp">|</span> <span class="in">`float`</span> <span class="pp">|</span> <span class="in">`0.1`</span> <span class="pp">|</span> LLM temperature <span class="pp">|</span></span>
+<span id="cb35-106"><a href="#cb35-106" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`grammar_analysis_enabled`</span> <span class="pp">|</span> <span class="in">`bool`</span> <span class="pp">|</span> <span class="in">`True`</span> <span class="pp">|</span> Enable grammar analysis <span class="pp">|</span></span>
+<span id="cb35-107"><a href="#cb35-107" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`content_analysis_enabled`</span> <span class="pp">|</span> <span class="in">`bool`</span> <span class="pp">|</span> <span class="in">`True`</span> <span class="pp">|</span> Enable content analysis <span class="pp">|</span></span>
+<span id="cb35-108"><a href="#cb35-108" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`citation_analysis_enabled`</span> <span class="pp">|</span> <span class="in">`bool`</span> <span class="pp">|</span> <span class="in">`True`</span> <span class="pp">|</span> Enable citation analysis <span class="pp">|</span></span>
+<span id="cb35-109"><a href="#cb35-109" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`high_severity_threshold`</span> <span class="pp">|</span> <span class="in">`float`</span> <span class="pp">|</span> <span class="in">`0.8`</span> <span class="pp">|</span> High severity threshold <span class="pp">|</span></span>
+<span id="cb35-110"><a href="#cb35-110" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`medium_severity_threshold`</span> <span class="pp">|</span> <span class="in">`float`</span> <span class="pp">|</span> <span class="in">`0.5`</span> <span class="pp">|</span> Medium severity threshold <span class="pp">|</span></span>
+<span id="cb35-111"><a href="#cb35-111" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`max_text_block_size`</span> <span class="pp">|</span> <span class="in">`int`</span> <span class="pp">|</span> <span class="in">`2000`</span> <span class="pp">|</span> Max chars per block <span class="pp">|</span></span>
+<span id="cb35-112"><a href="#cb35-112" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`parallel_processing`</span> <span class="pp">|</span> <span class="in">`bool`</span> <span class="pp">|</span> <span class="in">`True`</span> <span class="pp">|</span> Enable parallel processing <span class="pp">|</span></span>
+<span id="cb35-113"><a href="#cb35-113" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`max_concurrent_requests`</span> <span class="pp">|</span> <span class="in">`int`</span> <span class="pp">|</span> <span class="in">`5`</span> <span class="pp">|</span> Max concurrent requests <span class="pp">|</span></span>
+<span id="cb35-114"><a href="#cb35-114" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`output_directory`</span> <span class="pp">|</span> <span class="in">`str`</span> <span class="pp">|</span> <span class="in">`"./analysis_output"`</span> <span class="pp">|</span> Default output dir <span class="pp">|</span></span>
+<span id="cb35-115"><a href="#cb35-115" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`max_retries`</span> <span class="pp">|</span> <span class="in">`int`</span> <span class="pp">|</span> <span class="in">`3`</span> <span class="pp">|</span> Max retry attempts <span class="pp">|</span></span>
+<span id="cb35-116"><a href="#cb35-116" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`retry_delay`</span> <span class="pp">|</span> <span class="in">`float`</span> <span class="pp">|</span> <span class="in">`1.0`</span> <span class="pp">|</span> Retry delay seconds <span class="pp">|</span></span>
+<span id="cb35-117"><a href="#cb35-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-118"><a href="#cb35-118" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Configuration Functions</span></span>
+<span id="cb35-119"><a href="#cb35-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-120"><a href="#cb35-120" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb35-121"><a href="#cb35-121" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.config <span class="im">import</span> (</span>
+<span id="cb35-122"><a href="#cb35-122" aria-hidden="true" tabindex="-1"></a>    load_settings,</span>
+<span id="cb35-123"><a href="#cb35-123" aria-hidden="true" tabindex="-1"></a>    get_settings,</span>
+<span id="cb35-124"><a href="#cb35-124" aria-hidden="true" tabindex="-1"></a>    initialize_system</span>
+<span id="cb35-125"><a href="#cb35-125" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb35-126"><a href="#cb35-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-127"><a href="#cb35-127" aria-hidden="true" tabindex="-1"></a><span class="co"># Load fresh settings</span></span>
+<span id="cb35-128"><a href="#cb35-128" aria-hidden="true" tabindex="-1"></a>settings <span class="op">=</span> load_settings()</span>
+<span id="cb35-129"><a href="#cb35-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-130"><a href="#cb35-130" aria-hidden="true" tabindex="-1"></a><span class="co"># Get global settings instance (cached)</span></span>
+<span id="cb35-131"><a href="#cb35-131" aria-hidden="true" tabindex="-1"></a>settings <span class="op">=</span> get_settings()</span>
+<span id="cb35-132"><a href="#cb35-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-133"><a href="#cb35-133" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize complete system</span></span>
+<span id="cb35-134"><a href="#cb35-134" aria-hidden="true" tabindex="-1"></a>settings, dspy_config <span class="op">=</span> initialize_system()</span>
+<span id="cb35-135"><a href="#cb35-135" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-136"><a href="#cb35-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-137"><a href="#cb35-137" aria-hidden="true" tabindex="-1"></a><span class="fu">### Data Models</span></span>
+<span id="cb35-138"><a href="#cb35-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-139"><a href="#cb35-139" aria-hidden="true" tabindex="-1"></a>All data models use Pydantic for validation and serialization.</span>
+<span id="cb35-140"><a href="#cb35-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-141"><a href="#cb35-141" aria-hidden="true" tabindex="-1"></a><span class="fu">#### `veritascribe.data_models.LocationHint`</span></span>
+<span id="cb35-142"><a href="#cb35-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-143"><a href="#cb35-143" aria-hidden="true" tabindex="-1"></a>Represents the location of text or errors in the document.</span>
+<span id="cb35-144"><a href="#cb35-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-145"><a href="#cb35-145" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb35-146"><a href="#cb35-146" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.data_models <span class="im">import</span> LocationHint</span>
+<span id="cb35-147"><a href="#cb35-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-148"><a href="#cb35-148" aria-hidden="true" tabindex="-1"></a>location <span class="op">=</span> LocationHint(</span>
+<span id="cb35-149"><a href="#cb35-149" aria-hidden="true" tabindex="-1"></a>    page_number<span class="op">=</span><span class="dv">12</span>,</span>
+<span id="cb35-150"><a href="#cb35-150" aria-hidden="true" tabindex="-1"></a>    bounding_box_coordinates<span class="op">=</span>[<span class="dv">72</span>, <span class="dv">345</span>, <span class="dv">520</span>, <span class="dv">365</span>]</span>
+<span id="cb35-151"><a href="#cb35-151" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb35-152"><a href="#cb35-152" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-153"><a href="#cb35-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-154"><a href="#cb35-154" aria-hidden="true" tabindex="-1"></a>**Fields:**</span>
+<span id="cb35-155"><a href="#cb35-155" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`page_number: int`</span> - Page number (1-indexed)</span>
+<span id="cb35-156"><a href="#cb35-156" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`bounding_box_coordinates: Optional[List[float]]`</span> - <span class="in">`[x1, y1, x2, y2]`</span> coordinates</span>
+<span id="cb35-157"><a href="#cb35-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-158"><a href="#cb35-158" aria-hidden="true" tabindex="-1"></a><span class="fu">#### `veritascribe.data_models.BaseError`</span></span>
+<span id="cb35-159"><a href="#cb35-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-160"><a href="#cb35-160" aria-hidden="true" tabindex="-1"></a>Base class for all error types.</span>
+<span id="cb35-161"><a href="#cb35-161" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-162"><a href="#cb35-162" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb35-163"><a href="#cb35-163" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.data_models <span class="im">import</span> BaseError, ErrorSeverity, LocationHint</span>
+<span id="cb35-164"><a href="#cb35-164" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-165"><a href="#cb35-165" aria-hidden="true" tabindex="-1"></a>error <span class="op">=</span> BaseError(</span>
+<span id="cb35-166"><a href="#cb35-166" aria-hidden="true" tabindex="-1"></a>    error_type<span class="op">=</span><span class="st">"grammar"</span>,</span>
+<span id="cb35-167"><a href="#cb35-167" aria-hidden="true" tabindex="-1"></a>    severity<span class="op">=</span>ErrorSeverity.HIGH,</span>
+<span id="cb35-168"><a href="#cb35-168" aria-hidden="true" tabindex="-1"></a>    original_text<span class="op">=</span><span class="st">"The results shows that..."</span>,</span>
+<span id="cb35-169"><a href="#cb35-169" aria-hidden="true" tabindex="-1"></a>    suggested_correction<span class="op">=</span><span class="st">"The results show that..."</span>,</span>
+<span id="cb35-170"><a href="#cb35-170" aria-hidden="true" tabindex="-1"></a>    explanation<span class="op">=</span><span class="st">"Subject-verb agreement error."</span>,</span>
+<span id="cb35-171"><a href="#cb35-171" aria-hidden="true" tabindex="-1"></a>    location<span class="op">=</span>LocationHint(page_number<span class="op">=</span><span class="dv">12</span>),</span>
+<span id="cb35-172"><a href="#cb35-172" aria-hidden="true" tabindex="-1"></a>    confidence_score<span class="op">=</span><span class="fl">0.95</span></span>
+<span id="cb35-173"><a href="#cb35-173" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb35-174"><a href="#cb35-174" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-175"><a href="#cb35-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-176"><a href="#cb35-176" aria-hidden="true" tabindex="-1"></a>**Fields:**</span>
+<span id="cb35-177"><a href="#cb35-177" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`error_type: str`</span> - Type of error (grammar, citation_format, content_plausibility)</span>
+<span id="cb35-178"><a href="#cb35-178" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`severity: ErrorSeverity`</span> - Error severity level</span>
+<span id="cb35-179"><a href="#cb35-179" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`original_text: str`</span> - Original problematic text</span>
+<span id="cb35-180"><a href="#cb35-180" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`suggested_correction: Optional[str]`</span> - Suggested fix</span>
+<span id="cb35-181"><a href="#cb35-181" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`explanation: str`</span> - Explanation of the error</span>
+<span id="cb35-182"><a href="#cb35-182" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`location: LocationHint`</span> - Error location</span>
+<span id="cb35-183"><a href="#cb35-183" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`confidence_score: float`</span> - Confidence in error detection (0.0-1.0)</span>
+<span id="cb35-184"><a href="#cb35-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-185"><a href="#cb35-185" aria-hidden="true" tabindex="-1"></a><span class="fu">#### `veritascribe.data_models.ErrorSeverity`</span></span>
+<span id="cb35-186"><a href="#cb35-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-187"><a href="#cb35-187" aria-hidden="true" tabindex="-1"></a>Enumeration for error severity levels.</span>
+<span id="cb35-188"><a href="#cb35-188" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-189"><a href="#cb35-189" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb35-190"><a href="#cb35-190" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.data_models <span class="im">import</span> ErrorSeverity</span>
+<span id="cb35-191"><a href="#cb35-191" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-192"><a href="#cb35-192" aria-hidden="true" tabindex="-1"></a><span class="co"># Available values</span></span>
+<span id="cb35-193"><a href="#cb35-193" aria-hidden="true" tabindex="-1"></a>ErrorSeverity.LOW      <span class="co"># Low priority</span></span>
+<span id="cb35-194"><a href="#cb35-194" aria-hidden="true" tabindex="-1"></a>ErrorSeverity.MEDIUM   <span class="co"># Medium priority  </span></span>
+<span id="cb35-195"><a href="#cb35-195" aria-hidden="true" tabindex="-1"></a>ErrorSeverity.HIGH     <span class="co"># High priority</span></span>
+<span id="cb35-196"><a href="#cb35-196" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-197"><a href="#cb35-197" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-198"><a href="#cb35-198" aria-hidden="true" tabindex="-1"></a><span class="fu">#### `veritascribe.data_models.TextBlock`</span></span>
+<span id="cb35-199"><a href="#cb35-199" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-200"><a href="#cb35-200" aria-hidden="true" tabindex="-1"></a>Represents extracted text with layout information.</span>
+<span id="cb35-201"><a href="#cb35-201" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-202"><a href="#cb35-202" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb35-203"><a href="#cb35-203" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.data_models <span class="im">import</span> TextBlock</span>
+<span id="cb35-204"><a href="#cb35-204" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-205"><a href="#cb35-205" aria-hidden="true" tabindex="-1"></a>block <span class="op">=</span> TextBlock(</span>
+<span id="cb35-206"><a href="#cb35-206" aria-hidden="true" tabindex="-1"></a>    content<span class="op">=</span><span class="st">"The methodology employed in this study..."</span>,</span>
+<span id="cb35-207"><a href="#cb35-207" aria-hidden="true" tabindex="-1"></a>    page_number<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb35-208"><a href="#cb35-208" aria-hidden="true" tabindex="-1"></a>    bounding_box_coordinates<span class="op">=</span>[<span class="dv">72</span>, <span class="dv">200</span>, <span class="dv">520</span>, <span class="dv">280</span>]</span>
+<span id="cb35-209"><a href="#cb35-209" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb35-210"><a href="#cb35-210" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-211"><a href="#cb35-211" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-212"><a href="#cb35-212" aria-hidden="true" tabindex="-1"></a>**Fields:**</span>
+<span id="cb35-213"><a href="#cb35-213" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`content: str`</span> - Extracted text content</span>
+<span id="cb35-214"><a href="#cb35-214" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`page_number: int`</span> - Page number (1-indexed)</span>
+<span id="cb35-215"><a href="#cb35-215" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`bounding_box_coordinates: Optional[List[float]]`</span> - Layout coordinates</span>
+<span id="cb35-216"><a href="#cb35-216" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-217"><a href="#cb35-217" aria-hidden="true" tabindex="-1"></a><span class="fu">#### `veritascribe.data_models.AnalysisResult`</span></span>
+<span id="cb35-218"><a href="#cb35-218" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-219"><a href="#cb35-219" aria-hidden="true" tabindex="-1"></a>Links a text block with its detected errors.</span>
+<span id="cb35-220"><a href="#cb35-220" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-221"><a href="#cb35-221" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb35-222"><a href="#cb35-222" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.data_models <span class="im">import</span> AnalysisResult, TextBlock, BaseError</span>
+<span id="cb35-223"><a href="#cb35-223" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-224"><a href="#cb35-224" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> AnalysisResult(</span>
+<span id="cb35-225"><a href="#cb35-225" aria-hidden="true" tabindex="-1"></a>    text_block<span class="op">=</span>text_block,</span>
+<span id="cb35-226"><a href="#cb35-226" aria-hidden="true" tabindex="-1"></a>    errors<span class="op">=</span>[error1, error2, error3]</span>
+<span id="cb35-227"><a href="#cb35-227" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb35-228"><a href="#cb35-228" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-229"><a href="#cb35-229" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-230"><a href="#cb35-230" aria-hidden="true" tabindex="-1"></a>**Fields:**</span>
+<span id="cb35-231"><a href="#cb35-231" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`text_block: TextBlock`</span> - The analyzed text block</span>
+<span id="cb35-232"><a href="#cb35-232" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`errors: List[BaseError]`</span> - List of errors found in this block</span>
+<span id="cb35-233"><a href="#cb35-233" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-234"><a href="#cb35-234" aria-hidden="true" tabindex="-1"></a><span class="fu">#### `veritascribe.data_models.ThesisAnalysisReport`</span></span>
+<span id="cb35-235"><a href="#cb35-235" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-236"><a href="#cb35-236" aria-hidden="true" tabindex="-1"></a>Complete analysis report containing all results.</span>
+<span id="cb35-237"><a href="#cb35-237" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-238"><a href="#cb35-238" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb35-239"><a href="#cb35-239" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.data_models <span class="im">import</span> ThesisAnalysisReport</span>
+<span id="cb35-240"><a href="#cb35-240" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-241"><a href="#cb35-241" aria-hidden="true" tabindex="-1"></a>report <span class="op">=</span> ThesisAnalysisReport(</span>
+<span id="cb35-242"><a href="#cb35-242" aria-hidden="true" tabindex="-1"></a>    document_name<span class="op">=</span><span class="st">"thesis.pdf"</span>,</span>
+<span id="cb35-243"><a href="#cb35-243" aria-hidden="true" tabindex="-1"></a>    total_pages<span class="op">=</span><span class="dv">45</span>,</span>
+<span id="cb35-244"><a href="#cb35-244" aria-hidden="true" tabindex="-1"></a>    total_words<span class="op">=</span><span class="dv">12543</span>,</span>
+<span id="cb35-245"><a href="#cb35-245" aria-hidden="true" tabindex="-1"></a>    total_text_blocks<span class="op">=</span><span class="dv">87</span>,</span>
+<span id="cb35-246"><a href="#cb35-246" aria-hidden="true" tabindex="-1"></a>    analysis_results<span class="op">=</span>[result1, result2, ...],</span>
+<span id="cb35-247"><a href="#cb35-247" aria-hidden="true" tabindex="-1"></a>    total_processing_time_seconds<span class="op">=</span><span class="fl">45.32</span></span>
+<span id="cb35-248"><a href="#cb35-248" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb35-249"><a href="#cb35-249" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-250"><a href="#cb35-250" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-251"><a href="#cb35-251" aria-hidden="true" tabindex="-1"></a>**Key Fields:**</span>
+<span id="cb35-252"><a href="#cb35-252" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`document_name: str`</span> - Name of analyzed document</span>
+<span id="cb35-253"><a href="#cb35-253" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`analysis_timestamp: datetime`</span> - When analysis was performed</span>
+<span id="cb35-254"><a href="#cb35-254" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`total_pages: int`</span> - Number of pages in document</span>
+<span id="cb35-255"><a href="#cb35-255" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`total_words: int`</span> - Estimated word count</span>
+<span id="cb35-256"><a href="#cb35-256" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`total_text_blocks: int`</span> - Number of text blocks analyzed</span>
+<span id="cb35-257"><a href="#cb35-257" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`analysis_results: List[AnalysisResult]`</span> - All analysis results</span>
+<span id="cb35-258"><a href="#cb35-258" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`total_processing_time_seconds: float`</span> - Processing time</span>
+<span id="cb35-259"><a href="#cb35-259" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-260"><a href="#cb35-260" aria-hidden="true" tabindex="-1"></a>**Computed Properties:**</span>
+<span id="cb35-261"><a href="#cb35-261" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`total_errors: int`</span> - Total number of errors found</span>
+<span id="cb35-262"><a href="#cb35-262" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`error_rate: float`</span> - Errors per 1,000 words</span>
+<span id="cb35-263"><a href="#cb35-263" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`errors_by_type: Dict[str, int]`</span> - Error counts by type</span>
+<span id="cb35-264"><a href="#cb35-264" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`errors_by_severity: Dict[str, int]`</span> - Error counts by severity</span>
+<span id="cb35-265"><a href="#cb35-265" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-266"><a href="#cb35-266" aria-hidden="true" tabindex="-1"></a>**Methods:**</span>
+<span id="cb35-267"><a href="#cb35-267" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb35-268"><a href="#cb35-268" aria-hidden="true" tabindex="-1"></a><span class="co"># Get errors by severity</span></span>
+<span id="cb35-269"><a href="#cb35-269" aria-hidden="true" tabindex="-1"></a>high_errors <span class="op">=</span> report.get_high_severity_errors()</span>
+<span id="cb35-270"><a href="#cb35-270" aria-hidden="true" tabindex="-1"></a>medium_errors <span class="op">=</span> report.get_medium_severity_errors()</span>
+<span id="cb35-271"><a href="#cb35-271" aria-hidden="true" tabindex="-1"></a>low_errors <span class="op">=</span> report.get_low_severity_errors()</span>
+<span id="cb35-272"><a href="#cb35-272" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-273"><a href="#cb35-273" aria-hidden="true" tabindex="-1"></a><span class="co"># Get errors by type</span></span>
+<span id="cb35-274"><a href="#cb35-274" aria-hidden="true" tabindex="-1"></a>grammar_errors <span class="op">=</span> report.get_errors_by_type(<span class="st">"grammar"</span>)</span>
+<span id="cb35-275"><a href="#cb35-275" aria-hidden="true" tabindex="-1"></a>citation_errors <span class="op">=</span> report.get_errors_by_type(<span class="st">"citation_format"</span>)</span>
+<span id="cb35-276"><a href="#cb35-276" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-277"><a href="#cb35-277" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-278"><a href="#cb35-278" aria-hidden="true" tabindex="-1"></a><span class="fu">### PDF Processing</span></span>
+<span id="cb35-279"><a href="#cb35-279" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-280"><a href="#cb35-280" aria-hidden="true" tabindex="-1"></a><span class="fu">#### `veritascribe.pdf_processor.PDFProcessor`</span></span>
+<span id="cb35-281"><a href="#cb35-281" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-282"><a href="#cb35-282" aria-hidden="true" tabindex="-1"></a>Main class for PDF text extraction.</span>
+<span id="cb35-283"><a href="#cb35-283" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-284"><a href="#cb35-284" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb35-285"><a href="#cb35-285" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.pdf_processor <span class="im">import</span> PDFProcessor</span>
+<span id="cb35-286"><a href="#cb35-286" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-287"><a href="#cb35-287" aria-hidden="true" tabindex="-1"></a>processor <span class="op">=</span> PDFProcessor()</span>
+<span id="cb35-288"><a href="#cb35-288" aria-hidden="true" tabindex="-1"></a>text_blocks <span class="op">=</span> processor.extract_text_blocks_from_pdf(<span class="st">"thesis.pdf"</span>)</span>
+<span id="cb35-289"><a href="#cb35-289" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-290"><a href="#cb35-290" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-291"><a href="#cb35-291" aria-hidden="true" tabindex="-1"></a>**Methods:**</span>
+<span id="cb35-292"><a href="#cb35-292" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-293"><a href="#cb35-293" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb35-294"><a href="#cb35-294" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extract_text_blocks_from_pdf(</span>
+<span id="cb35-295"><a href="#cb35-295" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>, </span>
+<span id="cb35-296"><a href="#cb35-296" aria-hidden="true" tabindex="-1"></a>    pdf_path: <span class="bu">str</span></span>
+<span id="cb35-297"><a href="#cb35-297" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> List[TextBlock]:</span>
+<span id="cb35-298"><a href="#cb35-298" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Extract text blocks from PDF with layout information."""</span></span>
+<span id="cb35-299"><a href="#cb35-299" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span>
+<span id="cb35-300"><a href="#cb35-300" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-301"><a href="#cb35-301" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> estimate_word_count(</span>
+<span id="cb35-302"><a href="#cb35-302" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>, </span>
+<span id="cb35-303"><a href="#cb35-303" aria-hidden="true" tabindex="-1"></a>    text_blocks: List[TextBlock]</span>
+<span id="cb35-304"><a href="#cb35-304" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="cb35-305"><a href="#cb35-305" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Estimate total word count from text blocks."""</span></span>
+<span id="cb35-306"><a href="#cb35-306" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span>
+<span id="cb35-307"><a href="#cb35-307" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-308"><a href="#cb35-308" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-309"><a href="#cb35-309" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Utility Functions</span></span>
+<span id="cb35-310"><a href="#cb35-310" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-311"><a href="#cb35-311" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb35-312"><a href="#cb35-312" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.pdf_processor <span class="im">import</span> create_test_pdf</span>
+<span id="cb35-313"><a href="#cb35-313" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-314"><a href="#cb35-314" aria-hidden="true" tabindex="-1"></a><span class="co"># Create sample PDF for testing</span></span>
+<span id="cb35-315"><a href="#cb35-315" aria-hidden="true" tabindex="-1"></a>create_test_pdf(<span class="st">"sample.pdf"</span>)</span>
+<span id="cb35-316"><a href="#cb35-316" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-317"><a href="#cb35-317" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-318"><a href="#cb35-318" aria-hidden="true" tabindex="-1"></a><span class="fu">### LLM Analysis Modules</span></span>
+<span id="cb35-319"><a href="#cb35-319" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-320"><a href="#cb35-320" aria-hidden="true" tabindex="-1"></a><span class="fu">#### DSPy Signatures</span></span>
+<span id="cb35-321"><a href="#cb35-321" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-322"><a href="#cb35-322" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb35-323"><a href="#cb35-323" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.llm_modules <span class="im">import</span> (</span>
+<span id="cb35-324"><a href="#cb35-324" aria-hidden="true" tabindex="-1"></a>    LinguisticAnalysisSignature,</span>
+<span id="cb35-325"><a href="#cb35-325" aria-hidden="true" tabindex="-1"></a>    ContentValidationSignature,</span>
+<span id="cb35-326"><a href="#cb35-326" aria-hidden="true" tabindex="-1"></a>    CitationAnalysisSignature</span>
+<span id="cb35-327"><a href="#cb35-327" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb35-328"><a href="#cb35-328" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-329"><a href="#cb35-329" aria-hidden="true" tabindex="-1"></a><span class="co"># Example usage (typically internal)</span></span>
+<span id="cb35-330"><a href="#cb35-330" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> dspy</span>
+<span id="cb35-331"><a href="#cb35-331" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-332"><a href="#cb35-332" aria-hidden="true" tabindex="-1"></a>linguistic_analyzer <span class="op">=</span> dspy.Predict(LinguisticAnalysisSignature)</span>
+<span id="cb35-333"><a href="#cb35-333" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> linguistic_analyzer(text_chunk<span class="op">=</span><span class="st">"The results shows..."</span>)</span>
+<span id="cb35-334"><a href="#cb35-334" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-335"><a href="#cb35-335" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-336"><a href="#cb35-336" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Analysis Modules</span></span>
+<span id="cb35-337"><a href="#cb35-337" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-338"><a href="#cb35-338" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb35-339"><a href="#cb35-339" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.llm_modules <span class="im">import</span> (</span>
+<span id="cb35-340"><a href="#cb35-340" aria-hidden="true" tabindex="-1"></a>    LinguisticAnalyzer,</span>
+<span id="cb35-341"><a href="#cb35-341" aria-hidden="true" tabindex="-1"></a>    ContentValidator,</span>
+<span id="cb35-342"><a href="#cb35-342" aria-hidden="true" tabindex="-1"></a>    CitationChecker</span>
+<span id="cb35-343"><a href="#cb35-343" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb35-344"><a href="#cb35-344" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-345"><a href="#cb35-345" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize analyzers</span></span>
+<span id="cb35-346"><a href="#cb35-346" aria-hidden="true" tabindex="-1"></a>linguistic <span class="op">=</span> LinguisticAnalyzer()</span>
+<span id="cb35-347"><a href="#cb35-347" aria-hidden="true" tabindex="-1"></a>content <span class="op">=</span> ContentValidator()</span>
+<span id="cb35-348"><a href="#cb35-348" aria-hidden="true" tabindex="-1"></a>citation <span class="op">=</span> CitationChecker()</span>
+<span id="cb35-349"><a href="#cb35-349" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-350"><a href="#cb35-350" aria-hidden="true" tabindex="-1"></a><span class="co"># Analyze text block</span></span>
+<span id="cb35-351"><a href="#cb35-351" aria-hidden="true" tabindex="-1"></a>text_block <span class="op">=</span> TextBlock(content<span class="op">=</span><span class="st">"Sample text..."</span>, page_number<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb35-352"><a href="#cb35-352" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-353"><a href="#cb35-353" aria-hidden="true" tabindex="-1"></a>grammar_errors <span class="op">=</span> linguistic.analyze(text_block)</span>
+<span id="cb35-354"><a href="#cb35-354" aria-hidden="true" tabindex="-1"></a>content_errors <span class="op">=</span> content.analyze(text_block)</span>
+<span id="cb35-355"><a href="#cb35-355" aria-hidden="true" tabindex="-1"></a>citation_errors <span class="op">=</span> citation.analyze(text_block, bibliography<span class="op">=</span><span class="st">"References..."</span>)</span>
+<span id="cb35-356"><a href="#cb35-356" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-357"><a href="#cb35-357" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-358"><a href="#cb35-358" aria-hidden="true" tabindex="-1"></a><span class="fu">### Pipeline and Orchestration</span></span>
+<span id="cb35-359"><a href="#cb35-359" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-360"><a href="#cb35-360" aria-hidden="true" tabindex="-1"></a><span class="fu">#### `veritascribe.pipeline.AnalysisPipeline`</span></span>
+<span id="cb35-361"><a href="#cb35-361" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-362"><a href="#cb35-362" aria-hidden="true" tabindex="-1"></a>Main orchestration class for analysis workflow.</span>
+<span id="cb35-363"><a href="#cb35-363" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-364"><a href="#cb35-364" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb35-365"><a href="#cb35-365" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.pipeline <span class="im">import</span> AnalysisPipeline</span>
+<span id="cb35-366"><a href="#cb35-366" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-367"><a href="#cb35-367" aria-hidden="true" tabindex="-1"></a>pipeline <span class="op">=</span> AnalysisPipeline()</span>
+<span id="cb35-368"><a href="#cb35-368" aria-hidden="true" tabindex="-1"></a>report <span class="op">=</span> pipeline.analyze_thesis(</span>
+<span id="cb35-369"><a href="#cb35-369" aria-hidden="true" tabindex="-1"></a>    pdf_path<span class="op">=</span><span class="st">"thesis.pdf"</span>,</span>
+<span id="cb35-370"><a href="#cb35-370" aria-hidden="true" tabindex="-1"></a>    output_dir<span class="op">=</span><span class="st">"./results"</span>,</span>
+<span id="cb35-371"><a href="#cb35-371" aria-hidden="true" tabindex="-1"></a>    citation_style<span class="op">=</span><span class="st">"APA"</span></span>
+<span id="cb35-372"><a href="#cb35-372" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb35-373"><a href="#cb35-373" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-374"><a href="#cb35-374" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-375"><a href="#cb35-375" aria-hidden="true" tabindex="-1"></a>**Methods:**</span>
+<span id="cb35-376"><a href="#cb35-376" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-377"><a href="#cb35-377" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb35-378"><a href="#cb35-378" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> analyze_thesis(</span>
+<span id="cb35-379"><a href="#cb35-379" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>,</span>
+<span id="cb35-380"><a href="#cb35-380" aria-hidden="true" tabindex="-1"></a>    pdf_path: <span class="bu">str</span>,</span>
+<span id="cb35-381"><a href="#cb35-381" aria-hidden="true" tabindex="-1"></a>    output_dir: <span class="bu">str</span>,</span>
+<span id="cb35-382"><a href="#cb35-382" aria-hidden="true" tabindex="-1"></a>    citation_style: <span class="bu">str</span> <span class="op">=</span> <span class="st">"APA"</span></span>
+<span id="cb35-383"><a href="#cb35-383" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> ThesisAnalysisReport:</span>
+<span id="cb35-384"><a href="#cb35-384" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Perform complete thesis analysis."""</span></span>
+<span id="cb35-385"><a href="#cb35-385" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span>
+<span id="cb35-386"><a href="#cb35-386" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-387"><a href="#cb35-387" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> quick_analyze(</span>
+<span id="cb35-388"><a href="#cb35-388" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>,</span>
+<span id="cb35-389"><a href="#cb35-389" aria-hidden="true" tabindex="-1"></a>    pdf_path: <span class="bu">str</span>,</span>
+<span id="cb35-390"><a href="#cb35-390" aria-hidden="true" tabindex="-1"></a>    max_blocks: <span class="bu">int</span> <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb35-391"><a href="#cb35-391" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> ThesisAnalysisReport:</span>
+<span id="cb35-392"><a href="#cb35-392" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Perform quick analysis on subset of document."""</span></span>
+<span id="cb35-393"><a href="#cb35-393" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span>
+<span id="cb35-394"><a href="#cb35-394" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-395"><a href="#cb35-395" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-396"><a href="#cb35-396" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Factory Functions</span></span>
+<span id="cb35-397"><a href="#cb35-397" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-398"><a href="#cb35-398" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb35-399"><a href="#cb35-399" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.pipeline <span class="im">import</span> (</span>
+<span id="cb35-400"><a href="#cb35-400" aria-hidden="true" tabindex="-1"></a>    create_analysis_pipeline,</span>
+<span id="cb35-401"><a href="#cb35-401" aria-hidden="true" tabindex="-1"></a>    create_quick_pipeline</span>
+<span id="cb35-402"><a href="#cb35-402" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb35-403"><a href="#cb35-403" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-404"><a href="#cb35-404" aria-hidden="true" tabindex="-1"></a><span class="co"># Create configured pipeline instances</span></span>
+<span id="cb35-405"><a href="#cb35-405" aria-hidden="true" tabindex="-1"></a>full_pipeline <span class="op">=</span> create_analysis_pipeline()</span>
+<span id="cb35-406"><a href="#cb35-406" aria-hidden="true" tabindex="-1"></a>quick_pipeline <span class="op">=</span> create_quick_pipeline()</span>
+<span id="cb35-407"><a href="#cb35-407" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-408"><a href="#cb35-408" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-409"><a href="#cb35-409" aria-hidden="true" tabindex="-1"></a><span class="fu">### Report Generation</span></span>
+<span id="cb35-410"><a href="#cb35-410" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-411"><a href="#cb35-411" aria-hidden="true" tabindex="-1"></a><span class="fu">#### `veritascribe.report_generator.ReportGenerator`</span></span>
+<span id="cb35-412"><a href="#cb35-412" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-413"><a href="#cb35-413" aria-hidden="true" tabindex="-1"></a>Handles report generation and visualization.</span>
+<span id="cb35-414"><a href="#cb35-414" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-415"><a href="#cb35-415" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb35-416"><a href="#cb35-416" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.report_generator <span class="im">import</span> ReportGenerator</span>
+<span id="cb35-417"><a href="#cb35-417" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-418"><a href="#cb35-418" aria-hidden="true" tabindex="-1"></a>generator <span class="op">=</span> ReportGenerator()</span>
+<span id="cb35-419"><a href="#cb35-419" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-420"><a href="#cb35-420" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate text report</span></span>
+<span id="cb35-421"><a href="#cb35-421" aria-hidden="true" tabindex="-1"></a>generator.generate_text_report(report, <span class="st">"report.md"</span>)</span>
+<span id="cb35-422"><a href="#cb35-422" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-423"><a href="#cb35-423" aria-hidden="true" tabindex="-1"></a><span class="co"># Export JSON data</span></span>
+<span id="cb35-424"><a href="#cb35-424" aria-hidden="true" tabindex="-1"></a>generator.export_json_report(report, <span class="st">"data.json"</span>)</span>
+<span id="cb35-425"><a href="#cb35-425" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-426"><a href="#cb35-426" aria-hidden="true" tabindex="-1"></a><span class="co"># Create visualizations</span></span>
+<span id="cb35-427"><a href="#cb35-427" aria-hidden="true" tabindex="-1"></a>viz_files <span class="op">=</span> generator.visualize_errors(report, <span class="st">"./viz_output"</span>)</span>
+<span id="cb35-428"><a href="#cb35-428" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-429"><a href="#cb35-429" aria-hidden="true" tabindex="-1"></a><span class="co"># Create summary</span></span>
+<span id="cb35-430"><a href="#cb35-430" aria-hidden="true" tabindex="-1"></a>summary <span class="op">=</span> generator.create_summary_report(report)</span>
+<span id="cb35-431"><a href="#cb35-431" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-432"><a href="#cb35-432" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-433"><a href="#cb35-433" aria-hidden="true" tabindex="-1"></a>**Methods:**</span>
+<span id="cb35-434"><a href="#cb35-434" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-435"><a href="#cb35-435" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb35-436"><a href="#cb35-436" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_text_report(</span>
+<span id="cb35-437"><a href="#cb35-437" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>,</span>
+<span id="cb35-438"><a href="#cb35-438" aria-hidden="true" tabindex="-1"></a>    report: ThesisAnalysisReport,</span>
+<span id="cb35-439"><a href="#cb35-439" aria-hidden="true" tabindex="-1"></a>    output_path: <span class="bu">str</span></span>
+<span id="cb35-440"><a href="#cb35-440" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb35-441"><a href="#cb35-441" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Generate comprehensive Markdown report."""</span></span>
+<span id="cb35-442"><a href="#cb35-442" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span>
+<span id="cb35-443"><a href="#cb35-443" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-444"><a href="#cb35-444" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> export_json_report(</span>
+<span id="cb35-445"><a href="#cb35-445" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>,</span>
+<span id="cb35-446"><a href="#cb35-446" aria-hidden="true" tabindex="-1"></a>    report: ThesisAnalysisReport,</span>
+<span id="cb35-447"><a href="#cb35-447" aria-hidden="true" tabindex="-1"></a>    output_path: <span class="bu">str</span></span>
+<span id="cb35-448"><a href="#cb35-448" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb35-449"><a href="#cb35-449" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Export structured JSON data."""</span></span>
+<span id="cb35-450"><a href="#cb35-450" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span>
+<span id="cb35-451"><a href="#cb35-451" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-452"><a href="#cb35-452" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> visualize_errors(</span>
+<span id="cb35-453"><a href="#cb35-453" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>,</span>
+<span id="cb35-454"><a href="#cb35-454" aria-hidden="true" tabindex="-1"></a>    report: ThesisAnalysisReport,</span>
+<span id="cb35-455"><a href="#cb35-455" aria-hidden="true" tabindex="-1"></a>    output_dir: <span class="bu">str</span></span>
+<span id="cb35-456"><a href="#cb35-456" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> List[<span class="bu">str</span>]:</span>
+<span id="cb35-457"><a href="#cb35-457" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Generate error visualization charts."""</span></span>
+<span id="cb35-458"><a href="#cb35-458" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span>
+<span id="cb35-459"><a href="#cb35-459" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-460"><a href="#cb35-460" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> create_summary_report(</span>
+<span id="cb35-461"><a href="#cb35-461" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>,</span>
+<span id="cb35-462"><a href="#cb35-462" aria-hidden="true" tabindex="-1"></a>    report: ThesisAnalysisReport</span>
+<span id="cb35-463"><a href="#cb35-463" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> Dict[<span class="bu">str</span>, Any]:</span>
+<span id="cb35-464"><a href="#cb35-464" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Create executive summary."""</span></span>
+<span id="cb35-465"><a href="#cb35-465" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span>
+<span id="cb35-466"><a href="#cb35-466" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-467"><a href="#cb35-467" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-468"><a href="#cb35-468" aria-hidden="true" tabindex="-1"></a><span class="fu">## Error Handling</span></span>
+<span id="cb35-469"><a href="#cb35-469" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-470"><a href="#cb35-470" aria-hidden="true" tabindex="-1"></a><span class="fu">### Exception Types</span></span>
+<span id="cb35-471"><a href="#cb35-471" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-472"><a href="#cb35-472" aria-hidden="true" tabindex="-1"></a>VeritaScribe defines custom exceptions for different error conditions:</span>
+<span id="cb35-473"><a href="#cb35-473" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-474"><a href="#cb35-474" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb35-475"><a href="#cb35-475" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.exceptions <span class="im">import</span> (</span>
+<span id="cb35-476"><a href="#cb35-476" aria-hidden="true" tabindex="-1"></a>    VeritaScribeError,</span>
+<span id="cb35-477"><a href="#cb35-477" aria-hidden="true" tabindex="-1"></a>    ConfigurationError,</span>
+<span id="cb35-478"><a href="#cb35-478" aria-hidden="true" tabindex="-1"></a>    PDFProcessingError,</span>
+<span id="cb35-479"><a href="#cb35-479" aria-hidden="true" tabindex="-1"></a>    LLMAnalysisError,</span>
+<span id="cb35-480"><a href="#cb35-480" aria-hidden="true" tabindex="-1"></a>    ReportGenerationError</span>
+<span id="cb35-481"><a href="#cb35-481" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb35-482"><a href="#cb35-482" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-483"><a href="#cb35-483" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb35-484"><a href="#cb35-484" aria-hidden="true" tabindex="-1"></a>    settings <span class="op">=</span> load_settings()</span>
+<span id="cb35-485"><a href="#cb35-485" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> ConfigurationError <span class="im">as</span> e:</span>
+<span id="cb35-486"><a href="#cb35-486" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Configuration error: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb35-487"><a href="#cb35-487" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-488"><a href="#cb35-488" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb35-489"><a href="#cb35-489" aria-hidden="true" tabindex="-1"></a>    blocks <span class="op">=</span> processor.extract_text_blocks_from_pdf(<span class="st">"invalid.pdf"</span>)</span>
+<span id="cb35-490"><a href="#cb35-490" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> PDFProcessingError <span class="im">as</span> e:</span>
+<span id="cb35-491"><a href="#cb35-491" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"PDF processing failed: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb35-492"><a href="#cb35-492" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-493"><a href="#cb35-493" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-494"><a href="#cb35-494" aria-hidden="true" tabindex="-1"></a><span class="fu">### Error Context</span></span>
+<span id="cb35-495"><a href="#cb35-495" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-496"><a href="#cb35-496" aria-hidden="true" tabindex="-1"></a>Errors include contextual information for debugging:</span>
+<span id="cb35-497"><a href="#cb35-497" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-498"><a href="#cb35-498" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb35-499"><a href="#cb35-499" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb35-500"><a href="#cb35-500" aria-hidden="true" tabindex="-1"></a>    pipeline.analyze_thesis(<span class="st">"thesis.pdf"</span>, <span class="st">"./output"</span>)</span>
+<span id="cb35-501"><a href="#cb35-501" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> LLMAnalysisError <span class="im">as</span> e:</span>
+<span id="cb35-502"><a href="#cb35-502" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Analysis failed: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb35-503"><a href="#cb35-503" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Block being processed: </span><span class="sc">{</span>e<span class="sc">.</span>context<span class="sc">.</span>get(<span class="st">'text_block'</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb35-504"><a href="#cb35-504" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Error type: </span><span class="sc">{</span>e<span class="sc">.</span>context<span class="sc">.</span>get(<span class="st">'analysis_type'</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb35-505"><a href="#cb35-505" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-506"><a href="#cb35-506" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-507"><a href="#cb35-507" aria-hidden="true" tabindex="-1"></a><span class="fu">## Extensibility</span></span>
+<span id="cb35-508"><a href="#cb35-508" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-509"><a href="#cb35-509" aria-hidden="true" tabindex="-1"></a><span class="fu">### Custom Error Types</span></span>
+<span id="cb35-510"><a href="#cb35-510" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-511"><a href="#cb35-511" aria-hidden="true" tabindex="-1"></a>Extend the error system:</span>
+<span id="cb35-512"><a href="#cb35-512" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-513"><a href="#cb35-513" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb35-514"><a href="#cb35-514" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.data_models <span class="im">import</span> BaseError, ErrorSeverity, LocationHint</span>
+<span id="cb35-515"><a href="#cb35-515" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-516"><a href="#cb35-516" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> StyleError(BaseError):</span>
+<span id="cb35-517"><a href="#cb35-517" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Custom error type for style issues."""</span></span>
+<span id="cb35-518"><a href="#cb35-518" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb35-519"><a href="#cb35-519" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, <span class="op">**</span>kwargs):</span>
+<span id="cb35-520"><a href="#cb35-520" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(</span>
+<span id="cb35-521"><a href="#cb35-521" aria-hidden="true" tabindex="-1"></a>            error_type<span class="op">=</span><span class="st">"style"</span>,</span>
+<span id="cb35-522"><a href="#cb35-522" aria-hidden="true" tabindex="-1"></a>            <span class="op">**</span>kwargs</span>
+<span id="cb35-523"><a href="#cb35-523" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb35-524"><a href="#cb35-524" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-525"><a href="#cb35-525" aria-hidden="true" tabindex="-1"></a><span class="co"># Usage</span></span>
+<span id="cb35-526"><a href="#cb35-526" aria-hidden="true" tabindex="-1"></a>style_error <span class="op">=</span> StyleError(</span>
+<span id="cb35-527"><a href="#cb35-527" aria-hidden="true" tabindex="-1"></a>    severity<span class="op">=</span>ErrorSeverity.LOW,</span>
+<span id="cb35-528"><a href="#cb35-528" aria-hidden="true" tabindex="-1"></a>    original_text<span class="op">=</span><span class="st">"utilise"</span>,</span>
+<span id="cb35-529"><a href="#cb35-529" aria-hidden="true" tabindex="-1"></a>    suggested_correction<span class="op">=</span><span class="st">"utilize"</span>, </span>
+<span id="cb35-530"><a href="#cb35-530" aria-hidden="true" tabindex="-1"></a>    explanation<span class="op">=</span><span class="st">"Prefer American spelling"</span>,</span>
+<span id="cb35-531"><a href="#cb35-531" aria-hidden="true" tabindex="-1"></a>    location<span class="op">=</span>LocationHint(page_number<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb35-532"><a href="#cb35-532" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb35-533"><a href="#cb35-533" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-534"><a href="#cb35-534" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-535"><a href="#cb35-535" aria-hidden="true" tabindex="-1"></a><span class="fu">### Custom Analysis Modules</span></span>
+<span id="cb35-536"><a href="#cb35-536" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-537"><a href="#cb35-537" aria-hidden="true" tabindex="-1"></a>Create custom DSPy analysis modules:</span>
+<span id="cb35-538"><a href="#cb35-538" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-539"><a href="#cb35-539" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb35-540"><a href="#cb35-540" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> dspy</span>
+<span id="cb35-541"><a href="#cb35-541" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.data_models <span class="im">import</span> BaseError, TextBlock</span>
+<span id="cb35-542"><a href="#cb35-542" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-543"><a href="#cb35-543" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> CustomAnalysisSignature(dspy.Signature):</span>
+<span id="cb35-544"><a href="#cb35-544" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Custom analysis signature."""</span></span>
+<span id="cb35-545"><a href="#cb35-545" aria-hidden="true" tabindex="-1"></a>    text_chunk <span class="op">=</span> dspy.InputField(desc<span class="op">=</span><span class="st">"Text to analyze"</span>)</span>
+<span id="cb35-546"><a href="#cb35-546" aria-hidden="true" tabindex="-1"></a>    custom_errors <span class="op">=</span> dspy.OutputField(desc<span class="op">=</span><span class="st">"JSON list of custom errors"</span>)</span>
+<span id="cb35-547"><a href="#cb35-547" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-548"><a href="#cb35-548" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> CustomAnalyzer:</span>
+<span id="cb35-549"><a href="#cb35-549" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Custom analysis module."""</span></span>
+<span id="cb35-550"><a href="#cb35-550" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb35-551"><a href="#cb35-551" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb35-552"><a href="#cb35-552" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.analyzer <span class="op">=</span> dspy.Predict(CustomAnalysisSignature)</span>
+<span id="cb35-553"><a href="#cb35-553" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb35-554"><a href="#cb35-554" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> analyze(<span class="va">self</span>, text_block: TextBlock) <span class="op">-&gt;</span> List[BaseError]:</span>
+<span id="cb35-555"><a href="#cb35-555" aria-hidden="true" tabindex="-1"></a>        result <span class="op">=</span> <span class="va">self</span>.analyzer(text_chunk<span class="op">=</span>text_block.content)</span>
+<span id="cb35-556"><a href="#cb35-556" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Parse result.custom_errors and return BaseError objects</span></span>
+<span id="cb35-557"><a href="#cb35-557" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>._parse_errors(result.custom_errors, text_block)</span>
+<span id="cb35-558"><a href="#cb35-558" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-559"><a href="#cb35-559" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-560"><a href="#cb35-560" aria-hidden="true" tabindex="-1"></a><span class="fu">### Configuration Extensions</span></span>
+<span id="cb35-561"><a href="#cb35-561" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-562"><a href="#cb35-562" aria-hidden="true" tabindex="-1"></a>Add custom configuration options:</span>
+<span id="cb35-563"><a href="#cb35-563" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-564"><a href="#cb35-564" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb35-565"><a href="#cb35-565" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.config <span class="im">import</span> VeritaScribeSettings</span>
+<span id="cb35-566"><a href="#cb35-566" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pydantic <span class="im">import</span> Field</span>
+<span id="cb35-567"><a href="#cb35-567" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-568"><a href="#cb35-568" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ExtendedSettings(VeritaScribeSettings):</span>
+<span id="cb35-569"><a href="#cb35-569" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Extended configuration with custom options."""</span></span>
+<span id="cb35-570"><a href="#cb35-570" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb35-571"><a href="#cb35-571" aria-hidden="true" tabindex="-1"></a>    custom_analysis_enabled: <span class="bu">bool</span> <span class="op">=</span> Field(</span>
+<span id="cb35-572"><a href="#cb35-572" aria-hidden="true" tabindex="-1"></a>        default<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb35-573"><a href="#cb35-573" aria-hidden="true" tabindex="-1"></a>        description<span class="op">=</span><span class="st">"Enable custom analysis module"</span></span>
+<span id="cb35-574"><a href="#cb35-574" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb35-575"><a href="#cb35-575" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb35-576"><a href="#cb35-576" aria-hidden="true" tabindex="-1"></a>    custom_threshold: <span class="bu">float</span> <span class="op">=</span> Field(</span>
+<span id="cb35-577"><a href="#cb35-577" aria-hidden="true" tabindex="-1"></a>        default<span class="op">=</span><span class="fl">0.7</span>,</span>
+<span id="cb35-578"><a href="#cb35-578" aria-hidden="true" tabindex="-1"></a>        description<span class="op">=</span><span class="st">"Custom analysis threshold"</span></span>
+<span id="cb35-579"><a href="#cb35-579" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb35-580"><a href="#cb35-580" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-581"><a href="#cb35-581" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-582"><a href="#cb35-582" aria-hidden="true" tabindex="-1"></a><span class="fu">## Testing Utilities</span></span>
+<span id="cb35-583"><a href="#cb35-583" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-584"><a href="#cb35-584" aria-hidden="true" tabindex="-1"></a><span class="fu">### Test Helpers</span></span>
+<span id="cb35-585"><a href="#cb35-585" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-586"><a href="#cb35-586" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb35-587"><a href="#cb35-587" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.testing <span class="im">import</span> (</span>
+<span id="cb35-588"><a href="#cb35-588" aria-hidden="true" tabindex="-1"></a>    create_test_document,</span>
+<span id="cb35-589"><a href="#cb35-589" aria-hidden="true" tabindex="-1"></a>    create_test_errors,</span>
+<span id="cb35-590"><a href="#cb35-590" aria-hidden="true" tabindex="-1"></a>    mock_llm_response</span>
+<span id="cb35-591"><a href="#cb35-591" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb35-592"><a href="#cb35-592" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-593"><a href="#cb35-593" aria-hidden="true" tabindex="-1"></a><span class="co"># Create test documents</span></span>
+<span id="cb35-594"><a href="#cb35-594" aria-hidden="true" tabindex="-1"></a>test_pdf <span class="op">=</span> create_test_document(</span>
+<span id="cb35-595"><a href="#cb35-595" aria-hidden="true" tabindex="-1"></a>    content<span class="op">=</span><span class="st">"Sample thesis content..."</span>,</span>
+<span id="cb35-596"><a href="#cb35-596" aria-hidden="true" tabindex="-1"></a>    filename<span class="op">=</span><span class="st">"test.pdf"</span></span>
+<span id="cb35-597"><a href="#cb35-597" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb35-598"><a href="#cb35-598" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-599"><a href="#cb35-599" aria-hidden="true" tabindex="-1"></a><span class="co"># Create test errors</span></span>
+<span id="cb35-600"><a href="#cb35-600" aria-hidden="true" tabindex="-1"></a>test_errors <span class="op">=</span> create_test_errors(</span>
+<span id="cb35-601"><a href="#cb35-601" aria-hidden="true" tabindex="-1"></a>    count<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb35-602"><a href="#cb35-602" aria-hidden="true" tabindex="-1"></a>    error_types<span class="op">=</span>[<span class="st">"grammar"</span>, <span class="st">"citation_format"</span>]</span>
+<span id="cb35-603"><a href="#cb35-603" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb35-604"><a href="#cb35-604" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-605"><a href="#cb35-605" aria-hidden="true" tabindex="-1"></a><span class="co"># Mock LLM responses for testing</span></span>
+<span id="cb35-606"><a href="#cb35-606" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> mock_llm_response(test_errors):</span>
+<span id="cb35-607"><a href="#cb35-607" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> analyzer.analyze(text_block)</span>
+<span id="cb35-608"><a href="#cb35-608" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-609"><a href="#cb35-609" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-610"><a href="#cb35-610" aria-hidden="true" tabindex="-1"></a><span class="fu">### Fixtures for Testing</span></span>
+<span id="cb35-611"><a href="#cb35-611" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-612"><a href="#cb35-612" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb35-613"><a href="#cb35-613" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
+<span id="cb35-614"><a href="#cb35-614" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.testing <span class="im">import</span> AnalysisFixture</span>
+<span id="cb35-615"><a href="#cb35-615" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-616"><a href="#cb35-616" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.fixture</span></span>
+<span id="cb35-617"><a href="#cb35-617" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> analysis_fixture():</span>
+<span id="cb35-618"><a href="#cb35-618" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> AnalysisFixture(</span>
+<span id="cb35-619"><a href="#cb35-619" aria-hidden="true" tabindex="-1"></a>        document_pages<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb35-620"><a href="#cb35-620" aria-hidden="true" tabindex="-1"></a>        error_count<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb35-621"><a href="#cb35-621" aria-hidden="true" tabindex="-1"></a>        include_visualizations<span class="op">=</span><span class="va">True</span></span>
+<span id="cb35-622"><a href="#cb35-622" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb35-623"><a href="#cb35-623" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-624"><a href="#cb35-624" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_analysis_pipeline(analysis_fixture):</span>
+<span id="cb35-625"><a href="#cb35-625" aria-hidden="true" tabindex="-1"></a>    report <span class="op">=</span> analysis_fixture.run_analysis()</span>
+<span id="cb35-626"><a href="#cb35-626" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> report.total_errors <span class="op">==</span> <span class="dv">5</span></span>
+<span id="cb35-627"><a href="#cb35-627" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-628"><a href="#cb35-628" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-629"><a href="#cb35-629" aria-hidden="true" tabindex="-1"></a><span class="fu">## Performance Considerations</span></span>
+<span id="cb35-630"><a href="#cb35-630" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-631"><a href="#cb35-631" aria-hidden="true" tabindex="-1"></a><span class="fu">### Optimization Guidelines</span></span>
+<span id="cb35-632"><a href="#cb35-632" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-633"><a href="#cb35-633" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Batch Processing**: Process multiple blocks efficiently</span>
+<span id="cb35-634"><a href="#cb35-634" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Caching**: Cache LLM responses when possible</span>
+<span id="cb35-635"><a href="#cb35-635" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Async Processing**: Use parallel processing for large documents</span>
+<span id="cb35-636"><a href="#cb35-636" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Memory Management**: Handle large PDFs without memory issues</span>
+<span id="cb35-637"><a href="#cb35-637" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-638"><a href="#cb35-638" aria-hidden="true" tabindex="-1"></a><span class="fu">### Monitoring</span></span>
+<span id="cb35-639"><a href="#cb35-639" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-640"><a href="#cb35-640" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb35-641"><a href="#cb35-641" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.monitoring <span class="im">import</span> (</span>
+<span id="cb35-642"><a href="#cb35-642" aria-hidden="true" tabindex="-1"></a>    track_token_usage,</span>
+<span id="cb35-643"><a href="#cb35-643" aria-hidden="true" tabindex="-1"></a>    measure_processing_time,</span>
+<span id="cb35-644"><a href="#cb35-644" aria-hidden="true" tabindex="-1"></a>    log_api_calls</span>
+<span id="cb35-645"><a href="#cb35-645" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb35-646"><a href="#cb35-646" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-647"><a href="#cb35-647" aria-hidden="true" tabindex="-1"></a><span class="at">@track_token_usage</span></span>
+<span id="cb35-648"><a href="#cb35-648" aria-hidden="true" tabindex="-1"></a><span class="at">@measure_processing_time</span></span>
+<span id="cb35-649"><a href="#cb35-649" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> analyze_with_monitoring(text_block):</span>
+<span id="cb35-650"><a href="#cb35-650" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> analyzer.analyze(text_block)</span>
+<span id="cb35-651"><a href="#cb35-651" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-652"><a href="#cb35-652" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-653"><a href="#cb35-653" aria-hidden="true" tabindex="-1"></a><span class="fu">## Security Considerations</span></span>
+<span id="cb35-654"><a href="#cb35-654" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-655"><a href="#cb35-655" aria-hidden="true" tabindex="-1"></a><span class="fu">### API Key Management</span></span>
+<span id="cb35-656"><a href="#cb35-656" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-657"><a href="#cb35-657" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Never log API keys</span>
+<span id="cb35-658"><a href="#cb35-658" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Use environment variables in production</span>
+<span id="cb35-659"><a href="#cb35-659" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Rotate keys regularly</span>
+<span id="cb35-660"><a href="#cb35-660" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Monitor usage for anomalies</span>
+<span id="cb35-661"><a href="#cb35-661" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-662"><a href="#cb35-662" aria-hidden="true" tabindex="-1"></a><span class="fu">### Input Validation</span></span>
+<span id="cb35-663"><a href="#cb35-663" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-664"><a href="#cb35-664" aria-hidden="true" tabindex="-1"></a>All inputs are validated using Pydantic models:</span>
+<span id="cb35-665"><a href="#cb35-665" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-666"><a href="#cb35-666" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb35-667"><a href="#cb35-667" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pydantic <span class="im">import</span> ValidationError</span>
+<span id="cb35-668"><a href="#cb35-668" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-669"><a href="#cb35-669" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb35-670"><a href="#cb35-670" aria-hidden="true" tabindex="-1"></a>    settings <span class="op">=</span> VeritaScribeSettings(temperature<span class="op">=</span><span class="fl">2.0</span>)  <span class="co"># Invalid</span></span>
+<span id="cb35-671"><a href="#cb35-671" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> ValidationError <span class="im">as</span> e:</span>
+<span id="cb35-672"><a href="#cb35-672" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Invalid temperature value"</span>)</span>
+<span id="cb35-673"><a href="#cb35-673" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-674"><a href="#cb35-674" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-675"><a href="#cb35-675" aria-hidden="true" tabindex="-1"></a><span class="fu">### Output Sanitization</span></span>
+<span id="cb35-676"><a href="#cb35-676" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-677"><a href="#cb35-677" aria-hidden="true" tabindex="-1"></a>Reports are sanitized to prevent injection attacks:</span>
+<span id="cb35-678"><a href="#cb35-678" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-679"><a href="#cb35-679" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb35-680"><a href="#cb35-680" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> veritascribe.security <span class="im">import</span> sanitize_output</span>
+<span id="cb35-681"><a href="#cb35-681" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-682"><a href="#cb35-682" aria-hidden="true" tabindex="-1"></a>safe_content <span class="op">=</span> sanitize_output(user_content)</span>
+<span id="cb35-683"><a href="#cb35-683" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb35-684"><a href="#cb35-684" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-685"><a href="#cb35-685" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb35-686"><a href="#cb35-686" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-687"><a href="#cb35-687" aria-hidden="true" tabindex="-1"></a>*This API reference covers the main interfaces. For implementation details, see the [Architecture Guide](architecture.qmd).*</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

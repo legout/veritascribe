@@ -1,0 +1,4 @@
+.env
+analysis_output/
+**/__pycache__/
+dev/

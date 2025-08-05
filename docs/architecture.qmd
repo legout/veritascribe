@@ -1,0 +1,878 @@
+---
+title: "Architecture Guide"
+---
+
+# Architecture Guide
+
+This guide provides a comprehensive overview of VeritaScribe's system architecture, design patterns, and implementation details for developers and contributors.
+
+## System Overview
+
+VeritaScribe follows a modular pipeline architecture designed for scalability, maintainability, and extensibility.
+
+```{mermaid}
+graph TB
+    A[PDF Input] --> B[PDF Processor]
+    B --> C[Text Blocks]
+    C --> D[Analysis Pipeline]
+    D --> E[LLM Modules]
+    E --> F[Error Detection]
+    F --> G[Result Aggregation]
+    G --> H[Report Generator]
+    H --> I[Output Files]
+    
+    subgraph "Configuration Layer"
+        J[Environment Variables]
+        K[Settings Management]
+        L[DSPy Configuration]
+    end
+    
+    subgraph "Data Models"
+        M[Pydantic Schemas]
+        N[Error Types]
+        O[Validation]
+    end
+    
+    D --> J
+    E --> L
+    F --> M
+```
+
+## Core Components
+
+### 1. Configuration Layer (`config.py`)
+
+The configuration system provides centralized, type-safe settings management.
+
+#### Design Principles
+
+- **Environment-first**: Configuration comes from environment variables
+- **Type safety**: All settings validated with Pydantic
+- **Hierarchical loading**: Environment → .env → defaults
+- **Immutable**: Settings loaded once and cached
+
+#### Implementation Details
+
+```python
+class VeritaScribeSettings(BaseSettings):
+    """Main configuration using pydantic-settings."""
+    
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        case_sensitive=False,
+        extra="ignore"
+    )
+```
+
+**Key Features:**
+- Automatic environment variable mapping
+- Validation on load with clear error messages
+- Support for development/production environments
+- Integration with DSPy LLM configuration
+
+#### DSPy Integration
+
+```python
+class DSPyConfig:
+    """Manages DSPy LLM backend configuration."""
+    
+    def initialize_llm(self) -> dspy.LM:
+        """Initialize and configure DSPy LLM backend."""
+        self._lm = dspy.LM(
+            model=self.settings.default_model,
+            api_key=self.settings.openai_api_key,
+            max_tokens=self.settings.max_tokens,
+            temperature=self.settings.temperature
+        )
+        dspy.configure(lm=self._lm)
+        return self._lm
+```
+
+### 2. Data Models (`data_models.py`)
+
+The data layer uses Pydantic for robust data validation and serialization.
+
+#### Design Philosophy
+
+- **Type safety**: All data structures are strongly typed
+- **Validation**: Input validation prevents runtime errors
+- **Serialization**: Seamless JSON/dict conversion
+- **Immutability**: Data models are read-only after creation
+
+#### Core Model Hierarchy
+
+```{mermaid}
+classDiagram
+    class LocationHint {
+        +int page_number
+        +List[float] bounding_box_coordinates
+    }
+    
+    class BaseError {
+        +str error_type
+        +ErrorSeverity severity
+        +str original_text
+        +str suggested_correction
+        +str explanation
+        +LocationHint location
+        +float confidence_score
+    }
+    
+    class TextBlock {
+        +str content
+        +int page_number
+        +List[float] bounding_box_coordinates
+    }
+    
+    class AnalysisResult {
+        +TextBlock text_block
+        +List[BaseError] errors
+    }
+    
+    class ThesisAnalysisReport {
+        +str document_name
+        +datetime analysis_timestamp
+        +int total_pages
+        +int total_words
+        +List[AnalysisResult] analysis_results
+        +float total_processing_time_seconds
+    }
+    
+    BaseError --> LocationHint
+    AnalysisResult --> TextBlock
+    AnalysisResult --> BaseError
+    ThesisAnalysisReport --> AnalysisResult
+```
+
+#### Error Type System
+
+```python
+class ErrorSeverity(str, Enum):
+    """Enumeration for error severity levels."""
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
+
+class BaseError(BaseModel):
+    """Base class for all error types with common fields."""
+    error_type: str
+    severity: ErrorSeverity
+    original_text: str
+    suggested_correction: Optional[str] = None
+    explanation: str
+    location: LocationHint
+    confidence_score: float = Field(ge=0.0, le=1.0)
+```
+
+**Extensibility**: New error types inherit from `BaseError`:
+
+```python
+class GrammarError(BaseError):
+    """Grammar and linguistic errors."""
+    error_type: str = Field(default="grammar", frozen=True)
+
+class CitationError(BaseError):
+    """Citation format and referencing errors."""  
+    error_type: str = Field(default="citation_format", frozen=True)
+    citation_style: Optional[str] = None
+```
+
+### 3. PDF Processing (`pdf_processor.py`)
+
+The PDF processing layer extracts text while preserving spatial and layout information.
+
+#### Technology Stack
+
+- **PyMuPDF (fitz)**: Core PDF processing library
+- **Layout preservation**: Maintains bounding box coordinates
+- **Performance**: Efficient memory usage for large documents
+
+#### Architecture
+
+```python
+class PDFProcessor:
+    """Main PDF processing class."""
+    
+    def extract_text_blocks_from_pdf(self, pdf_path: str) -> List[TextBlock]:
+        """Extract text blocks with layout information."""
+        text_blocks = []
+        
+        with fitz.open(pdf_path) as doc:
+            for page_num, page in enumerate(doc, 1):
+                # Extract text blocks with coordinates
+                blocks = page.get_text("dict")
+                
+                for block in blocks["blocks"]:
+                    if "lines" in block:  # Text block
+                        text_block = self._process_text_block(
+                            block, page_num
+                        )
+                        if text_block:
+                            text_blocks.append(text_block)
+        
+        return text_blocks
+```
+
+#### Layout Information
+
+Each text block preserves its location:
+
+```python
+TextBlock(
+    content="The methodology employed...",
+    page_number=5,
+    bounding_box_coordinates=[72.0, 200.0, 520.0, 280.0]
+)
+```
+
+Coordinates format: `[x1, y1, x2, y2]` where:
+- `(x1, y1)`: Top-left corner
+- `(x2, y2)`: Bottom-right corner  
+- Units: PDF points (72 points = 1 inch)
+
+### 4. LLM Analysis Modules (`llm_modules.py`)
+
+The analysis layer uses DSPy for structured LLM interactions.
+
+#### DSPy Architecture
+
+DSPy provides declarative LLM programming with strong typing and structured outputs.
+
+```python
+class LinguisticAnalysisSignature(dspy.Signature):
+    """Grammar and linguistic analysis signature."""
+    text_chunk = dspy.InputField(
+        desc="Text to analyze for grammar and linguistic issues"
+    )
+    grammar_errors = dspy.OutputField(
+        desc="JSON list of grammar errors found"
+    )
+```
+
+#### Analysis Module Pattern
+
+Each analysis type follows a consistent pattern:
+
+```python
+class LinguisticAnalyzer(dspy.Module):
+    """Grammar and linguistic analysis module."""
+    
+    def __init__(self):
+        super().__init__()
+        self.analyzer = dspy.Predict(LinguisticAnalysisSignature)
+    
+    def forward(self, text_chunk: str) -> str:
+        """Analyze text for linguistic issues."""
+        return self.analyzer(text_chunk=text_chunk)
+    
+    def analyze(self, text_block: TextBlock) -> List[BaseError]:
+        """Convert DSPy output to validated error objects."""
+        result = self.forward(text_block.content)
+        return self._parse_and_validate_errors(
+            result.grammar_errors, 
+            text_block
+        )
+```
+
+#### Error Parsing and Validation
+
+LLM outputs are parsed and validated against Pydantic schemas:
+
+```python
+def _parse_and_validate_errors(
+    self, 
+    llm_output: str, 
+    text_block: TextBlock
+) -> List[BaseError]:
+    """Parse LLM JSON output and validate against schemas."""
+    try:
+        error_data = json.loads(llm_output)
+        errors = []
+        
+        for item in error_data:
+            # Inject location information
+            item["location"] = LocationHint(
+                page_number=text_block.page_number,
+                bounding_box_coordinates=text_block.bounding_box_coordinates
+            )
+            
+            # Validate against schema
+            error = BaseError(**item)
+            errors.append(error)
+            
+        return errors
+        
+    except (json.JSONDecodeError, ValidationError) as e:
+        # Handle malformed LLM output
+        self._log_parsing_error(e, llm_output)
+        return []
+```
+
+### 5. Pipeline Orchestration (`pipeline.py`)
+
+The pipeline coordinates the entire analysis workflow.
+
+#### Workflow Design
+
+```{mermaid}
+sequenceDiagram
+    participant P as Pipeline
+    participant PDF as PDFProcessor  
+    participant LLM as LLMModules
+    participant A as Aggregator
+    
+    P->>PDF: extract_text_blocks_from_pdf()
+    PDF->>P: List[TextBlock]
+    
+    loop For each TextBlock
+        P->>LLM: analyze(text_block)
+        LLM->>P: List[BaseError]
+        P->>A: collect_errors()
+    end
+    
+    P->>A: create_report()
+    A->>P: ThesisAnalysisReport
+```
+
+#### Implementation
+
+```python
+class AnalysisPipeline:
+    """Main analysis orchestration pipeline."""
+    
+    def __init__(self):
+        self.pdf_processor = PDFProcessor()
+        self.linguistic_analyzer = LinguisticAnalyzer()
+        self.content_validator = ContentValidator()
+        self.citation_checker = CitationChecker()
+    
+    def analyze_thesis(
+        self, 
+        pdf_path: str, 
+        output_dir: str,
+        citation_style: str = "APA"
+    ) -> ThesisAnalysisReport:
+        """Perform complete thesis analysis."""
+        
+        # Phase 1: Extract text blocks
+        text_blocks = self.pdf_processor.extract_text_blocks_from_pdf(pdf_path)
+        
+        # Phase 2: Analyze each block
+        analysis_results = []
+        for text_block in text_blocks:
+            errors = self._analyze_text_block(text_block, citation_style)
+            analysis_results.append(
+                AnalysisResult(text_block=text_block, errors=errors)
+            )
+        
+        # Phase 3: Create comprehensive report
+        return self._create_report(pdf_path, analysis_results)
+```
+
+#### Parallel Processing
+
+For performance, the pipeline supports parallel analysis:
+
+```python
+def _analyze_blocks_parallel(
+    self, 
+    text_blocks: List[TextBlock]
+) -> List[AnalysisResult]:
+    """Analyze blocks in parallel using ThreadPoolExecutor."""
+    
+    with ThreadPoolExecutor(
+        max_workers=self.settings.max_concurrent_requests
+    ) as executor:
+        futures = [
+            executor.submit(self._analyze_text_block, block)
+            for block in text_blocks
+        ]
+        
+        results = []
+        for future in as_completed(futures):
+            try:
+                result = future.result(timeout=30)
+                results.append(result)
+            except TimeoutError:
+                self._handle_timeout_error()
+        
+        return results
+```
+
+### 6. Report Generation (`report_generator.py`)
+
+The reporting layer creates multiple output formats from analysis results.
+
+#### Multi-Format Output
+
+```python
+class ReportGenerator:
+    """Generate reports and visualizations from analysis results."""
+    
+    def generate_text_report(self, report: ThesisAnalysisReport, output_path: str):
+        """Generate comprehensive Markdown report."""
+        
+    def export_json_report(self, report: ThesisAnalysisReport, output_path: str):
+        """Export structured JSON data."""
+        
+    def visualize_errors(self, report: ThesisAnalysisReport, output_dir: str):
+        """Generate matplotlib/seaborn visualizations."""
+```
+
+#### Visualization Architecture
+
+Uses matplotlib for chart generation:
+
+```python
+def _create_error_type_chart(self, report: ThesisAnalysisReport) -> str:
+    """Create error distribution by type chart."""
+    fig, ax = plt.subplots(figsize=(10, 6))
+    
+    error_types = list(report.errors_by_type.keys())
+    error_counts = list(report.errors_by_type.values())
+    
+    ax.bar(error_types, error_counts)
+    ax.set_title("Error Distribution by Type")
+    ax.set_xlabel("Error Type")
+    ax.set_ylabel("Count")
+    
+    # Save with consistent styling
+    plt.tight_layout()
+    chart_path = os.path.join(output_dir, "error_types.png")
+    plt.savefig(chart_path, dpi=300, bbox_inches='tight')
+    plt.close()
+    
+    return chart_path
+```
+
+## Design Patterns
+
+### 1. Factory Pattern
+
+Used for creating configured instances:
+
+```python
+def create_analysis_pipeline() -> AnalysisPipeline:
+    """Factory function for analysis pipeline."""
+    settings, dspy_config = initialize_system()
+    return AnalysisPipeline(settings=settings, dspy_config=dspy_config)
+```
+
+### 2. Strategy Pattern
+
+Different analysis strategies can be plugged in:
+
+```python
+class AnalysisStrategy(ABC):
+    """Abstract base for analysis strategies."""
+    
+    @abstractmethod
+    def analyze(self, text_block: TextBlock) -> List[BaseError]:
+        pass
+
+class GrammarAnalysisStrategy(AnalysisStrategy):
+    """Grammar-focused analysis strategy."""
+    
+    def analyze(self, text_block: TextBlock) -> List[BaseError]:
+        # Grammar-specific analysis
+        pass
+```
+
+### 3. Observer Pattern
+
+For monitoring and logging:
+
+```python
+class AnalysisObserver(ABC):
+    """Observer for analysis events."""
+    
+    @abstractmethod
+    def on_block_analyzed(self, block: TextBlock, errors: List[BaseError]):
+        pass
+
+class TokenUsageObserver(AnalysisObserver):
+    """Track token usage during analysis."""
+    
+    def on_block_analyzed(self, block: TextBlock, errors: List[BaseError]):
+        self.total_tokens += self._estimate_tokens(block.content)
+```
+
+## Error Handling Strategy
+
+### 1. Exception Hierarchy
+
+```python
+class VeritaScribeError(Exception):
+    """Base exception for all VeritaScribe errors."""
+    pass
+
+class ConfigurationError(VeritaScribeError):
+    """Configuration-related errors."""
+    pass
+
+class PDFProcessingError(VeritaScribeError):
+    """PDF processing errors."""
+    pass
+
+class LLMAnalysisError(VeritaScribeError):
+    """LLM analysis errors."""
+    
+    def __init__(self, message: str, context: Dict[str, Any] = None):
+        super().__init__(message)
+        self.context = context or {}
+```
+
+### 2. Retry Logic
+
+```python
+class RetryHandler:
+    """Handle retries for transient failures."""
+    
+    def __init__(self, max_retries: int = 3, delay: float = 1.0):
+        self.max_retries = max_retries
+        self.delay = delay
+    
+    def retry_with_backoff(self, func: Callable, *args, **kwargs):
+        """Retry function with exponential backoff."""
+        for attempt in range(self.max_retries):
+            try:
+                return func(*args, **kwargs)
+            except (APIError, TimeoutError) as e:
+                if attempt == self.max_retries - 1:
+                    raise
+                
+                sleep_time = self.delay * (2 ** attempt)
+                time.sleep(sleep_time)
+```
+
+### 3. Graceful Degradation
+
+```python
+def analyze_with_fallback(self, text_block: TextBlock) -> List[BaseError]:
+    """Analyze with fallback strategies."""
+    try:
+        # Try primary analysis
+        return self.primary_analyzer.analyze(text_block)
+    except LLMAnalysisError:
+        try:
+            # Fallback to simpler analysis
+            return self.fallback_analyzer.analyze(text_block)
+        except Exception:
+            # Return empty results rather than failing
+            self._log_analysis_failure(text_block)
+            return []
+```
+
+## Performance Optimization
+
+### 1. Caching Strategy
+
+```python
+from functools import lru_cache
+import hashlib
+
+class CachedAnalyzer:
+    """Analyzer with response caching."""
+    
+    def __init__(self):
+        self.cache = {}
+    
+    def analyze(self, text_block: TextBlock) -> List[BaseError]:
+        # Create cache key from content hash
+        content_hash = hashlib.md5(
+            text_block.content.encode()
+        ).hexdigest()
+        
+        if content_hash in self.cache:
+            return self.cache[content_hash]
+        
+        # Perform analysis
+        result = self._perform_analysis(text_block)
+        self.cache[content_hash] = result
+        return result
+```
+
+### 2. Memory Management
+
+```python
+def process_large_document(self, pdf_path: str) -> ThesisAnalysisReport:
+    """Process large documents with memory optimization."""
+    
+    # Process in chunks to avoid memory issues
+    chunk_size = self.settings.max_text_block_size
+    results = []
+    
+    for chunk in self._chunk_document(pdf_path, chunk_size):
+        # Process chunk
+        chunk_results = self._process_chunk(chunk)
+        results.extend(chunk_results)
+        
+        # Clear intermediate data
+        gc.collect()
+    
+    return self._aggregate_results(results)
+```
+
+### 3. Async Processing
+
+```python
+import asyncio
+import aiofiles
+
+class AsyncAnalysisPipeline:
+    """Async version of analysis pipeline."""
+    
+    async def analyze_thesis_async(
+        self, 
+        pdf_path: str
+    ) -> ThesisAnalysisReport:
+        """Async analysis with concurrency control."""
+        
+        text_blocks = await self._extract_text_blocks_async(pdf_path)
+        
+        # Create semaphore for concurrency control
+        semaphore = asyncio.Semaphore(
+            self.settings.max_concurrent_requests
+        )
+        
+        # Process blocks concurrently
+        tasks = [
+            self._analyze_block_async(block, semaphore)
+            for block in text_blocks
+        ]
+        
+        results = await asyncio.gather(*tasks, return_exceptions=True)
+        return self._create_report(pdf_path, results)
+```
+
+## Security Considerations
+
+### 1. Input Validation
+
+All inputs are validated at multiple layers:
+
+```python
+def validate_pdf_path(pdf_path: str) -> Path:
+    """Validate PDF path for security."""
+    path = Path(pdf_path).resolve()
+    
+    # Check file exists and is readable
+    if not path.exists():
+        raise FileNotFoundError(f"PDF not found: {path}")
+    
+    # Check file extension
+    if path.suffix.lower() != '.pdf':
+        raise ValueError(f"File must be PDF: {path}")
+    
+    # Check file size (prevent DoS)
+    if path.stat().st_size > MAX_FILE_SIZE:
+        raise ValueError(f"File too large: {path}")
+    
+    return path
+```
+
+### 2. API Key Protection
+
+```python
+class SecureSettings(VeritaScribeSettings):
+    """Settings with enhanced security."""
+    
+    @field_validator('openai_api_key')
+    def validate_api_key(cls, v):
+        if v and len(v) < 10:  # Basic validation
+            raise ValueError("Invalid API key format")
+        return v
+    
+    def __repr__(self):
+        # Never expose API key in logs
+        safe_dict = self.model_dump()
+        if 'openai_api_key' in safe_dict:
+            safe_dict['openai_api_key'] = '[REDACTED]'
+        return f"Settings({safe_dict})"
+```
+
+### 3. Output Sanitization
+
+```python
+def sanitize_output(content: str) -> str:
+    """Sanitize content for safe output."""
+    # Remove potential script injection
+    content = re.sub(r'<script.*?</script>', '', content, flags=re.IGNORECASE)
+    
+    # Escape HTML entities
+    content = html.escape(content)
+    
+    # Limit output length
+    if len(content) > MAX_OUTPUT_LENGTH:
+        content = content[:MAX_OUTPUT_LENGTH] + "..."
+    
+    return content
+```
+
+## Testing Architecture
+
+### 1. Test Structure
+
+```
+tests/
+├── unit/                    # Unit tests for individual components
+│   ├── test_config.py
+│   ├── test_data_models.py
+│   ├── test_pdf_processor.py
+│   └── test_llm_modules.py
+├── integration/             # Integration tests
+│   ├── test_pipeline.py
+│   └── test_report_generation.py
+├── fixtures/                # Test data and fixtures
+│   ├── sample_pdfs/
+│   └── expected_outputs/
+└── conftest.py             # Pytest configuration
+```
+
+### 2. Mock Strategy
+
+```python
+import pytest
+from unittest.mock import Mock, patch
+
+@pytest.fixture
+def mock_llm():
+    """Mock LLM for testing without API calls."""
+    with patch('dspy.LM') as mock:
+        mock_instance = Mock()
+        mock_instance.generate.return_value = MockResponse(
+            text='[{"error_type": "grammar", "severity": "high", ...}]'
+        )
+        mock.return_value = mock_instance
+        yield mock_instance
+
+def test_linguistic_analyzer(mock_llm):
+    """Test analyzer with mocked LLM."""
+    analyzer = LinguisticAnalyzer()
+    text_block = TextBlock(content="Test content", page_number=1)
+    
+    errors = analyzer.analyze(text_block)
+    
+    assert len(errors) > 0
+    assert errors[0].error_type == "grammar"
+```
+
+### 3. Property-Based Testing
+
+```python
+from hypothesis import given, strategies as st
+
+@given(
+    content=st.text(min_size=10, max_size=1000),
+    page_number=st.integers(min_value=1, max_value=100)
+)
+def test_text_block_creation(content, page_number):
+    """Property-based test for TextBlock creation."""
+    block = TextBlock(content=content, page_number=page_number)
+    
+    assert block.content == content
+    assert block.page_number == page_number
+    assert len(block.content) >= 10
+```
+
+## Deployment Considerations
+
+### 1. Docker Configuration
+
+```dockerfile
+FROM python:3.13-slim
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python dependencies
+COPY pyproject.toml uv.lock ./
+RUN pip install uv && uv sync --frozen
+
+# Copy application code
+COPY src/ ./src/
+
+# Set environment variables
+ENV PYTHONPATH=/app/src
+ENV OPENAI_API_KEY=""
+
+# Run application
+CMD ["uv", "run", "python", "-m", "veritascribe"]
+```
+
+### 2. Production Configuration
+
+```yaml
+# docker-compose.prod.yml
+version: '3.8'
+services:
+  veritascribe:
+    build: .
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - DEFAULT_MODEL=gpt-4-turbo
+      - MAX_CONCURRENT_REQUESTS=10
+      - PARALLEL_PROCESSING=true
+      - OUTPUT_DIRECTORY=/app/output
+    volumes:
+      - ./input:/app/input:ro
+      - ./output:/app/output
+      - ./logs:/app/logs
+    restart: unless-stopped
+    resource_limits:
+      cpus: '2'
+      memory: 4G
+```
+
+### 3. Monitoring and Logging
+
+```python
+import structlog
+from prometheus_client import Counter, Histogram, start_http_server
+
+# Metrics
+ANALYSIS_COUNTER = Counter('veritascribe_analyses_total', 'Total analyses')
+PROCESSING_TIME = Histogram('veritascribe_processing_seconds', 'Processing time')
+ERROR_COUNTER = Counter('veritascribe_errors_total', 'Total errors', ['error_type'])
+
+logger = structlog.get_logger()
+
+class InstrumentedPipeline(AnalysisPipeline):
+    """Pipeline with monitoring instrumentation."""
+    
+    @PROCESSING_TIME.time()
+    def analyze_thesis(self, pdf_path: str, **kwargs) -> ThesisAnalysisReport:
+        """Instrumented analysis with metrics."""
+        ANALYSIS_COUNTER.inc()
+        
+        logger.info("Starting analysis", pdf_path=pdf_path)
+        
+        try:
+            report = super().analyze_thesis(pdf_path, **kwargs)
+            
+            # Record metrics
+            for error_type, count in report.errors_by_type.items():
+                ERROR_COUNTER.labels(error_type=error_type).inc(count)
+            
+            logger.info(
+                "Analysis completed", 
+                pdf_path=pdf_path,
+                total_errors=report.total_errors,
+                processing_time=report.total_processing_time_seconds
+            )
+            
+            return report
+            
+        except Exception as e:
+            logger.error("Analysis failed", pdf_path=pdf_path, error=str(e))
+            raise
+```
+
+---
+
+*This architecture guide provides the foundation for understanding and extending VeritaScribe. For specific implementation details, refer to the source code and [API Reference](api-reference.qmd).*
