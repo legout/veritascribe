@@ -1,6 +1,24 @@
 [project]
 name = "veritascribe"
-version = "0.2.1"
+version = "0.2.0"
+license = "MIT"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.13",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Quality Assurance",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Text Processing :: Linguistic",
+    "Topic :: Utilities",
+    "Typing :: Typed",
+    "Framework :: AsyncIO",
+    "Framework :: Typer",
+    "Framework :: DSPy",
+]       
 description = "AI-powered bachelor thesis review tool for automated quality analysis"
 readme = "README.md"
 authors = [
@@ -34,6 +52,10 @@ dependencies = [
     "google-genai>=1.28.0",
     "pdfplumber>=0.11.7",
 ]
+
+[project.urls]
+documentation = "https://legout.github.io/veritascribe"
+homepage = "https://github.com/legout/veritascribe"
 
 [build-system]
 requires = ["hatchling"]
