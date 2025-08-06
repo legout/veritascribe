@@ -6,7 +6,7 @@ import re
 from typing import List, Optional, Dict, Any, Union
 import dspy
 from pydantic import ValidationError
-from langdetect import detect, LangDetectError
+from langdetect import detect, LangDetectException
 from pathlib import Path
 
 from .data_models import (
@@ -18,7 +18,7 @@ from .data_models import (
     ErrorSeverity,
     ErrorType
 )
-from .config import get_settings
+from .config import get_settings, get_rate_limiter
 
 logger = logging.getLogger(__name__)
 
@@ -48,7 +48,7 @@ def detect_language(text: str) -> str:
         
         return language_mapping.get(detected, 'english')
         
-    except LangDetectError:
+    except LangDetectException:
         logger.warning(f"Language detection failed for text: {text[:50]}...")
         return "english"  # Fallback to English
 
@@ -278,6 +278,7 @@ class LinguisticAnalyzer(dspy.Module):
         super().__init__()
         self.analyzer = dspy.ChainOfThought(LinguisticAnalysisSignature)
         self.settings = get_settings()
+        self.rate_limiter = get_rate_limiter() if self.settings.rate_limit_enabled else None
     
     def forward(self, text_block: TextBlock, language: str = None) -> List[GrammarCorrectionError]:
         """
@@ -302,11 +303,19 @@ class LinguisticAnalyzer(dspy.Module):
                 # Use compiled module - implementation would depend on DSPy API
                 # For now, fall back to regular module
             
-            # Call DSPy module with language context
-            response = self.analyzer(
-                text_chunk=text_block.content,
-                language=language
-            )
+            # Call DSPy module with language context and rate limiting
+            if self.rate_limiter:
+                response = self.rate_limiter.rate_limited_call(
+                    self.settings.llm_provider,
+                    self.analyzer,
+                    text_chunk=text_block.content,
+                    language=language
+                )
+            else:
+                response = self.analyzer(
+                    text_chunk=text_block.content,
+                    language=language
+                )
             
             # Parse JSON response with robust error handling
             errors_data = safe_json_parse(response.grammar_errors, ['error_type', 'severity', 'original_text'])
@@ -348,6 +357,7 @@ class ContentValidator(dspy.Module):
         super().__init__()
         self.validator = dspy.ChainOfThought(ContentValidationSignature)
         self.settings = get_settings()
+        self.rate_limiter = get_rate_limiter() if self.settings.rate_limit_enabled else None
     
     def forward(self, text_block: TextBlock, context: str = "academic thesis", language: str = None) -> List[ContentPlausibilityError]:
         """
@@ -372,12 +382,21 @@ class ContentValidator(dspy.Module):
                 logger.debug(f"Using compiled module for {language}")
                 # Use compiled module - implementation would depend on DSPy API
             
-            # Call DSPy module with language context
-            response = self.validator(
-                text_chunk=text_block.content,
-                context=context,
-                language=language
-            )
+            # Call DSPy module with language context and rate limiting
+            if self.rate_limiter:
+                response = self.rate_limiter.rate_limited_call(
+                    self.settings.llm_provider,
+                    self.validator,
+                    text_chunk=text_block.content,
+                    context=context,
+                    language=language
+                )
+            else:
+                response = self.validator(
+                    text_chunk=text_block.content,
+                    context=context,
+                    language=language
+                )
             
             # Parse JSON response with robust error handling
             errors_data = safe_json_parse(response.content_errors, ['error_type', 'severity', 'original_text'])
@@ -419,6 +438,7 @@ class CitationChecker(dspy.Module):
         super().__init__()
         self.checker = dspy.ChainOfThought(CitationAnalysisSignature)
         self.settings = get_settings()
+        self.rate_limiter = get_rate_limiter() if self.settings.rate_limit_enabled else None
     
     def forward(
         self, 
@@ -450,13 +470,23 @@ class CitationChecker(dspy.Module):
                 logger.debug(f"Using compiled module for {language}")
                 # Use compiled module - implementation would depend on DSPy API
             
-            # Call DSPy module with language context
-            response = self.checker(
-                text_chunk=text_block.content,
-                bibliography=bibliography,
-                citation_style=citation_style,
-                language=language
-            )
+            # Call DSPy module with language context and rate limiting
+            if self.rate_limiter:
+                response = self.rate_limiter.rate_limited_call(
+                    self.settings.llm_provider,
+                    self.checker,
+                    text_chunk=text_block.content,
+                    bibliography=bibliography,
+                    citation_style=citation_style,
+                    language=language
+                )
+            else:
+                response = self.checker(
+                    text_chunk=text_block.content,
+                    bibliography=bibliography,
+                    citation_style=citation_style,
+                    language=language
+                )
             
             # Parse JSON response with robust error handling
             errors_data = safe_json_parse(response.citation_errors, ['error_type', 'severity', 'original_text'])

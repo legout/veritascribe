@@ -24,6 +24,24 @@ logger = logging.getLogger(__name__)
 class ReportGenerator:
     """Generates comprehensive reports and visualizations from analysis results."""
     
+    # Font mapping for PyMuPDF compatibility
+    FONT_MAPPING = {
+        "helv": "helvetica",
+        "helv-bold": "helvetica-bold",
+        "times": "times-roman", 
+        "times-bold": "times-bold",
+        "courier": "courier",
+        "courier-bold": "courier-bold"
+    }
+    
+    # Fallback fonts in order of preference
+    FALLBACK_FONTS = [
+        "helvetica",
+        "times-roman", 
+        "courier",
+        None  # Use default system font
+    ]
+    
     def __init__(self):
         # Configure matplotlib for better-looking plots
         plt.style.use('default')
@@ -31,6 +49,107 @@ class ReportGenerator:
         plt.rcParams['font.size'] = 10
         plt.rcParams['axes.grid'] = True
         plt.rcParams['grid.alpha'] = 0.3
+    
+    def _get_safe_font(self, requested_font: str) -> str:
+        """
+        Get a safe font name for PyMuPDF that's guaranteed to work.
+        
+        Args:
+            requested_font: The requested font name
+            
+        Returns:
+            A font name that should work with PyMuPDF
+        """
+        # First try to map the font name
+        mapped_font = self.FONT_MAPPING.get(requested_font, requested_font)
+        
+        # Try the mapped font first
+        if self._test_font(mapped_font):
+            return mapped_font
+        
+        # Fall back through the fallback fonts
+        for fallback_font in self.FALLBACK_FONTS:
+            if fallback_font is None:
+                logger.warning(f"Using default font as fallback for '{requested_font}'")
+                return "helv"  # PyMuPDF default
+            
+            if self._test_font(fallback_font):
+                logger.info(f"Using fallback font '{fallback_font}' for '{requested_font}'")
+                return fallback_font
+        
+        # Last resort - use PyMuPDF default
+        logger.warning(f"All font fallbacks failed for '{requested_font}', using default")
+        return "helv"
+    
+    def _test_font(self, fontname: str) -> bool:
+        """
+        Test if a font name works with PyMuPDF.
+        
+        Args:
+            fontname: Font name to test
+            
+        Returns:
+            True if font is available, False otherwise
+        """
+        try:
+            # Create a temporary document to test the font
+            test_doc = fitz.open()
+            test_page = test_doc.new_page()
+            test_rect = fitz.Rect(0, 0, 100, 20)
+            
+            # Try to insert text with this font
+            test_page.insert_textbox(
+                test_rect,
+                "Test",
+                fontsize=12,
+                fontname=fontname
+            )
+            
+            test_doc.close()
+            return True
+            
+        except Exception as e:
+            logger.debug(f"Font '{fontname}' test failed: {e}")
+            return False
+    
+    def _safe_insert_textbox(self, page, rect, text, fontsize=12, fontname="helvetica", color=(0, 0, 0), **kwargs):
+        """
+        Safely insert text into a PDF page with font fallback.
+        
+        Args:
+            page: PyMuPDF page object
+            rect: Rectangle for text insertion
+            text: Text to insert
+            fontsize: Font size
+            fontname: Requested font name
+            color: Text color
+            **kwargs: Additional arguments
+        """
+        safe_font = self._get_safe_font(fontname)
+        
+        try:
+            return page.insert_textbox(
+                rect,
+                text,
+                fontsize=fontsize,
+                fontname=safe_font,
+                color=color,
+                **kwargs
+            )
+        except Exception as e:
+            # Try with absolute fallback
+            logger.warning(f"Text insertion failed with font '{safe_font}': {e}")
+            try:
+                return page.insert_textbox(
+                    rect,
+                    text,
+                    fontsize=fontsize,
+                    color=color,
+                    **kwargs
+                )
+            except Exception as e2:
+                logger.error(f"Text insertion failed even with default font: {e2}")
+                raise
     
     def generate_text_report(
         self, 
@@ -631,7 +750,8 @@ class ReportGenerator:
         
         # Title
         title_rect = fitz.Rect(50, 50, 545, 100)
-        summary_page.insert_textbox(
+        self._safe_insert_textbox(
+            summary_page,
             title_rect,
             f"VeritaScribe Analysis Summary - {report.document_name}",
             fontsize=18,
@@ -641,7 +761,8 @@ class ReportGenerator:
         
         # Analysis date
         date_rect = fitz.Rect(50, 110, 545, 130)
-        summary_page.insert_textbox(
+        self._safe_insert_textbox(
+            summary_page,
             date_rect,
             f"Analysis Date: {report.analysis_timestamp.strftime('%Y-%m-%d %H:%M:%S')}",
             fontsize=12,
@@ -661,7 +782,8 @@ class ReportGenerator:
         y_pos = 160
         for metric in metrics_text:
             metric_rect = fitz.Rect(50, y_pos, 545, y_pos + 20)
-            summary_page.insert_textbox(
+            self._safe_insert_textbox(
+                summary_page,
                 metric_rect,
                 metric,
                 fontsize=11,
@@ -673,7 +795,8 @@ class ReportGenerator:
         # Error breakdown
         if report.errors_by_severity:
             breakdown_title_rect = fitz.Rect(50, y_pos + 20, 545, y_pos + 40)
-            summary_page.insert_textbox(
+            self._safe_insert_textbox(
+                summary_page,
                 breakdown_title_rect,
                 "Error Breakdown by Severity:",
                 fontsize=12,
@@ -690,7 +813,8 @@ class ReportGenerator:
                 if count > 0:
                     color_name = severity_colors_text[severity]
                     breakdown_rect = fitz.Rect(50, y_pos, 545, y_pos + 20)
-                    summary_page.insert_textbox(
+                    self._safe_insert_textbox(
+                        summary_page,
                         breakdown_rect,
                         f"• {severity.title()}: {count} errors (highlighted in {color_name})",
                         fontsize=11,
@@ -701,7 +825,8 @@ class ReportGenerator:
         
         # Instructions
         instructions_title_rect = fitz.Rect(50, y_pos + 20, 545, y_pos + 40)
-        summary_page.insert_textbox(
+        self._safe_insert_textbox(
+            summary_page,
             instructions_title_rect,
             "How to Use This Annotated PDF:",
             fontsize=12,
@@ -720,7 +845,8 @@ class ReportGenerator:
         y_pos += 60
         for instruction in instructions:
             inst_rect = fitz.Rect(50, y_pos, 545, y_pos + 20)
-            summary_page.insert_textbox(
+            self._safe_insert_textbox(
+                summary_page,
                 inst_rect,
                 instruction,
                 fontsize=10,

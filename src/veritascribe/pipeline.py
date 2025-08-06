@@ -501,6 +501,106 @@ class QuickAnalysisPipeline:
         except Exception as e:
             logger.error(f"Quick analysis failed: {e}")
             raise
+    
+    def _calculate_llm_usage(self) -> tuple[Dict[str, int], float]:
+        """
+        Calculate token usage and estimated cost from DSPy LLM history.
+        
+        Returns:
+            Tuple of (token_usage_dict, estimated_cost)
+        """
+        try:
+            # Get the current DSPy LM instance
+            if not hasattr(dspy.settings, 'lm') or not dspy.settings.lm:
+                return {}, 0.0
+            
+            lm = dspy.settings.lm
+            
+            # Initialize counters
+            total_prompt_tokens = 0
+            total_completion_tokens = 0
+            
+            # Check if the LM has a history attribute
+            if hasattr(lm, 'history') and lm.history:
+                for call in lm.history:
+                    # Extract token counts from call metadata
+                    if hasattr(call, 'usage') and call.usage:
+                        total_prompt_tokens += getattr(call.usage, 'prompt_tokens', 0)
+                        total_completion_tokens += getattr(call.usage, 'completion_tokens', 0)
+                    elif hasattr(call, 'response') and hasattr(call.response, 'usage'):
+                        usage = call.response.usage
+                        total_prompt_tokens += getattr(usage, 'prompt_tokens', 0)
+                        total_completion_tokens += getattr(usage, 'completion_tokens', 0)
+            
+            total_tokens = total_prompt_tokens + total_completion_tokens
+            
+            # Calculate cost based on current provider and model
+            estimated_cost = self._calculate_cost(
+                total_prompt_tokens, 
+                total_completion_tokens
+            )
+            
+            # Prepare usage dictionary
+            token_usage = {
+                'prompt_tokens': total_prompt_tokens,
+                'completion_tokens': total_completion_tokens,
+                'total_tokens': total_tokens
+            }
+            
+            # Clear history to avoid double counting on subsequent runs
+            if hasattr(lm, 'history'):
+                lm.history.clear()
+            
+            return token_usage, estimated_cost
+            
+        except Exception as e:
+            logger.warning(f"Failed to calculate LLM usage: {e}")
+            return {}, 0.0
+    
+    def _calculate_cost(self, prompt_tokens: int, completion_tokens: int) -> float:
+        """
+        Calculate estimated cost based on current provider and model.
+        
+        Args:
+            prompt_tokens: Number of prompt tokens used
+            completion_tokens: Number of completion tokens used
+            
+        Returns:
+            Estimated cost in USD
+        """
+        try:
+            provider = self.settings.llm_provider
+            model = self.settings.default_model
+            
+            # Get provider pricing information
+            if provider not in PROVIDER_MODELS:
+                return 0.0
+            
+            provider_config = PROVIDER_MODELS[provider]
+            pricing = provider_config.get('pricing', {})
+            
+            # Find pricing for the specific model
+            model_pricing = None
+            if model in pricing:
+                model_pricing = pricing[model]
+            else:
+                # Try to find a matching model (handle provider prefixes)
+                for price_model, price_info in pricing.items():
+                    if model.endswith(price_model) or price_model.endswith(model):
+                        model_pricing = price_info
+                        break
+            
+            # Calculate cost if pricing is available
+            if model_pricing and isinstance(model_pricing, dict):
+                prompt_cost = (prompt_tokens / 1000) * model_pricing.get('prompt', 0)
+                completion_cost = (completion_tokens / 1000) * model_pricing.get('completion', 0)
+                return prompt_cost + completion_cost
+            
+            return 0.0
+            
+        except Exception as e:
+            logger.warning(f"Failed to calculate cost: {e}")
+            return 0.0
 
 
 def create_analysis_pipeline() -> ThesisAnalysisPipeline:

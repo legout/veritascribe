@@ -136,10 +136,71 @@ class PDFProcessor:
                 lines.append(line_text.strip())
         
         # Join lines with proper spacing
-        text = " ".join(lines)
+        text = "\n".join(lines)
         
         # Clean up the text
         text = self._clean_extracted_text(text)
+        
+        return text
+    
+    def _fix_german_umlauts(self, text: str) -> str:
+        """
+        Fix corrupted German umlauts that appear as space + base letter.
+        
+        Args:
+            text: Text with potentially corrupted umlauts
+            
+        Returns:
+            Text with restored German umlauts
+        """
+        if not text:
+            return ""
+        
+        
+       # Replace '"a' with 'ä' and '"A' with 'Ä'
+        text = re.sub(r'"a', 'ä', text)
+        text = re.sub(r'"A', 'Ä', text)
+
+        # Replace '"o' with 'ö' and '"O' with 'Ö'
+        text = re.sub(r'"o', 'ö', text)
+        text = re.sub(r'"O', 'Ö', text)
+
+        # Replace '"u' with 'ü' and '"U' with 'Ü'
+        text = re.sub(r'"u', 'ü', text)
+        text = re.sub(r'"U', 'Ü', text)
+
+        # Replace '¨a' with 'ä' and '¨A' with 'Ä'
+        text = re.sub(r'¨a', 'ä', text)
+        text = re.sub(r'¨A', 'Ä', text)
+
+        # Replace '¨o' with 'ö' and '¨O' with 'Ö'
+        text = re.sub(r'¨o', 'ö', text)
+        text = re.sub(r'¨O', 'Ö', text)
+
+        # Replace '¨u' with 'ü' and '¨U' with 'Ü'
+        text = re.sub(r'¨u', 'ü', text)
+        text = re.sub(r'¨U', 'Ü', text)
+
+
+
+        return text
+    
+    def _remove_line_break_hyphens(self, text: str) -> str:
+        """
+        Remove hyphens that were inserted at line breaks in German text.
+        
+        Args:
+            text: Text with potential line-break hyphens
+            
+        Returns:
+            Text with line-break hyphens removed
+        """
+        if not text:
+            return ""
+        
+        # replace hyphens at the end of a line
+        text = re.sub(r'-\n(?![ ,])', '', text)
+
         
         return text
     
@@ -156,14 +217,23 @@ class PDFProcessor:
         if not text:
             return ""
         
-        # Remove excessive whitespace
+        # Step 1: Fix German umlaut corruption
+        text = self._fix_german_umlauts(text)
+        
+        # Step 2: Remove line-break hyphens
+        text = self._remove_line_break_hyphens(text)
+        
+        # Step 3: Remove excessive whitespace
         text = re.sub(r'\s+', ' ', text)
         
-        # Remove common PDF artifacts
+        # Step 4: Remove common PDF artifacts
         text = re.sub(r'[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F]', '', text)  # Control characters
-        text = re.sub(r'[^\w\s\.,;:!?()[\]{}"\'-]', ' ', text)  # Keep only common punctuation
         
-        # Fix common spacing issues
+        # Step 5: Keep German characters and common punctuation
+        # Updated regex to preserve German characters: äöüßÄÖÜ
+        #text = re.sub(r'[^\w\s\.,;:!?()[\]{}"\'-äöüßÄÖÜ]', ' ', text)
+        
+        # Step 6: Fix common spacing issues
         text = re.sub(r'\s+([.,;:!?])', r'\1', text)  # Remove space before punctuation
         text = re.sub(r'([.,;:!?])\s*', r'\1 ', text)  # Ensure space after punctuation
         
@@ -404,7 +474,11 @@ def create_test_pdf(output_path: str) -> str:
         
         # Insert text into the page
         text_rect = fitz.Rect(72, 72, 500, 700)  # Text area
-        page.insert_textbox(text_rect, sample_text, fontsize=11, fontname="helv")
+        try:
+            page.insert_textbox(text_rect, sample_text, fontsize=11, fontname="helvetica")
+        except Exception:
+            # Fallback to default font if helvetica fails
+            page.insert_textbox(text_rect, sample_text, fontsize=11)
         
         # Save the PDF
         doc.save(output_path)

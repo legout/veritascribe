@@ -63,6 +63,13 @@ class VeritaScribeSettings(BaseSettings):
     max_retries: int = Field(default=3, description="Maximum retries for failed LLM requests")
     retry_delay: float = Field(default=1.0, description="Delay between retries in seconds")
     
+    # Rate Limiting Configuration
+    rate_limit_enabled: bool = Field(default=True, description="Enable rate limiting for LLM API calls")
+    rate_limit_requests_per_minute: Optional[int] = Field(None, description="Custom requests per minute limit (auto-detected by provider if None)")
+    rate_limit_burst_capacity: Optional[int] = Field(None, description="Burst capacity for rate limiter (defaults to 2x RPM)")
+    rate_limit_queue_timeout: float = Field(default=300.0, description="Maximum time to wait in rate limit queue (seconds)")
+    rate_limit_backoff_multiplier: float = Field(default=1.5, description="Exponential backoff multiplier for rate limiting")
+    
     @field_validator('llm_provider')
     @classmethod
     def validate_provider(cls, v):
@@ -417,8 +424,40 @@ def initialize_system() -> tuple[VeritaScribeSettings, DSPyConfig]:
     # Initialize LLM
     dspy_config.initialize_llm()
     
+    # Initialize rate limiter if enabled
+    if settings.rate_limit_enabled:
+        rate_limiter = get_rate_limiter()
+        # Configure provider-specific limits
+        if settings.rate_limit_requests_per_minute:
+            rate_limiter.get_limiter(
+                settings.llm_provider,
+                requests_per_minute=settings.rate_limit_requests_per_minute,
+                burst_capacity=settings.rate_limit_burst_capacity,
+                queue_timeout=settings.rate_limit_queue_timeout,
+                backoff_multiplier=settings.rate_limit_backoff_multiplier
+            )
+    
     # Setup output directory
     setup_output_directory(settings.output_directory)
     
     print("VeritaScribe system initialized successfully")
     return settings, dspy_config
+
+
+# Global rate limiter instance  
+_rate_limiter = None
+
+
+def get_rate_limiter():
+    """Get global rate limiter instance."""
+    global _rate_limiter
+    if _rate_limiter is None:
+        from .rate_limiter import ProviderRateLimiter
+        _rate_limiter = ProviderRateLimiter()
+    return _rate_limiter
+
+
+def reset_rate_limiter() -> None:
+    """Reset global rate limiter instance."""
+    global _rate_limiter
+    _rate_limiter = None
