@@ -1,6 +1,6 @@
 # VeritaScribe
 
-**AI-Powered Bachelor Thesis Review Tool**
+**AI-Powered Thesis Review Tool**
 
 VeritaScribe is an intelligent document analysis system that automatically reviews PDF thesis documents for quality issues including grammar errors, content plausibility problems, and citation format inconsistencies. Built with DSPy for LLM orchestration, Pydantic for structured data modeling, and PyMuPDF for PDF processing.
 
