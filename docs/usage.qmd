@@ -183,6 +183,11 @@ uv run python -m veritascribe analyze thesis.pdf
 uv run python -m veritascribe analyze thesis.pdf --annotate
 ```
 
+The annotated PDF will contain:
+- Color-coded highlights on problematic text (red/orange/yellow by severity)
+- Detailed sticky note annotations with suggestions and explanations
+- All original document formatting preserved
+
 **Custom Output Location:**
 ```bash
 uv run python -m veritascribe analyze thesis.pdf \
@@ -211,11 +216,99 @@ uv run python -m veritascribe quick thesis.pdf --blocks 15
 
 ### `optimize-prompts` - DSPy Prompt Optimization
 
-Fine-tunes the analysis prompts using a few-shot learning dataset.
+Fine-tunes the analysis prompts using few-shot learning with bilingual training data for improved accuracy.
 
 ```bash
 uv run python -m veritascribe optimize-prompts
 ```
+
+#### What This Does
+
+The prompt optimization process:
+
+1. **Trains Language-Specific Modules**: Creates optimized DSPy modules for both English and German
+2. **Uses Curated Training Data**: Leverages hand-crafted examples of grammar, content, and citation errors
+3. **Applies Few-Shot Learning**: Uses DSPy's BootstrapFewShot compilation to improve prompt performance
+4. **Enhances Accuracy**: Results in significantly better error detection and fewer false positives
+
+#### When to Use
+
+- **After Installation**: Run once to set up optimized prompts for better results
+- **When Analysis Quality is Poor**: If you notice many false positives or missed errors
+- **After Updating Training Data**: When you've added new examples to the training dataset
+- **For Research/Academic Use**: When maximum accuracy is more important than processing speed
+
+#### Process Details
+
+```bash
+# The optimization process will:
+# 1. Load bilingual training examples
+# 2. Compile optimized modules for each analysis type
+# 3. Save compiled modules for future use
+# 4. Take 3-5 minutes to complete
+
+uv run python -m veritascribe optimize-prompts
+```
+
+**Note**: This process requires significant LLM API usage as it trains multiple modules. Budget approximately $2-5 in API costs for the full optimization process.
+
+### `demo` - Create Sample Document
+
+Creates and analyzes a demo thesis document for testing and demonstration.
+
+```bash
+uv run python -m veritascribe demo
+```
+
+This command:
+- Creates a sample PDF document (`demo_thesis.pdf`) with intentional errors
+- Runs quick analysis if API key is configured
+- Provides example output to familiarize you with the system
+- Perfect for testing your setup and configuration
+
+### `config` - View Configuration
+
+Displays current configuration settings and provider information.
+
+```bash
+uv run python -m veritascribe config
+```
+
+Shows:
+- Active LLM provider and model
+- API key configuration status
+- Analysis settings (temperature, max tokens, etc.)
+- Recommended models for your provider
+- Configuration validation results
+
+### `providers` - List Available Providers
+
+Shows all supported LLM providers, models, and configuration examples.
+
+```bash
+uv run python -m veritascribe providers
+```
+
+Displays:
+- Available providers (OpenAI, OpenRouter, Anthropic, Custom)
+- Recommended models for each provider
+- Configuration examples
+- Quick setup instructions for each provider
+
+### `test` - Run System Tests
+
+Verifies that all components are working correctly.
+
+```bash
+uv run python -m veritascribe test
+```
+
+Tests:
+- Configuration loading
+- PDF processing functionality
+- Analysis modules (if API key configured)
+- System integration and dependencies
+- Provides diagnostic information for troubleshooting
 
 ## Understanding Output
 
@@ -263,7 +356,96 @@ Charts and graphs showing error distribution, density, and severity.
 
 #### 4. Annotated PDF (`_annotated.pdf`)
 
-An optional PDF output with errors highlighted and comments added directly to the document.
+An interactive PDF that transforms your original document into a comprehensive visual review tool.
+
+**What You Get:**
+
+- **Visual Error Highlighting**: Problematic text is highlighted directly on the page using a severity-based color system:
+  - 🔴 **Red Highlights**: High-severity errors requiring immediate attention (grammar mistakes, logical inconsistencies, missing citations)
+  - 🟠 **Orange Highlights**: Medium-severity errors needing improvement (style issues, minor grammar problems, formatting inconsistencies)
+  - 🟡 **Yellow Highlights**: Low-severity suggestions for enhancement (stylistic preferences, optional improvements)
+
+- **Detailed Sticky Note Annotations**: Each error includes a comprehensive sticky note with:
+  ```
+  ERROR: Grammar
+  Severity: High
+  
+  Original: The results shows that our hypothesis
+  Suggested: The results show that our hypothesis
+  
+  Explanation: Subject-verb disagreement: 'results' is plural 
+  and requires the plural verb 'show'
+  
+  Confidence: 95.0%
+  ```
+
+- **Smart Annotation Positioning**: Annotations are automatically positioned to avoid overlaps while maintaining readability
+
+- **Preserves Original Document**: All original formatting, images, and layout are maintained while adding the review layer
+
+**Perfect Use Cases:**
+- **Supervisor Review**: Share annotated PDFs with advisors for targeted feedback discussions
+- **Collaborative Editing**: Team members can see exactly what needs attention
+- **Iterative Writing**: Quickly identify areas needing revision during the writing process
+- **Self-Review**: Visual representation helps you understand error patterns in your writing
+- **Academic Presentations**: Demonstrate quality control processes to committees
+
+**Important Notes:**
+- Annotated PDFs are only generated when errors are found
+- The `--annotate` flag must be used explicitly
+- Annotations preserve the original PDF's formatting and can be viewed in any standard PDF reader
+
+## Multi-Language Document Analysis
+
+VeritaScribe provides intelligent multi-language support with automatic language detection and language-specific analysis.
+
+### Automatic Language Detection
+
+The system automatically detects document language and applies appropriate analysis:
+
+```bash
+# English document - automatically detected and analyzed with English grammar rules
+uv run python -m veritascribe analyze english_thesis.pdf
+
+# German document - automatically detected and analyzed with German grammar rules  
+uv run python -m veritascribe analyze deutsche_abschlussarbeit.pdf
+
+# Mixed-language document - intelligently handles language switching
+uv run python -m veritascribe analyze multilingual_thesis.pdf
+```
+
+### Language-Specific Features
+
+#### English Analysis
+- **Grammar**: Subject-verb agreement, tense consistency, article usage
+- **Academic Style**: Formal writing conventions, passive voice usage
+- **Citations**: APA, MLA, Chicago style formatting
+- **Content**: Logical flow, argument structure, evidence validation
+
+#### German Analysis  
+- **Grammar**: Kasus-Kongruenz (case agreement), Subjekt-Verb-Kongruenz
+- **Academic Style**: German academic writing conventions, complex sentence structure
+- **Citations**: German academic citation styles, bibliography formatting
+- **Content**: German academic argumentation patterns, cultural context awareness
+
+### Optimization for Specific Languages
+
+```bash
+# Run prompt optimization to improve accuracy for both languages
+uv run python -m veritascribe optimize-prompts
+
+# This creates optimized modules for:
+# - English grammar, content, and citation analysis
+# - German grammar, content, and citation analysis
+# - Language detection and switching logic
+```
+
+### Best Practices for Multi-Language Documents
+
+1. **Language Consistency**: Ensure your document maintains consistent language usage
+2. **Cultural Context**: Be aware of different academic writing conventions
+3. **Citation Styles**: Use appropriate citation styles for your document's language
+4. **Optimization**: Run prompt optimization for best results with non-English documents
 
 ## Advanced Usage Patterns
 
@@ -296,6 +478,8 @@ uv run python -m veritascribe quick draft.pdf --blocks 10
 
 # Step 2: Address major issues, then full analysis with annotation
 uv run python -m veritascribe analyze draft.pdf --output ./review_1 --annotate
+
+# The annotated PDF will visually show all errors with severity-based highlighting
 
 # Step 3: After revisions, re-analyze
 uv run python -m veritascribe analyze revised_draft.pdf --output ./review_2
@@ -340,7 +524,8 @@ uv run python -m veritascribe analyze large_thesis.pdf
 1. **Start with quick analysis**: Get overview before full analysis
 2. **Choose appropriate provider**: Match your needs and budget
 3. **Focus on high-priority issues**: Address critical errors first
-4. **Use `optimize-prompts`**: Fine-tune prompts for better accuracy if needed.
+4. **Use `optimize-prompts`**: Fine-tune prompts for better accuracy, especially for non-English documents
+5. **Consider document language**: German and other non-English documents benefit significantly from prompt optimization
 
 ---
 

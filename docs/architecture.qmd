@@ -231,9 +231,76 @@ Coordinates format: `[x1, y1, x2, y2]` where:
 - `(x2, y2)`: Bottom-right corner  
 - Units: PDF points (72 points = 1 inch)
 
-### 4. LLM Analysis Modules (`llm_modules.py`)
+### 4. Multi-Language Analysis System
 
-The analysis layer uses DSPy for structured LLM interactions.
+VeritaScribe provides comprehensive multi-language support with automatic language detection and language-specific analysis modules.
+
+#### Language Detection Architecture
+
+```python
+def detect_language(text: str) -> str:
+    """Detect the primary language of text content."""
+    try:
+        from langdetect import detect
+        detected = detect(text)
+        
+        # Map to supported languages
+        language_mapping = {
+            'en': 'english',
+            'de': 'german'
+        }
+        
+        return language_mapping.get(detected, 'english')  # Fallback to English
+        
+    except Exception:
+        return 'english'  # Safe fallback
+```
+
+#### Language-Specific Training Data
+
+The system uses curated bilingual training examples for few-shot learning:
+
+```python
+TRAINING_DATA = {
+    "english": {
+        "grammar_examples": [...],  # English grammar error examples
+        "content_examples": [...],  # English content validation examples
+        "citation_examples": [...]  # English citation format examples
+    },
+    "german": {
+        "grammar_examples": [...],  # German grammar error examples  
+        "content_examples": [...],  # German content validation examples
+        "citation_examples": [...]  # German citation format examples
+    }
+}
+```
+
+#### DSPy Prompt Optimization
+
+The system implements advanced prompt optimization using DSPy's few-shot learning capabilities:
+
+```python
+# DSPy module compilation for enhanced accuracy
+from dspy.teleprompt import BootstrapFewShot
+
+def compile_module_for_language(language: str, error_type: str):
+    """Compile optimized DSPy module for specific language and error type."""
+    
+    # Get training examples for the specific language and error type
+    training_examples = get_training_examples(language, error_type)
+    
+    # Create few-shot optimizer
+    optimizer = BootstrapFewShot(max_bootstrapped_demos=8, max_labeled_demos=4)
+    
+    # Compile the module with training data
+    optimized_module = optimizer.compile(base_module, trainset=training_examples)
+    
+    return optimized_module
+```
+
+### 5. LLM Analysis Modules (`llm_modules.py`)
+
+The analysis layer uses DSPy for structured LLM interactions with multi-language awareness.
 
 #### DSPy Architecture
 
@@ -241,12 +308,16 @@ DSPy provides declarative LLM programming with strong typing and structured outp
 
 ```python
 class LinguisticAnalysisSignature(dspy.Signature):
-    """Grammar and linguistic analysis signature."""
-    text_chunk = dspy.InputField(
-        desc="Text to analyze for grammar and linguistic issues"
+    """Grammar and linguistic analysis signature with language awareness."""
+    text_chunk: str = dspy.InputField(
+        description="Text chunk to analyze for grammatical issues"
     )
-    grammar_errors = dspy.OutputField(
-        desc="JSON list of grammar errors found"
+    language: str = dspy.InputField(
+        description="Language of the text (e.g., 'english', 'german')", 
+        default="english"
+    )
+    grammar_errors: str = dspy.OutputField(
+        description="JSON list of grammar errors with language-specific rules applied"
     )
 ```
 
@@ -256,23 +327,42 @@ Each analysis type follows a consistent pattern:
 
 ```python
 class LinguisticAnalyzer(dspy.Module):
-    """Grammar and linguistic analysis module."""
+    """Grammar and linguistic analysis module with language detection."""
     
     def __init__(self):
         super().__init__()
         self.analyzer = dspy.Predict(LinguisticAnalysisSignature)
     
-    def forward(self, text_chunk: str) -> str:
-        """Analyze text for linguistic issues."""
-        return self.analyzer(text_chunk=text_chunk)
+    def forward(self, text_chunk: str, language: str = None) -> str:
+        """Analyze text for linguistic issues with language awareness."""
+        if language is None:
+            language = detect_language(text_chunk)
+        
+        return self.analyzer(text_chunk=text_chunk, language=language)
     
     def analyze(self, text_block: TextBlock) -> List[BaseError]:
         """Convert DSPy output to validated error objects."""
-        result = self.forward(text_block.content)
+        # Detect language for this text block
+        detected_language = detect_language(text_block.content)
+        
+        # Try to use optimized module if available
+        optimized_module = self._load_optimized_module('grammar', detected_language)
+        if optimized_module:
+            result = optimized_module.forward(text_block.content, detected_language)
+        else:
+            result = self.forward(text_block.content, detected_language)
+            
         return self._parse_and_validate_errors(
             result.grammar_errors, 
             text_block
         )
+    
+    def _load_optimized_module(self, error_type: str, language: str):
+        """Load optimized module if available."""
+        module_path = f"compiled_modules/{language}_{error_type}_module.json"
+        if os.path.exists(module_path):
+            return dspy.load(module_path)
+        return None
 ```
 
 #### Error Parsing and Validation
@@ -309,9 +399,93 @@ def _parse_and_validate_errors(
         return []
 ```
 
-### 5. Pipeline Orchestration (`pipeline.py`)
+### 6. Prompt Optimization System (`scripts/compile_modules.py`)
 
-The pipeline coordinates the entire analysis workflow.
+The prompt optimization system uses DSPy's few-shot learning to create highly accurate analysis modules.
+
+#### Compilation Architecture
+
+```python
+def compile_module_for_language(language: str, error_type: str, num_examples: int = 8):
+    """Compile optimized DSPy module for specific language and error type."""
+    
+    # Load training examples
+    training_examples = get_training_examples(language, error_type)
+    if len(training_examples) < 2:
+        print(f"Insufficient training data for {language} {error_type}")
+        return None
+    
+    # Initialize base module 
+    if error_type == 'grammar':
+        base_module = LinguisticAnalyzer()
+    elif error_type == 'content':
+        base_module = ContentValidator()  
+    elif error_type == 'citation':
+        base_module = CitationChecker()
+    
+    # Create optimizer with few-shot learning
+    optimizer = BootstrapFewShot(
+        max_bootstrapped_demos=num_examples,
+        max_labeled_demos=min(4, len(training_examples))
+    )
+    
+    # Compile with training data
+    try:
+        optimized_module = optimizer.compile(base_module, trainset=training_examples)
+        
+        # Save compiled module
+        output_path = f"compiled_modules/{language}_{error_type}_module.json"
+        optimized_module.save(output_path)
+        
+        return optimized_module
+        
+    except Exception as e:
+        print(f"Compilation failed for {language} {error_type}: {e}")
+        return None
+```
+
+#### Training Data Structure
+
+The training system uses structured examples for each language and error type:
+
+```python
+# Example training data structure
+grammar_example = dspy.Example(
+    text_chunk="Die Forschung zeigen deutliche Ergebnisse in diesem Bereich.",
+    language="german",
+    grammar_errors='[{
+        "error_type": "grammar",
+        "severity": "medium", 
+        "original_text": "Die Forschung zeigen",
+        "suggested_correction": "Die Forschung zeigt",
+        "explanation": "Subjekt-Verb-Kongruenz: \'Forschung\' ist Singular",
+        "confidence_score": 0.95
+    }]'
+)
+```
+
+#### Module Loading and Fallback
+
+The analysis modules implement intelligent fallback mechanisms:
+
+```python
+def load_optimized_module(error_type: str, language: str):
+    """Load optimized module with fallback to base module."""
+    module_file = f"compiled_modules/{language}_{error_type}_module.json"
+    
+    if os.path.exists(module_file):
+        try:
+            return dspy.load(module_file)
+        except Exception as e:
+            logging.warning(f"Failed to load optimized module {module_file}: {e}")
+    
+    # Fallback to base module
+    return create_base_module(error_type)
+```
+
+### 7. Pipeline Orchestration (`pipeline.py`)
+
+The pipeline coordinates the entire analysis workflow with multi-language awareness.
 
 #### Workflow Design
 

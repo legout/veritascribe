@@ -7,9 +7,9 @@ VeritaScribe is an intelligent document analysis system that automatically revie
 ## ✨ Features
 
 - **Multi-Provider LLM Support**: Works with OpenAI, OpenRouter, Anthropic Claude, and custom endpoints.
-- **Multi-Language Analysis**: Supports English and German with language-specific grammar and context.
+- **Multi-Language Analysis**: Automatic language detection with native support for English and German documents, including language-specific grammar rules and cultural context.
 - **Comprehensive Analysis**: Grammar checking, content validation, and citation format verification.
-- **DSPy Prompt Optimization**: Includes tools to fine-tune analysis prompts for higher accuracy.
+- **DSPy Prompt Optimization**: Advanced few-shot learning system with bilingual training data to fine-tune analysis prompts for maximum accuracy.
 - **Smart PDF Processing**: Extracts text while preserving layout context and location information.
 - **Structured Reporting**: Generates detailed reports with error locations, severities, and suggestions.
 - **Visual Analytics & Annotated PDFs**: Creates charts, visualizations, and annotated PDFs to highlight error patterns.
@@ -62,10 +62,15 @@ VeritaScribe is an intelligent document analysis system that automatically revie
    uv run python -m veritascribe analyze your_thesis.pdf
    ```
 
-3. **Generate an annotated PDF** with highlighted errors:
+3. **Generate an annotated PDF** with highlighted errors and detailed annotations:
    ```bash
    uv run python -m veritascribe analyze your_thesis.pdf --annotate
    ```
+   
+   This creates an interactive PDF with:
+   - Color-coded error highlights (red/orange/yellow by severity)
+   - Sticky note annotations with suggestions and explanations
+   - Perfect for sharing with supervisors or collaborators
 
 ##  CLI Commands
 
@@ -84,9 +89,17 @@ uv run python -m veritascribe analyze [OPTIONS] PDF_PATH
 - `--annotate`: Generate an annotated PDF with highlighted errors
 - `--verbose, -v`: Enable verbose logging
 
-**Example:**
+**Examples:**
+
 ```bash
+# Standard analysis with annotated PDF
 uv run python -m veritascribe analyze thesis.pdf --output ./results --annotate
+
+# Quick analysis with annotation for iterative writing
+uv run python -m veritascribe analyze draft.pdf --quick --annotate
+
+# Full analysis with specific citation style and annotations
+uv run python -m veritascribe analyze thesis.pdf --citation-style MLA --annotate --verbose
 ```
 
 ### `quick` - Fast Analysis
@@ -121,11 +134,17 @@ uv run python -m veritascribe providers
 ```
 
 ### `optimize-prompts` - DSPy Prompt Optimization
-Fine-tunes the analysis prompts using a few-shot learning dataset.
+Fine-tunes the analysis prompts using few-shot learning with bilingual training data for improved accuracy.
 
 ```bash
 uv run python -m veritascribe optimize-prompts
 ```
+
+This command:
+- Creates optimized modules for English and German analysis
+- Uses curated training examples for grammar, content, and citation checking
+- Improves analysis accuracy through DSPy's BootstrapFewShot compilation
+- Takes several minutes to complete but significantly enhances analysis quality
 
 ### `test` - Run System Tests
 Verifies that all components are working correctly.
@@ -201,6 +220,33 @@ VeritaScribe supports multiple LLM providers, giving you flexibility in model ch
 
 VeritaScribe uses environment variables for configuration. Copy `.env.example` to `.env` and customize.
 
+## 🌍 Multi-Language Support
+
+VeritaScribe automatically detects document language and applies language-specific analysis:
+
+### Supported Languages
+- **English**: Full grammar checking, content validation, and citation verification
+- **German**: Native grammar rules, cultural context awareness, and German academic conventions
+
+### Language Detection
+The system automatically detects the primary language of your document and:
+- Applies appropriate grammar rules and linguistic patterns
+- Uses language-specific training data for enhanced accuracy
+- Provides culturally-aware content validation
+- Supports mixed-language documents with intelligent switching
+
+### Examples
+```bash
+# English thesis
+uv run python -m veritascribe analyze english_thesis.pdf
+
+# German thesis (automatically detected)
+uv run python -m veritascribe analyze german_thesis.pdf
+
+# Optimize prompts for both languages
+uv run python -m veritascribe optimize-prompts
+```
+
 ## 📄 Understanding the Output
 
 VeritaScribe generates several types of output:
@@ -223,8 +269,24 @@ Charts and graphs showing:
 - Error density per page
 - Severity breakdown
 
-### 4. Annotated PDF (`*_annotated.pdf`)
-An optional PDF output with errors highlighted and comments added directly to the document.
+### 4. Annotated PDF (`*_annotated.pdf`) 
+An interactive PDF with errors visually highlighted and detailed annotations. Generated using `--annotate` flag.
+
+**Features:**
+- **Color-coded highlights** directly on problematic text:
+  - 🔴 **Red**: High-severity errors (critical issues requiring immediate attention)
+  - 🟠 **Orange**: Medium-severity errors (important improvements needed) 
+  - 🟡 **Yellow**: Low-severity errors (minor suggestions)
+- **Sticky note annotations** with comprehensive error details:
+  - Error type and severity level
+  - Original problematic text excerpt
+  - Specific suggested corrections
+  - Detailed explanations of the issue
+  - AI confidence scores
+- **Smart positioning** to prevent overlapping annotations
+- **Preserves original formatting** while adding review layers
+
+**Perfect for:** Collaborative review, supervisor feedback, iterative editing, and visual error identification.
 
 ### 5. Cost and Token Usage
 The console output and Markdown report include details on token usage and the estimated cost of the analysis.
