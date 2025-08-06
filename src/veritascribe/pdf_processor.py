@@ -159,29 +159,27 @@ class PDFProcessor:
         
        # Replace '"a' with 'ä' and '"A' with 'Ä'
         text = re.sub(r'"a', 'ä', text)
+        text = re.sub(r'¨a', 'ä', text)
+        text = re.sub(r'“a', 'ä', text)
         text = re.sub(r'"A', 'Ä', text)
+        text = re.sub(r'¨A', 'Ä', text)
+        text = re.sub(r'“A', 'Ä', text)
 
         # Replace '"o' with 'ö' and '"O' with 'Ö'
         text = re.sub(r'"o', 'ö', text)
+        text = re.sub(r'¨o', 'ö', text)
+        text = re.sub(r'“o', 'ö', text)
         text = re.sub(r'"O', 'Ö', text)
+        text = re.sub(r'¨O', 'Ö', text)
+        text = re.sub(r'“O', 'Ö', text)
 
         # Replace '"u' with 'ü' and '"U' with 'Ü'
         text = re.sub(r'"u', 'ü', text)
-        text = re.sub(r'"U', 'Ü', text)
-
-        # Replace '¨a' with 'ä' and '¨A' with 'Ä'
-        text = re.sub(r'¨a', 'ä', text)
-        text = re.sub(r'¨A', 'Ä', text)
-
-        # Replace '¨o' with 'ö' and '¨O' with 'Ö'
-        text = re.sub(r'¨o', 'ö', text)
-        text = re.sub(r'¨O', 'Ö', text)
-
-        # Replace '¨u' with 'ü' and '¨U' with 'Ü'
         text = re.sub(r'¨u', 'ü', text)
+        text = re.sub(r'“u', 'ü', text)
+        text = re.sub(r'"U', 'Ü', text)
         text = re.sub(r'¨U', 'Ü', text)
-
-
+        text = re.sub(r'“U', 'Ü', text)
 
         return text
     
@@ -235,7 +233,7 @@ class PDFProcessor:
         
         # Step 6: Fix common spacing issues
         text = re.sub(r'\s+([.,;:!?])', r'\1', text)  # Remove space before punctuation
-        
+
         # Protect URLs and email addresses to avoid inserting spaces within them
         protected = []
         def _mask(match):
@@ -388,6 +386,7 @@ class PDFProcessor:
                 for page_num in range(len(doc)):
                     page = doc[page_num]
                     page_text = page.get_text()
+                    page_text = self._clean_extracted_text(page_text)
                     
                     # Look for bibliography section headers
                     bib_headers = [

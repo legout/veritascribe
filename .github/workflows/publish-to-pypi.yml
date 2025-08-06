@@ -1,0 +1,60 @@
+name: Publish Python 🐍 distribution to PyPI on version bump
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'pyproject.toml'
+
+jobs:
+  publish-to-pypi:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install uv
+        run: |
+          pip install uv
+
+      - name: Install build dependencies with uv
+        run: |
+          uv pip install build toml requests packaging
+
+      - name: Get current version from pyproject.toml
+        id: get_version
+        run: |
+          python -c "import toml; print(toml.load('pyproject.toml')['project']['version'])" > version.txt
+          echo "version=$(cat version.txt)" >> $GITHUB_OUTPUT
+
+      - name: Get latest version from PyPI
+        id: get_latest
+        run: |
+          PKG_NAME=$(python -c "import toml; print(toml.load('pyproject.toml')['project']['name'])")
+          curl -s https://pypi.org/pypi/$PKG_NAME/json | \
+            python -c "import sys, json; print(json.load(sys.stdin)['info']['version']) if sys.stdin.read() else print('0.0.0')" > latest.txt
+          echo "latest=$(cat latest.txt)" >> $GITHUB_OUTPUT
+
+      - name: Compare versions and set publish flag
+        id: check_version
+        run: |
+          python -c "from packaging.version import parse; import os; v1 = parse(os.environ['VERSION']); v2 = parse(os.environ['LATEST']); print('::set-output name=publish::' + str(v1 > v2))" \
+            VERSION=${{ steps.get_version.outputs.version }} LATEST=${{ steps.get_latest.outputs.latest }} > publish.txt
+          echo "publish=$(cat publish.txt | tail -n1 | cut -d'=' -f2)" >> $GITHUB_OUTPUT
+
+      - name: Build package
+        if: steps.check_version.outputs.publish == 'True'
+        run: uv pip run -m build
+
+      - name: Publish to PyPI
+        if: steps.check_version.outputs.publish == 'True'
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: ${{ secrets.PYPI_USERNAME }}
+          password: ${{ secrets.PYPI_PASSWORD }}
+          # Alternatively, use 'password: ${{ secrets.PYPI_API_TOKEN }}' if using an API token

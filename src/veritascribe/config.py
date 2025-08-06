@@ -136,21 +136,29 @@ class VeritaScribeSettings(BaseSettings):
         return model
     
     def get_provider_specific_max_tokens(self) -> int:
-        """Get provider-specific max token limits optimized for each provider."""
-        provider_token_limits = {
-            "openai": min(self.max_tokens, 4000),  # OpenAI models generally handle larger contexts well
-            "openrouter": min(self.max_tokens, 3000),  # More conservative for free/cheaper models
-            "anthropic": min(self.max_tokens, 4000),  # Claude handles large contexts well
-            "custom": min(self.max_tokens, 4000)  # Conservative for unknown endpoints
+        """Get provider-specific max token limits, respecting user configuration."""
+        # Use user's max_tokens as the primary value
+        user_max_tokens = self.max_tokens
+        
+        # Define reasonable upper bounds per provider (only used as safety caps)
+        provider_max_caps = {
+            "openai": 8000,  # OpenAI models generally handle larger contexts well
+            "openrouter": 8000,  # More conservative for free/cheaper models
+            "anthropic": 4000,  # Claude handles large contexts well
+            "custom": 8000  # Conservative for unknown endpoints
         }
+        
+        # Apply provider-specific cap only if user's setting exceeds it
+        provider_cap = provider_max_caps.get(self.llm_provider, 8000)
+        base_tokens = min(user_max_tokens, provider_cap)
         
         # For specific known problematic models, use even lower limits
         formatted_model = self.format_model_name()
         if "free" in formatted_model.lower() or "air" in formatted_model.lower():
             # Free models often have quality issues with large contexts
-            return min(provider_token_limits.get(self.llm_provider, self.max_tokens), 2000)
+            return min(base_tokens, 8000)
         
-        return provider_token_limits.get(self.llm_provider, self.max_tokens)
+        return base_tokens
 
 
 # Provider-specific model configurations

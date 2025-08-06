@@ -41,6 +41,7 @@ build-backend = "hatchling.build"
 
 [dependency-groups]
 dev = [
+    "ipykernel>=6.30.1",
     "marimo>=0.14.16",
     "pdf2text>=1.0.0",
 ]
