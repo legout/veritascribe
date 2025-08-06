@@ -158,10 +158,10 @@ class PDFProcessor:
         
         
        # Replace '"a' with 'ä' and '"A' with 'Ä'
-        text = re.sub(r'"a', 'ä', text)
+        #text = re.sub(r'"a', 'ä', text)
         text = re.sub(r'¨a', 'ä', text)
         text = re.sub(r'“a', 'ä', text)
-        text = re.sub(r'"A', 'Ä', text)
+        #text = re.sub(r'"A', 'Ä', text)
         text = re.sub(r'¨A', 'Ä', text)
         text = re.sub(r'“A', 'Ä', text)
 
@@ -169,7 +169,7 @@ class PDFProcessor:
         text = re.sub(r'"o', 'ö', text)
         text = re.sub(r'¨o', 'ö', text)
         text = re.sub(r'“o', 'ö', text)
-        text = re.sub(r'"O', 'Ö', text)
+        #text = re.sub(r'"O', 'Ö', text)
         text = re.sub(r'¨O', 'Ö', text)
         text = re.sub(r'“O', 'Ö', text)
 
@@ -177,7 +177,7 @@ class PDFProcessor:
         text = re.sub(r'"u', 'ü', text)
         text = re.sub(r'¨u', 'ü', text)
         text = re.sub(r'“u', 'ü', text)
-        text = re.sub(r'"U', 'Ü', text)
+        #text = re.sub(r'"U', 'Ü', text)
         text = re.sub(r'¨U', 'Ü', text)
         text = re.sub(r'“U', 'Ü', text)
 

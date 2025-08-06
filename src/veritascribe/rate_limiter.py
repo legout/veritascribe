@@ -252,8 +252,8 @@ class ProviderRateLimiter:
     
     # Default rate limits for different providers (requests per minute)
     DEFAULT_LIMITS = {
-        "openai": 3500,      # OpenAI Tier 1 default
-        "openrouter": 60,    # Conservative default for mixed models
+        "openai": 500,      # OpenAI Tier 1 default
+        "openrouter": 100,    # Conservative default for mixed models
         "anthropic": 1000,   # Claude API default
         "custom": 100        # Conservative default for custom endpoints
     }

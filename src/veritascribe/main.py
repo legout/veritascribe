@@ -136,8 +136,8 @@ def analyze(
             timestamp = report.analysis_timestamp.strftime("%Y%m%d_%H%M%S")
             report_name = f"{pdf_file.stem}_{timestamp}"
             
-            text_report_path = output_path / f"{report_name}_report.md"
-            report_generator.generate_text_report(report, str(text_report_path))
+            #text_report_path = output_path / f"{report_name}_report.md"
+            #report_generator.generate_text_report(report, str(text_report_path))
             
             # Generate JSON export
             json_report_path = output_path / f"{report_name}_data.json"
@@ -171,7 +171,7 @@ def analyze(
         # Display output summary
         console.print("\n[green]✓ Analysis completed successfully![/green]")
         console.print(f"\n[bold]Generated files:[/bold]")
-        console.print(f"  📄 Text report: {text_report_path}")
+        #console.print(f"  📄 Text report: {text_report_path}")
         console.print(f"  📊 JSON data: {json_report_path}")
         
         if not no_visualizations and report.total_errors > 0:
