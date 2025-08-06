@@ -29,13 +29,13 @@ jobs:
       - name: Get current version from pyproject.toml
         id: get_version
         run: |
-          uv run python -c "import toml; print(toml.load('pyproject.toml')['project']['version'])" > version.txt
+          uv run python -c "import tomllib; print(tomllib.load(open('pyproject.toml', 'rb'))['project']['version'])" > version.txt
           echo "version=$(cat version.txt)" >> $GITHUB_OUTPUT
 
       - name: Get latest version from PyPI
         id: get_latest
         run: |
-          PKG_NAME=$(uv run python -c "import toml; print(toml.load('pyproject.toml')['project']['name'])")
+          PKG_NAME=$(uv run python -c "import tomllib; print(tomllib.load(open('pyproject.toml', 'rb'))['project']['name'])")
           LATEST_VERSION=$(curl -s https://pypi.org/pypi/$PKG_NAME/json | uv run python -c "import sys, json; data = json.load(sys.stdin); print(data['info']['version']) if 'info' in data else print('0.0.0')" 2>/dev/null || echo "0.0.0")
           echo "latest=$LATEST_VERSION" >> $GITHUB_OUTPUT
 
