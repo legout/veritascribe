@@ -340,119 +340,12 @@ See all supported providers and their models:
 uv run python -m veritascribe providers
 ```
 
-Output example:
-```
-VeritaScribe Configuration
-┏━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃ Setting           ┃ Value                                                                                                    ┃ Description                                                                                                              ┃
-┡━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ Default Model     │ gpt-4                                                                                                    │ LLM model for analysis                                                                                                  │
-│ Max Tokens        │ 2000                                                                                                     │ Maximum tokens per request                                                                                              │
-│ Temperature       │ 0.1                                                                                                      │ LLM temperature setting                                                                                                 │
-│ Grammar Analysis  │ ✓                                                                                                        │ Grammar checking enabled                                                                                                │
-│ Content Analysis  │ ✓                                                                                                        │ Content validation enabled                                                                                              │
-│ Citation Analysis │ ✓                                                                                                        │ Citation checking enabled                                                                                               │
-│ Parallel Process… │ ✓                                                                                                        │ Parallel LLM requests                                                                                                   │
-│ Max Concurrent    │ 5                                                                                                        │ Maximum parallel requests                                                                                               │
-│ Output Directory  │ ./analysis_output                                                                                        │ Default output location                                                                                                  │
-│ Max Retries       │ 3                                                                                                        │ LLM request retry limit                                                                                                 │
-└───────────────────┴──────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-
-✓ OpenAI API key is configured
-```
-
 ### Test Configuration
 
 Validate your configuration with system tests:
 
 ```bash
 uv run python -m veritascribe test
-```
-
-## Performance Tuning
-
-### Cost Optimization
-
-For budget-conscious usage:
-
-```bash
-DEFAULT_MODEL=gpt-3.5-turbo
-MAX_TOKENS=1500
-MAX_TEXT_BLOCK_SIZE=1500
-PARALLEL_PROCESSING=false
-MAX_CONCURRENT_REQUESTS=2
-```
-
-### Speed Optimization
-
-For faster processing:
-
-```bash
-DEFAULT_MODEL=gpt-4-turbo
-PARALLEL_PROCESSING=true
-MAX_CONCURRENT_REQUESTS=10
-MAX_RETRIES=1
-RETRY_DELAY=0.5
-```
-
-### Quality Optimization
-
-For highest quality analysis:
-
-```bash
-DEFAULT_MODEL=gpt-4
-MAX_TOKENS=3000
-TEMPERATURE=0.0
-MAX_TEXT_BLOCK_SIZE=2500
-PARALLEL_PROCESSING=true
-MAX_CONCURRENT_REQUESTS=3
-```
-
-## Troubleshooting Configuration
-
-### Common Configuration Issues
-
-**API Key Not Working**
-```bash
-# Test API key validity
-uv run python -c "
-from openai import OpenAI
-client = OpenAI()
-print('API key is valid')
-"
-```
-
-**Model Not Available**
-- Check OpenAI model availability
-- Verify your API tier supports the model
-- Try with `gpt-3.5-turbo` as fallback
-
-**Permission Errors**
-- Ensure output directory is writable
-- Check file permissions on `.env` file
-
-### Environment Variable Priority
-
-Configuration is loaded in this order (highest to lowest priority):
-
-1. **Environment variables** (e.g., `export OPENAI_API_KEY=...`)
-2. **`.env` file** in project root
-3. **Default values** in code
-
-### Debug Configuration Loading
-
-```bash
-# Show configuration details
-uv run python -c "
-from veritascribe.config import get_settings, get_dspy_config
-settings = get_settings()
-dspy_config = get_dspy_config()
-info = dspy_config.get_provider_info()
-print('Configuration loaded successfully')
-print(f'Provider: {info["provider_name"]}')
-print(f'Model: {info["formatted_model"]}')
-print(f'API Key configured: {info["api_key_configured"]}')
-"
 ```
 
 ## Advanced Configuration
@@ -494,43 +387,6 @@ LLM_PROVIDER=custom
 OPENAI_API_KEY=your-azure-key
 OPENAI_BASE_URL=https://your-resource.openai.azure.com/
 DEFAULT_MODEL=gpt-4  # Your Azure deployment name
-```
-
-### Custom Analysis Workflows
-
-**Grammar-Only Analysis:**
-```bash
-GRAMMAR_ANALYSIS_ENABLED=true
-CONTENT_ANALYSIS_ENABLED=false
-CITATION_ANALYSIS_ENABLED=false
-```
-
-**Citation-Only Analysis:**
-```bash
-GRAMMAR_ANALYSIS_ENABLED=false
-CONTENT_ANALYSIS_ENABLED=false
-CITATION_ANALYSIS_ENABLED=true
-```
-
-### Multiple Configuration Files
-
-Create different configurations for different scenarios:
-
-```bash
-# High-quality analysis
-cp .env .env.quality
-echo "DEFAULT_MODEL=gpt-4" >> .env.quality
-echo "MAX_TOKENS=3000" >> .env.quality
-
-# Fast analysis  
-cp .env .env.fast
-echo "DEFAULT_MODEL=gpt-3.5-turbo" >> .env.fast
-echo "PARALLEL_PROCESSING=true" >> .env.fast
-
-# Cost-optimized analysis
-cp .env .env.budget
-echo "LLM_PROVIDER=openrouter" >> .env.budget
-echo "DEFAULT_MODEL=z-ai/glm-4.5-air:free" >> .env.budget
 ```
 
 ---

@@ -8,6 +8,7 @@ from typing import List, Dict, Any, Optional
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 from collections import Counter
+import fitz  # PyMuPDF
 
 from .data_models import (
     ThesisAnalysisReport,
@@ -74,6 +75,14 @@ class ReportGenerator:
         content.append(f"**Document:** {report.document_name}")
         content.append(f"**Analysis Date:** {report.analysis_timestamp.strftime('%Y-%m-%d %H:%M:%S')}")
         content.append(f"**Processing Time:** {report.total_processing_time_seconds:.2f} seconds")
+        
+        # Add token usage and cost information if available
+        if report.token_usage:
+            content.append(f"**Token Usage:** {report.token_usage['total_tokens']:,} tokens (Prompt: {report.token_usage['prompt_tokens']:,}, Completion: {report.token_usage['completion_tokens']:,})")
+        
+        if report.estimated_cost is not None:
+            content.append(f"**Estimated Cost:** ${report.estimated_cost:.4f} USD")
+        
         content.append(f"")
         
         # Executive Summary
@@ -472,6 +481,8 @@ class ReportGenerator:
             'high_severity_errors': len(high_severity_errors),
             'errors_by_type': report.errors_by_type,
             'errors_by_severity': report.errors_by_severity,
+            'token_usage': report.token_usage,
+            'estimated_cost': report.estimated_cost,
             'recommendation': self._generate_recommendation(report)
         }
         
@@ -493,6 +504,230 @@ class ReportGenerator:
             return "Moderate revision recommended: Several errors found. Review and correct identified issues."
         else:
             return "Minor revisions needed: Low error rate. Quick review should address remaining issues."
+    
+    def generate_annotated_pdf(
+        self, 
+        report: ThesisAnalysisReport, 
+        original_pdf_path: str, 
+        output_path: str
+    ) -> str:
+        """
+        Generate an annotated PDF with errors highlighted and explained directly on the page.
+        
+        Args:
+            report: ThesisAnalysisReport containing the analysis results
+            original_pdf_path: Path to the original PDF file
+            output_path: Path where the annotated PDF should be saved
+            
+        Returns:
+            Path to the generated annotated PDF file
+        """
+        original_path = Path(original_pdf_path)
+        output_path = Path(output_path)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        
+        if not original_path.exists():
+            raise FileNotFoundError(f"Original PDF not found: {original_pdf_path}")
+        
+        try:
+            # Open the original PDF
+            doc = fitz.open(original_pdf_path)
+            
+            # Define colors for different error severities
+            severity_colors = {
+                ErrorSeverity.HIGH: (1.0, 0.2, 0.2),      # Red
+                ErrorSeverity.MEDIUM: (1.0, 0.6, 0.0),    # Orange
+                ErrorSeverity.LOW: (1.0, 1.0, 0.0)        # Yellow
+            }
+            
+            # Track annotations per page to avoid overlaps
+            page_annotations = {}
+            
+            # Process each analysis result
+            for result in report.analysis_results:
+                for error in result.errors:
+                    page_num = error.location.page_number - 1  # Convert to 0-based indexing
+                    
+                    # Skip if page number is invalid
+                    if page_num < 0 or page_num >= len(doc):
+                        logger.warning(f"Invalid page number {error.location.page_number} for error: {error.original_text[:50]}...")
+                        continue
+                    
+                    page = doc[page_num]
+                    
+                    # Initialize page annotation counter
+                    if page_num not in page_annotations:
+                        page_annotations[page_num] = 0
+                    
+                    # Get highlight color based on severity
+                    highlight_color = severity_colors.get(error.severity, (0.8, 0.8, 0.8))
+                    
+                    # Add highlight annotation if bounding box is available
+                    if error.location.bounding_box:
+                        x0, y0, x1, y1 = error.location.bounding_box
+                        rect = fitz.Rect(x0, y0, x1, y1)
+                        
+                        # Add highlight annotation
+                        highlight = page.add_highlight_annot(rect)
+                        highlight.set_colors(stroke=highlight_color)
+                        highlight.update()
+                    
+                    # Create annotation text
+                    annotation_text = self._format_error_annotation(error)
+                    
+                    # Determine annotation position
+                    annotation_y = 50 + (page_annotations[page_num] * 80)  # Offset annotations vertically
+                    annotation_point = fitz.Point(50, annotation_y)
+                    
+                    # Add text annotation (sticky note)
+                    text_annot = page.add_text_annot(annotation_point, annotation_text)
+                    text_annot.set_info(title=f"VeritaScribe - {error.error_type.title()}")
+                    text_annot.update()
+                    
+                    page_annotations[page_num] += 1
+            
+            # Add summary page at the beginning
+            self._add_summary_page(doc, report)
+            
+            # Save the annotated PDF
+            doc.save(output_path)
+            doc.close()
+            
+            logger.info(f"Annotated PDF generated: {output_path}")
+            return str(output_path)
+            
+        except Exception as e:
+            logger.error(f"Error generating annotated PDF: {e}")
+            raise
+    
+    def _format_error_annotation(self, error: BaseError) -> str:
+        """Format error information for PDF annotation."""
+        lines = [
+            f"ERROR: {error.error_type.replace('_', ' ').title()}",
+            f"Severity: {error.severity.title()}",
+            f"",
+            f"Original: {error.original_text}",
+        ]
+        
+        if error.suggested_correction:
+            lines.extend([
+                f"",
+                f"Suggested: {error.suggested_correction}"
+            ])
+        
+        lines.extend([
+            f"",
+            f"Explanation: {error.explanation}",
+            f"",
+            f"Confidence: {error.confidence_score:.1%}"
+        ])
+        
+        return "\n".join(lines)
+    
+    def _add_summary_page(self, doc: fitz.Document, report: ThesisAnalysisReport) -> None:
+        """Add a summary page at the beginning of the annotated PDF."""
+        # Insert a new page at the beginning
+        summary_page = doc.new_page(0, width=595, height=842)  # A4 size
+        
+        # Title
+        title_rect = fitz.Rect(50, 50, 545, 100)
+        summary_page.insert_textbox(
+            title_rect,
+            f"VeritaScribe Analysis Summary - {report.document_name}",
+            fontsize=18,
+            fontname="helv-bold",
+            color=(0, 0, 0)
+        )
+        
+        # Analysis date
+        date_rect = fitz.Rect(50, 110, 545, 130)
+        summary_page.insert_textbox(
+            date_rect,
+            f"Analysis Date: {report.analysis_timestamp.strftime('%Y-%m-%d %H:%M:%S')}",
+            fontsize=12,
+            fontname="helv",
+            color=(0.3, 0.3, 0.3)
+        )
+        
+        # Key metrics
+        metrics_text = [
+            f"Total Pages: {report.total_pages}",
+            f"Total Words: {report.total_words:,}",
+            f"Total Errors: {report.total_errors}",
+            f"Error Rate: {report.error_rate:.2f} per 1,000 words",
+            f"Processing Time: {report.total_processing_time_seconds:.1f} seconds"
+        ]
+        
+        y_pos = 160
+        for metric in metrics_text:
+            metric_rect = fitz.Rect(50, y_pos, 545, y_pos + 20)
+            summary_page.insert_textbox(
+                metric_rect,
+                metric,
+                fontsize=11,
+                fontname="helv",
+                color=(0, 0, 0)
+            )
+            y_pos += 25
+        
+        # Error breakdown
+        if report.errors_by_severity:
+            breakdown_title_rect = fitz.Rect(50, y_pos + 20, 545, y_pos + 40)
+            summary_page.insert_textbox(
+                breakdown_title_rect,
+                "Error Breakdown by Severity:",
+                fontsize=12,
+                fontname="helv-bold",
+                color=(0, 0, 0)
+            )
+            
+            y_pos += 60
+            severity_order = ['high', 'medium', 'low']
+            severity_colors_text = {'high': 'Red', 'medium': 'Orange', 'low': 'Yellow'}
+            
+            for severity in severity_order:
+                count = report.errors_by_severity.get(severity, 0)
+                if count > 0:
+                    color_name = severity_colors_text[severity]
+                    breakdown_rect = fitz.Rect(50, y_pos, 545, y_pos + 20)
+                    summary_page.insert_textbox(
+                        breakdown_rect,
+                        f"• {severity.title()}: {count} errors (highlighted in {color_name})",
+                        fontsize=11,
+                        fontname="helv",
+                        color=(0, 0, 0)
+                    )
+                    y_pos += 25
+        
+        # Instructions
+        instructions_title_rect = fitz.Rect(50, y_pos + 20, 545, y_pos + 40)
+        summary_page.insert_textbox(
+            instructions_title_rect,
+            "How to Use This Annotated PDF:",
+            fontsize=12,
+            fontname="helv-bold",
+            color=(0, 0, 0)
+        )
+        
+        instructions = [
+            "• Errors are highlighted directly on the pages with colored backgrounds",
+            "• Click on the sticky note icons to view detailed error explanations",
+            "• High severity errors (red) require immediate attention",
+            "• Medium severity errors (orange) should be addressed during revision",
+            "• Low severity errors (yellow) are minor improvements"
+        ]
+        
+        y_pos += 60
+        for instruction in instructions:
+            inst_rect = fitz.Rect(50, y_pos, 545, y_pos + 20)
+            summary_page.insert_textbox(
+                inst_rect,
+                instruction,
+                fontsize=10,
+                fontname="helv",
+                color=(0, 0, 0)
+            )
+            y_pos += 20
 
 
 def create_report_generator() -> ReportGenerator:

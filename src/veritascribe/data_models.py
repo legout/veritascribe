@@ -320,6 +320,17 @@ class ThesisAnalysisReport(BaseModel):
         description="Configuration settings used for this analysis"
     )
     
+    # Token usage and cost tracking
+    token_usage: Optional[Dict[str, int]] = Field(
+        None,
+        description="Token usage breakdown (prompt_tokens, completion_tokens, total_tokens)"
+    )
+    estimated_cost: Optional[float] = Field(
+        None,
+        ge=0.0,
+        description="Estimated cost in USD for the analysis"
+    )
+    
     def __init__(self, **data):
         super().__init__(**data)
         self._calculate_statistics()

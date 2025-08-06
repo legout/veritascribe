@@ -769,6 +769,15 @@ wheels = [
 ]
 
 [[package]]
+name = "langdetect"
+version = "1.0.9"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "six" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/0e/72/a3add0e4eec4eb9e2569554f7c70f4a3c27712f40e3284d483e88094cc0e/langdetect-1.0.9.tar.gz", hash = "sha256:cbc1fef89f8d062739774bd51eda3da3274006b3661d199c2655f6b3f6d605a0", size = 981474 }
+
+[[package]]
 name = "litellm"
 version = "1.74.15.post1"
 source = { registry = "https://pypi.org/simple" }
@@ -1723,6 +1732,7 @@ source = { editable = "." }
 dependencies = [
     { name = "azure-identity" },
     { name = "dspy" },
+    { name = "langdetect" },
     { name = "matplotlib" },
     { name = "openai" },
     { name = "pydantic" },
@@ -1737,6 +1747,7 @@ dependencies = [
 requires-dist = [
     { name = "azure-identity", specifier = ">=1.23.1" },
     { name = "dspy", specifier = ">=2.6.27" },
+    { name = "langdetect", specifier = ">=1.0.9" },
     { name = "matplotlib", specifier = ">=3.10.5" },
     { name = "openai", specifier = ">=1.98.0" },
     { name = "pydantic", specifier = ">=2.11.7" },

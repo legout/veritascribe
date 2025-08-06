@@ -158,6 +158,14 @@ PROVIDER_MODELS = {
             "quality": "gpt-4",
             "speed": "gpt-4o-mini", 
             "cost": "gpt-3.5-turbo"
+        },
+        "pricing": {
+            "gpt-4": {"prompt": 0.03, "completion": 0.06},
+            "gpt-4-turbo": {"prompt": 0.01, "completion": 0.03},
+            "gpt-4o": {"prompt": 0.005, "completion": 0.015},
+            "gpt-4o-mini": {"prompt": 0.00015, "completion": 0.0006},
+            "gpt-3.5-turbo": {"prompt": 0.0005, "completion": 0.0015},
+            "gpt-3.5-turbo-16k": {"prompt": 0.003, "completion": 0.004}
         }
     },
     "openrouter": {
@@ -177,6 +185,24 @@ PROVIDER_MODELS = {
             "quality": "anthropic/claude-3-opus",
             "speed": "anthropic/claude-3-haiku", 
             "cost": "z-ai/glm-4.5-air:free"
+        },
+        "pricing": {
+            # Anthropic models via OpenRouter (per 1K tokens)
+            "anthropic/claude-3.5-sonnet": {"prompt": 0.003, "completion": 0.015},
+            "anthropic/claude-3-haiku": {"prompt": 0.00025, "completion": 0.00125},
+            "anthropic/claude-3-opus": {"prompt": 0.015, "completion": 0.075},
+            # OpenAI models via OpenRouter
+            "openai/gpt-4": {"prompt": 0.03, "completion": 0.06},
+            "openai/gpt-4-turbo": {"prompt": 0.01, "completion": 0.03},
+            "openai/gpt-3.5-turbo": {"prompt": 0.0005, "completion": 0.0015},
+            # Open source models (approximate)
+            "meta-llama/llama-3.1-70b-instruct": {"prompt": 0.0009, "completion": 0.0009},
+            "meta-llama/llama-3.1-8b-instruct": {"prompt": 0.0002, "completion": 0.0002},
+            "mistralai/mistral-7b-instruct": {"prompt": 0.0002, "completion": 0.0002},
+            "google/gemini-pro": {"prompt": 0.0005, "completion": 0.0015},
+            # Free models
+            "z-ai/glm-4.5-air:free": {"prompt": 0.0, "completion": 0.0},
+            "microsoft/phi-3-mini-128k-instruct:free": {"prompt": 0.0, "completion": 0.0}
         }
     },
     "anthropic": {
@@ -189,6 +215,14 @@ PROVIDER_MODELS = {
             "quality": "claude-3-opus-20240229",
             "speed": "claude-3-5-haiku-20241022",
             "cost": "claude-3-haiku-20240307"
+        },
+        "pricing": {
+            # Anthropic direct pricing (per 1K tokens)
+            "claude-3-5-sonnet-20241022": {"prompt": 0.003, "completion": 0.015},
+            "claude-3-5-haiku-20241022": {"prompt": 0.00025, "completion": 0.00125},
+            "claude-3-opus-20240229": {"prompt": 0.015, "completion": 0.075},
+            "claude-3-sonnet-20240229": {"prompt": 0.003, "completion": 0.015},
+            "claude-3-haiku-20240307": {"prompt": 0.00025, "completion": 0.00125}
         }
     },
     "custom": {
@@ -198,6 +232,10 @@ PROVIDER_MODELS = {
             "quality": "User-configured",
             "speed": "User-configured",
             "cost": "User-configured"
+        },
+        "pricing": {
+            # Default pricing for custom models (often free local models)
+            "default": {"prompt": 0.0, "completion": 0.0}
         }
     }
 }

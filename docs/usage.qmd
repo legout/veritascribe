@@ -17,6 +17,7 @@ VeritaScribe provides several commands for different use cases:
 | `analyze` | Full document analysis | Complete review |
 | `config` | View configuration | Troubleshooting |
 | `providers` | List available LLM providers | Provider setup |
+| `optimize-prompts` | Fine-tune analysis prompts | Accuracy improvement |
 | `test` | System diagnostics | Verify installation |
 
 ## Provider Selection
@@ -136,6 +137,7 @@ uv run python -m veritascribe analyze thesis.pdf
 uv run python -m veritascribe analyze thesis.pdf \
   --output ./results \
   --citation-style APA \
+  --annotate \
   --verbose
 ```
 
@@ -147,6 +149,7 @@ uv run python -m veritascribe analyze thesis.pdf \
 | `--citation-style` | `-c` | Citation style | `APA` |
 | `--quick` | `-q` | Quick mode (10 blocks) | `false` |
 | `--no-viz` | | Skip visualizations | `false` |
+| `--annotate` | | Generate annotated PDF | `false` |
 | `--verbose` | `-v` | Verbose logging | `false` |
 
 #### Citation Styles Supported
@@ -175,26 +178,15 @@ uv run python -m veritascribe analyze thesis.pdf \
 uv run python -m veritascribe analyze thesis.pdf
 ```
 
+**Generate Annotated PDF:**
+```bash
+uv run python -m veritascribe analyze thesis.pdf --annotate
+```
+
 **Custom Output Location:**
 ```bash
 uv run python -m veritascribe analyze thesis.pdf \
   --output ~/Documents/thesis_review
-```
-
-**MLA Citation Style:**
-```bash
-uv run python -m veritascribe analyze thesis.pdf \
-  --citation-style MLA
-```
-
-**Quick Full Analysis:**
-```bash
-uv run python -m veritascribe analyze thesis.pdf --quick
-```
-
-**Analysis Without Visualizations:**
-```bash
-uv run python -m veritascribe analyze thesis.pdf --no-viz
 ```
 
 ### `quick` - Fast Analysis
@@ -217,12 +209,13 @@ uv run python -m veritascribe quick thesis.pdf --blocks 3
 uv run python -m veritascribe quick thesis.pdf --blocks 15
 ```
 
-#### When to Use Quick Analysis
+### `optimize-prompts` - DSPy Prompt Optimization
 
-- **During writing**: Get feedback on recent sections
-- **Initial review**: Spot-check document quality
-- **Cost management**: Reduce API usage for large documents
-- **Debugging**: Test configuration with small sample
+Fine-tunes the analysis prompts using a few-shot learning dataset.
+
+```bash
+uv run python -m veritascribe optimize-prompts
+```
 
 ## Understanding Output
 
@@ -244,29 +237,12 @@ Analysis Results: thesis.pdf
 │ ⚠️  Total errors: 23                                                            │
 │ 📊 Error rate: 1.83 per 1,000 words                                           │
 │ ⏱️  Processing time: 45.32s                                                     │
+│ 🔤 Token usage: 15,234 tokens                                                    │
+│ 💰 Estimated cost: $0.0457 USD                                                   │
 └─────────────────────────────────────────────────────────────────────────────────┘
 
 Errors by Type
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃ Type                                                                             ┃ Count                                                                            ┃ Percentage                                                                       ┃
-┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ Grammar                                                                          │ 12                                                                               │ 52.2%                                                                           │
-│ Citation Format                                                                  │ 7                                                                                │ 30.4%                                                                           │
-│ Content Plausibility                                                             │ 4                                                                                │ 17.4%                                                                           │
-└──────────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────────┘
-
-Severity Breakdown: 🔴 High: 3 | 🟡 Medium: 8 | 🟢 Low: 12
-
-🚨 3 high-priority issues require immediate attention!
-
-✓ Analysis completed successfully!
-
-Generated files:
-  📄 Text report: ./analysis_output/thesis_20240315_143022_report.md
-  📊 JSON data: ./analysis_output/thesis_20240315_143022_data.json
-  📈 Visualizations: ./analysis_output/thesis_20240315_143022_visualizations/
-
-Recommendation: Document shows good overall quality with some areas for improvement. Focus on addressing high-priority grammar and citation issues first.
+...
 ```
 
 ### Generated Files
@@ -275,122 +251,19 @@ Each analysis produces several output files:
 
 #### 1. Text Report (`.md`)
 
-Comprehensive Markdown report with:
-
-```markdown
-# VeritaScribe Analysis Report
-
-**Document:** thesis.pdf
-**Analysis Date:** 2024-03-15 14:30:22
-**Processing Time:** 45.32 seconds
-
-## Executive Summary
-
-- **Total Pages:** 45
-- **Word Count:** 12,543
-- **Text Blocks Analyzed:** 87
-- **Total Errors Found:** 23
-- **Error Rate:** 1.83 per 1,000 words
-
-## Error Summary
-
-### By Type
-- Grammar: 12 errors (52.2%)
-- Citation Format: 7 errors (30.4%)  
-- Content Plausibility: 4 errors (17.4%)
-
-### By Severity
-- High Priority: 3 errors
-- Medium Priority: 8 errors
-- Low Priority: 12 errors
-
-## Detailed Findings
-
-### High Priority Issues
-
-#### 1. Grammar Error (Page 12)
-**Location:** Page 12, coordinates (72, 345, 520, 365)
-**Original Text:** "The results shows that..."
-**Suggested Fix:** "The results show that..."
-**Explanation:** Subject-verb agreement error. 'Results' is plural and requires 'show' not 'shows'.
-
-#### 2. Citation Format Error (Page 23)
-**Location:** Page 23, coordinates (72, 123, 520, 143)
-**Original Text:** "(Smith 2020)"
-**Suggested Fix:** "(Smith, 2020)"
-**Explanation:** APA format requires comma between author and year.
-
-[... more detailed errors ...]
-
-## Recommendations
-
-1. **Immediate Action Required:** Address 3 high-priority issues
-2. **Grammar Focus:** Review subject-verb agreements throughout
-3. **Citation Consistency:** Ensure all citations follow APA format
-4. **Content Review:** Verify factual claims in identified sections
-
-## Overall Assessment
-
-Document quality: **Good** with room for improvement.
-Recommended next steps: Focus on high-priority issues first.
-```
+Comprehensive Markdown report with summaries, detailed error listings, and cost information.
 
 #### 2. JSON Data Export (`.json`)
 
-Structured data for programmatic access:
-
-```json
-{
-  "document_name": "thesis.pdf",
-  "analysis_timestamp": "2024-03-15T14:30:22.123456",
-  "total_pages": 45,
-  "total_words": 12543,
-  "total_text_blocks": 87,
-  "total_errors": 23,
-  "error_rate": 1.83,
-  "total_processing_time_seconds": 45.32,
-  "errors_by_type": {
-    "grammar": 12,
-    "citation_format": 7,
-    "content_plausibility": 4
-  },
-  "errors_by_severity": {
-    "high": 3,
-    "medium": 8,
-    "low": 12
-  },
-  "analysis_results": [
-    {
-      "text_block": {
-        "content": "The results shows that...",
-        "page_number": 12,
-        "bounding_box": [72, 345, 520, 365]
-      },
-      "errors": [
-        {
-          "error_type": "grammar",
-          "severity": "high",
-          "original_text": "The results shows that",
-          "suggested_correction": "The results show that",
-          "explanation": "Subject-verb agreement error...",
-          "location": {
-            "page_number": 12,
-            "bounding_box": [72, 345, 520, 365]
-          }
-        }
-      ]
-    }
-  ]
-}
-```
+Structured data for programmatic access, including all errors, locations, and analysis statistics.
 
 #### 3. Visualizations
 
-Charts and graphs in the visualizations directory:
+Charts and graphs showing error distribution, density, and severity.
 
-- **Error Distribution by Type** (`error_types.png`)
-- **Error Density by Page** (`error_density.png`)
-- **Severity Breakdown** (`severity_breakdown.png`)
+#### 4. Annotated PDF (`_annotated.pdf`)
+
+An optional PDF output with errors highlighted and comments added directly to the document.
 
 ## Advanced Usage Patterns
 
@@ -413,24 +286,6 @@ chmod +x batch_analyze.sh
 ./batch_analyze.sh
 ```
 
-### Citation Style Workflows
-
-Different workflows for different academic styles:
-
-```bash
-# APA Style (Psychology, Education)
-uv run python -m veritascribe analyze thesis.pdf --citation-style APA
-
-# MLA Style (Literature, Humanities)  
-uv run python -m veritascribe analyze thesis.pdf --citation-style MLA
-
-# Chicago Style (History, Arts)
-uv run python -m veritascribe analyze thesis.pdf --citation-style Chicago
-
-# IEEE Style (Engineering, Computer Science)
-uv run python -m veritascribe analyze thesis.pdf --citation-style IEEE
-```
-
 ### Iterative Review Process
 
 Workflow for document improvement:
@@ -439,8 +294,8 @@ Workflow for document improvement:
 # Step 1: Initial quick review
 uv run python -m veritascribe quick draft.pdf --blocks 10
 
-# Step 2: Address major issues, then full analysis
-uv run python -m veritascribe analyze draft.pdf --output ./review_1
+# Step 2: Address major issues, then full analysis with annotation
+uv run python -m veritascribe analyze draft.pdf --output ./review_1 --annotate
 
 # Step 3: After revisions, re-analyze
 uv run python -m veritascribe analyze revised_draft.pdf --output ./review_2
@@ -454,170 +309,21 @@ diff ./review_1/draft_*_data.json ./review_2/revised_draft_*_data.json
 Optimize API usage for large documents using different providers and models:
 
 ```bash
-# Strategy 1: Quick analysis first
-uv run python -m veritascribe quick large_thesis.pdf --blocks 20
-
-# Strategy 2: Use free OpenRouter models
+# Strategy 1: Use free OpenRouter models
 LLM_PROVIDER=openrouter \
 DEFAULT_MODEL=z-ai/glm-4.5-air:free \
 uv run python -m veritascribe analyze large_thesis.pdf
 
-# Strategy 3: Use cheaper OpenAI models
+# Strategy 2: Use cheaper OpenAI models
 LLM_PROVIDER=openai \
 DEFAULT_MODEL=gpt-3.5-turbo \
 uv run python -m veritascribe analyze large_thesis.pdf
 
-# Strategy 4: Use local models (no API costs)
+# Strategy 3: Use local models (no API costs)
 LLM_PROVIDER=custom \
 OPENAI_BASE_URL=http://localhost:11434/v1 \
 DEFAULT_MODEL=llama3.1:8b \
 uv run python -m veritascribe analyze large_thesis.pdf
-
-# Strategy 5: Disable expensive analysis types
-CONTENT_ANALYSIS_ENABLED=false \
-uv run python -m veritascribe analyze large_thesis.pdf
-
-# Strategy 6: Reduce parallel processing
-MAX_CONCURRENT_REQUESTS=2 \
-uv run python -m veritascribe analyze large_thesis.pdf
-```
-
-## Working with Results
-
-### Interpreting Error Severity
-
-**High Priority (Score ≥ 0.8):**
-- Critical grammar errors
-- Major citation format violations
-- Significant factual inconsistencies
-- **Action:** Fix immediately
-
-**Medium Priority (Score ≥ 0.5):**
-- Minor grammar issues
-- Style inconsistencies
-- Citation formatting preferences
-- **Action:** Review and fix as time permits
-
-**Low Priority (Score < 0.5):**
-- Style suggestions
-- Minor formatting preferences
-- Optional improvements
-- **Action:** Consider for polish pass
-
-### Error Location Information
-
-Each error includes precise location data:
-
-```json
-{
-  "location": {
-    "page_number": 12,
-    "bounding_box": [72, 345, 520, 365]
-  }
-}
-```
-
-Bounding box coordinates `[x1, y1, x2, y2]`:
-- `(x1, y1)`: Top-left corner
-- `(x2, y2)`: Bottom-right corner
-- Units are in PDF points (72 points = 1 inch)
-
-### Using JSON Data
-
-Process results programmatically:
-
-```python
-import json
-
-# Load analysis results
-with open('thesis_20240315_143022_data.json', 'r') as f:
-    results = json.load(f)
-
-# Get high-priority errors
-high_priority = [
-    error for result in results['analysis_results']
-    for error in result['errors']
-    if error['severity'] == 'high'
-]
-
-print(f"Found {len(high_priority)} high-priority issues")
-
-# Group errors by type
-error_types = {}
-for result in results['analysis_results']:
-    for error in result['errors']:
-        error_type = error['error_type']
-        error_types[error_type] = error_types.get(error_type, 0) + 1
-
-print("Error distribution:", error_types)
-```
-
-## Integration with Other Tools
-
-### Text Editors
-
-Import location information into editors:
-
-```python
-# Generate editor jump commands
-def generate_editor_commands(json_file):
-    with open(json_file, 'r') as f:
-        results = json.load(f)
-    
-    commands = []
-    for result in results['analysis_results']:
-        for error in result['errors']:
-            page = error['location']['page_number']
-            text = error['original_text'][:50]
-            commands.append(f"# Page {page}: {text}...")
-    
-    return commands
-
-commands = generate_editor_commands('results.json')
-for cmd in commands[:5]:  # Show first 5
-    print(cmd)
-```
-
-### Citation Managers
-
-Export citation issues for reference managers:
-
-```python
-def export_citation_issues(json_file):
-    with open(json_file, 'r') as f:
-        results = json.load(f)
-    
-    citation_errors = []
-    for result in results['analysis_results']:
-        for error in result['errors']:
-            if error['error_type'] == 'citation_format':
-                citation_errors.append({
-                    'page': error['location']['page_number'],
-                    'original': error['original_text'],
-                    'suggested': error['suggested_correction'],
-                    'explanation': error['explanation']
-                })
-    
-    return citation_errors
-```
-
-### Version Control
-
-Track improvements over time:
-
-```bash
-# Create analysis baseline
-uv run python -m veritascribe analyze thesis.pdf --output ./baseline
-git add baseline/
-git commit -m "Baseline thesis analysis"
-
-# After revisions
-uv run python -m veritascribe analyze thesis_v2.pdf --output ./revision_1
-git add revision_1/
-git commit -m "First revision analysis"
-
-# Compare improvements
-python compare_analyses.py baseline/ revision_1/
 ```
 
 ## Best Practices
@@ -634,23 +340,7 @@ python compare_analyses.py baseline/ revision_1/
 1. **Start with quick analysis**: Get overview before full analysis
 2. **Choose appropriate provider**: Match your needs and budget
 3. **Focus on high-priority issues**: Address critical errors first
-4. **Use appropriate citation style**: Match your academic field
-5. **Consider document size**: Large documents may need configuration adjustment
-
-### Cost Management
-
-1. **Choose cost-effective providers**: OpenRouter free models, local Ollama
-2. **Monitor token usage**: Check costs regularly with large documents
-3. **Use quick mode for drafts**: Full analysis for final versions
-4. **Adjust block size**: Smaller blocks = more requests but finer analysis
-5. **Consider model selection**: Balance quality vs. cost across providers
-
-### Workflow Integration
-
-1. **Regular analysis**: Integrate into writing routine
-2. **Version tracking**: Keep analysis results with document versions
-3. **Collaborative review**: Share analysis results with advisors
-4. **Final validation**: Run full analysis before submission
+4. **Use `optimize-prompts`**: Fine-tune prompts for better accuracy if needed.
 
 ---
 

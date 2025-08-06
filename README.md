@@ -6,14 +6,16 @@ VeritaScribe is an intelligent document analysis system that automatically revie
 
 ## ✨ Features
 
-- **Multi-Provider LLM Support**: Works with OpenAI, OpenRouter, Anthropic Claude, and custom endpoints
-- **Comprehensive Analysis**: Grammar checking, content validation, and citation format verification
-- **Smart PDF Processing**: Extracts text while preserving layout context and location information
-- **Structured Reporting**: Generates detailed reports with error locations, severities, and suggestions
-- **Visual Analytics**: Creates charts and visualizations to highlight error patterns
-- **Flexible Configuration**: Customizable analysis parameters and provider selection
-- **CLI Interface**: Easy-to-use command-line interface with multiple analysis modes
-- **Cost Optimization**: Choose from 100+ models across providers for optimal cost/performance
+- **Multi-Provider LLM Support**: Works with OpenAI, OpenRouter, Anthropic Claude, and custom endpoints.
+- **Multi-Language Analysis**: Supports English and German with language-specific grammar and context.
+- **Comprehensive Analysis**: Grammar checking, content validation, and citation format verification.
+- **DSPy Prompt Optimization**: Includes tools to fine-tune analysis prompts for higher accuracy.
+- **Smart PDF Processing**: Extracts text while preserving layout context and location information.
+- **Structured Reporting**: Generates detailed reports with error locations, severities, and suggestions.
+- **Visual Analytics & Annotated PDFs**: Creates charts, visualizations, and annotated PDFs to highlight error patterns.
+- **Flexible Configuration**: Customizable analysis parameters and provider selection.
+- **CLI Interface**: Easy-to-use command-line interface with multiple analysis modes.
+- **Cost Optimization**: Choose from 100+ models across providers for optimal cost/performance.
 
 ## 🚀 Quick Start
 
@@ -60,12 +62,12 @@ VeritaScribe is an intelligent document analysis system that automatically revie
    uv run python -m veritascribe analyze your_thesis.pdf
    ```
 
-3. **Quick analysis** (analyzes first few text blocks):
+3. **Generate an annotated PDF** with highlighted errors:
    ```bash
-   uv run python -m veritascribe quick your_thesis.pdf
+   uv run python -m veritascribe analyze your_thesis.pdf --annotate
    ```
 
-## =� CLI Commands
+##  CLI Commands
 
 ### `analyze` - Full Document Analysis
 Performs comprehensive analysis of a thesis document.
@@ -79,11 +81,12 @@ uv run python -m veritascribe analyze [OPTIONS] PDF_PATH
 - `--citation-style, -c`: Expected citation style (default: `APA`)
 - `--quick, -q`: Quick analysis mode (first 10 blocks only)
 - `--no-viz`: Skip generating visualization charts
+- `--annotate`: Generate an annotated PDF with highlighted errors
 - `--verbose, -v`: Enable verbose logging
 
 **Example:**
 ```bash
-uv run python -m veritascribe analyze thesis.pdf --output ./results --citation-style MLA
+uv run python -m veritascribe analyze thesis.pdf --output ./results --annotate
 ```
 
 ### `quick` - Fast Analysis
@@ -115,6 +118,13 @@ Shows all supported LLM providers, models, and configuration examples.
 
 ```bash
 uv run python -m veritascribe providers
+```
+
+### `optimize-prompts` - DSPy Prompt Optimization
+Fine-tunes the analysis prompts using a few-shot learning dataset.
+
+```bash
+uv run python -m veritascribe optimize-prompts
 ```
 
 ### `test` - Run System Tests
@@ -187,73 +197,11 @@ VeritaScribe supports multiple LLM providers, giving you flexibility in model ch
 | Anthropic | Medium | Fast | Excellent | 5+ | Cloud |
 | Custom | Variable | Variable | Variable | Unlimited | Configurable |
 
-### Quick Setup Commands
-
-```bash
-# View available providers and models
-uv run python -m veritascribe providers
-
-# Check current configuration
-uv run python -m veritascribe config
-
-# Test your setup
-uv run python -m veritascribe test
-```
-
 ## 🔧 Configuration
 
-VeritaScribe uses environment variables for configuration. Copy `.env.example` to `.env` and customize:
+VeritaScribe uses environment variables for configuration. Copy `.env.example` to `.env` and customize.
 
-### Required Configuration
-
-Choose your LLM provider and set the appropriate API key:
-
-```bash
-# Provider selection (openai, openrouter, anthropic, custom)
-LLM_PROVIDER=openai
-
-# API Keys (set the one for your chosen provider)
-OPENAI_API_KEY=your_openai_api_key_here           # For OpenAI or custom
-OPENROUTER_API_KEY=sk-or-your_key_here           # For OpenRouter
-ANTHROPIC_API_KEY=sk-ant-your_key_here           # For Anthropic Claude
-
-# Custom endpoint (required for custom provider)
-OPENAI_BASE_URL=https://your-endpoint.com/v1     # For custom endpoints
-```
-
-### Optional Configuration
-
-```bash
-# LLM Model Settings
-DEFAULT_MODEL=gpt-4                    # LLM model to use
-MAX_TOKENS=2000                        # Maximum tokens per request
-TEMPERATURE=0.1                        # LLM temperature (0.0-1.0)
-
-# Analysis Features
-GRAMMAR_ANALYSIS_ENABLED=true          # Enable grammar checking
-CONTENT_ANALYSIS_ENABLED=true         # Enable content validation
-CITATION_ANALYSIS_ENABLED=true        # Enable citation format checking
-
-# Error Severity Thresholds
-HIGH_SEVERITY_THRESHOLD=0.8            # Threshold for high severity (0.0-1.0)
-MEDIUM_SEVERITY_THRESHOLD=0.5          # Threshold for medium severity (0.0-1.0)
-
-# Processing Settings
-PARALLEL_PROCESSING=true               # Enable parallel LLM requests
-MAX_CONCURRENT_REQUESTS=5              # Maximum simultaneous requests
-MAX_TEXT_BLOCK_SIZE=2000              # Maximum characters per analysis block
-
-# Output Settings
-OUTPUT_DIRECTORY=./analysis_output     # Default output directory
-GENERATE_VISUALIZATIONS=true           # Generate error charts
-SAVE_DETAILED_REPORTS=true            # Save detailed text reports
-
-# Retry Settings
-MAX_RETRIES=3                         # Maximum retry attempts
-RETRY_DELAY=1.0                       # Delay between retries (seconds)
-```
-
-## =� Understanding the Output
+## 📄 Understanding the Output
 
 VeritaScribe generates several types of output:
 
@@ -275,89 +223,16 @@ Charts and graphs showing:
 - Error density per page
 - Severity breakdown
 
-## <� Error Types
+### 4. Annotated PDF (`*_annotated.pdf`)
+An optional PDF output with errors highlighted and comments added directly to the document.
 
-VeritaScribe detects three main categories of issues:
+### 5. Cost and Token Usage
+The console output and Markdown report include details on token usage and the estimated cost of the analysis.
 
-### Grammar Errors
-- Spelling mistakes
-- Grammatical inconsistencies
-- Punctuation issues
-- Style problems
+## Troubleshooting
 
-### Content Plausibility
-- Logical inconsistencies
-- Factual accuracy concerns
-- Argument structure issues
-- Citation-content mismatches
+Run into issues? Check the [Troubleshooting Guide](docs/troubleshooting.qmd) for help.
 
-### Citation Format
-- Incorrect citation style
-- Missing references
-- Inconsistent formatting
-- Bibliography issues
+## 🏛️ Architecture
 
-## =� Tips for Best Results
-
-1. **Use High-Quality PDFs**: Text-based PDFs work better than scanned images
-2. **Configure Citation Style**: Specify your expected citation style for accurate checking
-3. **Review High-Priority Issues First**: Focus on high-severity errors for maximum impact
-4. **Use Quick Mode for Drafts**: Get fast feedback during writing with `quick` command
-5. **Monitor Token Usage**: Large documents may consume significant API tokens
-
-## = Troubleshooting
-
-### Common Issues
-
-**"OpenAI API key is required"**
-- Ensure your `.env` file contains a valid `OPENAI_API_KEY`
-- Check that the `.env` file is in the project root directory
-
-**"PDF file not found"**
-- Verify the file path is correct
-- Ensure the file has a `.pdf` extension
-
-**"No text blocks extracted"**
-- The PDF might be image-based (scanned). Try using OCR tools first
-- Check if the PDF is password-protected or corrupted
-
-**High API costs**
-- Use `--quick` mode for large documents
-- Adjust `MAX_TEXT_BLOCK_SIZE` to smaller values
-- Set `PARALLEL_PROCESSING=false` to reduce concurrent requests
-
-### Getting Help
-
-1. **Run system tests**: `uv run python -m veritascribe test`
-2. **Check configuration**: `uv run python -m veritascribe config`
-3. **Enable verbose logging**: Add `--verbose` to commands
-4. **Try the demo**: `uv run python -m veritascribe demo`
-
-## <� Architecture
-
-VeritaScribe follows a modular pipeline architecture:
-
-```
-PDF Input � Text Extraction � LLM Analysis � Error Aggregation � Report Generation
-```
-
-**Core Components:**
-- `pdf_processor.py`: Text extraction with layout preservation
-- `llm_modules.py`: DSPy-based analysis modules
-- `data_models.py`: Pydantic models for structured data
-- `pipeline.py`: Orchestration and workflow management
-- `report_generator.py`: Output generation and visualization
-
-## > Contributing
-
-Contributions are welcome! This tool is designed for defensive security and academic quality assurance purposes only.
-
-## =� License
-
-[Add your license information here]
-
-## = Related Projects
-
-- [DSPy](https://github.com/stanfordnlp/dspy) - LLM programming framework
-- [Pydantic](https://pydantic.dev/) - Data validation library
-- [PyMuPDF](https://pymupdf.readthedocs.io/) - PDF processing library
+VeritaScribe follows a modular pipeline architecture. Learn more in the [Architecture Guide](docs/architecture.qmd).

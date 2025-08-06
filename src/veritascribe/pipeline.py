@@ -9,7 +9,7 @@ import asyncio
 import concurrent.futures
 from concurrent.futures import ThreadPoolExecutor
 
-from .config import get_settings, get_dspy_config, initialize_system
+from .config import get_settings, get_dspy_config, initialize_system, PROVIDER_MODELS
 from .pdf_processor import PDFProcessor
 from .llm_modules import AnalysisOrchestrator
 from .data_models import (
@@ -18,6 +18,7 @@ from .data_models import (
     ThesisAnalysisReport,
     ErrorSeverity
 )
+import dspy
 
 logger = logging.getLogger(__name__)
 
@@ -35,6 +36,107 @@ class ThesisAnalysisPipeline:
         self.analysis_orchestrator = AnalysisOrchestrator()
         
         logger.info("Thesis analysis pipeline initialized")
+    
+    def _calculate_llm_usage(self) -> tuple[Dict[str, int], float]:
+        """
+        Calculate token usage and estimated cost from DSPy LLM history.
+        
+        Returns:
+            Tuple of (token_usage_dict, estimated_cost)
+        """
+        try:
+            # Get the current DSPy LM instance
+            if not hasattr(dspy.settings, 'lm') or not dspy.settings.lm:
+                return {}, 0.0
+            
+            lm = dspy.settings.lm
+            
+            # Initialize counters
+            total_prompt_tokens = 0
+            total_completion_tokens = 0
+            
+            # Check if the LM has a history attribute
+            if hasattr(lm, 'history') and lm.history:
+                for call in lm.history:
+                    # Extract token counts from call metadata
+                    if hasattr(call, 'usage') and call.usage:
+                        total_prompt_tokens += getattr(call.usage, 'prompt_tokens', 0)
+                        total_completion_tokens += getattr(call.usage, 'completion_tokens', 0)
+                    elif hasattr(call, 'response') and hasattr(call.response, 'usage'):
+                        usage = call.response.usage
+                        total_prompt_tokens += getattr(usage, 'prompt_tokens', 0)
+                        total_completion_tokens += getattr(usage, 'completion_tokens', 0)
+            
+            total_tokens = total_prompt_tokens + total_completion_tokens
+            
+            # Calculate cost based on current provider and model
+            estimated_cost = self._calculate_cost(
+                total_prompt_tokens, 
+                total_completion_tokens
+            )
+            
+            # Prepare usage dictionary
+            token_usage = {
+                'prompt_tokens': total_prompt_tokens,
+                'completion_tokens': total_completion_tokens,
+                'total_tokens': total_tokens
+            }
+            
+            # Clear history to avoid double counting on subsequent runs
+            if hasattr(lm, 'history'):
+                lm.history.clear()
+            
+            return token_usage, estimated_cost
+            
+        except Exception as e:
+            logger.warning(f"Failed to calculate LLM usage: {e}")
+            return {}, 0.0
+    
+    def _calculate_cost(self, prompt_tokens: int, completion_tokens: int) -> float:
+        """
+        Calculate estimated cost based on current provider and model.
+        
+        Args:
+            prompt_tokens: Number of prompt tokens used
+            completion_tokens: Number of completion tokens used
+            
+        Returns:
+            Estimated cost in USD
+        """
+        try:
+            provider = self.settings.llm_provider
+            model = self.settings.default_model
+            
+            # Get provider pricing information
+            if provider not in PROVIDER_MODELS:
+                return 0.0
+            
+            provider_config = PROVIDER_MODELS[provider]
+            pricing = provider_config.get('pricing', {})
+            
+            # Find pricing for the specific model
+            model_pricing = None
+            if model in pricing:
+                model_pricing = pricing[model]
+            elif provider == 'custom':
+                # Use default pricing for custom providers
+                model_pricing = pricing.get('default', {'prompt': 0.0, 'completion': 0.0})
+            
+            if not model_pricing:
+                logger.warning(f"No pricing information found for {provider}/{model}")
+                return 0.0
+            
+            # Calculate cost (pricing is per 1K tokens)
+            prompt_cost = (prompt_tokens / 1000.0) * model_pricing['prompt']
+            completion_cost = (completion_tokens / 1000.0) * model_pricing['completion']
+            
+            total_cost = prompt_cost + completion_cost
+            
+            return round(total_cost, 6)  # Round to 6 decimal places for precision
+            
+        except Exception as e:
+            logger.warning(f"Failed to calculate cost: {e}")
+            return 0.0
     
     def analyze_thesis(
         self, 
@@ -272,6 +374,9 @@ class ThesisAnalysisPipeline:
     ) -> ThesisAnalysisReport:
         """Create comprehensive analysis report."""
         
+        # Calculate token usage and cost
+        token_usage, estimated_cost = self._calculate_llm_usage()
+        
         # Calculate total pages (get max page number from text blocks)
         total_pages = max(block.page_number for block in text_blocks) if text_blocks else 0
         
@@ -283,6 +388,8 @@ class ThesisAnalysisPipeline:
             total_text_blocks=len(text_blocks),
             analysis_results=analysis_results,
             total_processing_time_seconds=processing_time,
+            token_usage=token_usage if token_usage else None,
+            estimated_cost=estimated_cost if estimated_cost > 0 else None,
             configuration_used={
                 'grammar_analysis_enabled': self.settings.grammar_analysis_enabled,
                 'content_analysis_enabled': self.settings.content_analysis_enabled,
@@ -374,13 +481,18 @@ class QuickAnalysisPipeline:
             processing_time = time.time() - start_time
             total_pages = max(block.page_number for block in all_blocks) if all_blocks else 0
             
+            # Calculate token usage and cost
+            token_usage, estimated_cost = self._calculate_llm_usage()
+            
             report = ThesisAnalysisReport(
                 document_name=Path(pdf_path).name,
                 document_path=pdf_path,
                 total_pages=total_pages,
                 total_text_blocks=len(all_blocks),
                 analysis_results=analysis_results,
-                total_processing_time_seconds=processing_time
+                total_processing_time_seconds=processing_time,
+                token_usage=token_usage if token_usage else None,
+                estimated_cost=estimated_cost if estimated_cost > 0 else None
             )
             
             logger.info(f"Quick analysis completed: {report.total_errors} errors in {processing_time:.2f}s")

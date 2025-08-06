@@ -61,6 +61,11 @@ def analyze(
         False, 
         "--verbose", "-v", 
         help="Enable verbose logging"
+    ),
+    annotate_pdf: bool = typer.Option(
+        False,
+        "--annotate", 
+        help="Generate an annotated PDF with highlighted errors"
     )
 ):
     """Analyze a thesis PDF document for quality issues."""
@@ -142,6 +147,23 @@ def analyze(
             if not no_visualizations and report.total_errors > 0:
                 viz_dir = output_path / f"{report_name}_visualizations"
                 viz_files = report_generator.visualize_errors(report, str(viz_dir))
+            
+            # Generate annotated PDF if requested
+            annotated_pdf_path = None
+            if annotate_pdf and report.total_errors > 0:
+                annotated_pdf_path = output_path / f"{report_name}_annotated.pdf"
+                report_generator.generate_annotated_pdf(
+                    report, 
+                    str(pdf_file),
+                    str(annotated_pdf_path)
+                )
+            
+            # Update progress message
+            if annotate_pdf and not no_visualizations and report.total_errors > 0:
+                progress.update(task, description="Reports, visualizations, and annotated PDF generated!")
+            elif annotate_pdf and report.total_errors > 0:
+                progress.update(task, description="Reports and annotated PDF generated!")
+            elif not no_visualizations and report.total_errors > 0:
                 progress.update(task, description="Reports and visualizations generated!")
             else:
                 progress.update(task, description="Reports generated!")
@@ -154,6 +176,9 @@ def analyze(
         
         if not no_visualizations and report.total_errors > 0:
             console.print(f"  📈 Visualizations: {viz_dir}/")
+        
+        if annotated_pdf_path:
+            console.print(f"  📑 Annotated PDF: {annotated_pdf_path}")
         
         # Show recommendations
         summary = report_generator.create_summary_report(report)
@@ -311,6 +336,61 @@ def config():
         
     except Exception as e:
         console.print(f"[red]Failed to load configuration: {str(e)}[/red]")
+        raise typer.Exit(1)
+
+
+@app.command()
+def optimize_prompts():
+    """Optimize DSPy prompts using few-shot learning with multi-language support."""
+    
+    console.print("[blue]Starting DSPy prompt optimization...[/blue]")
+    console.print("This will create optimized prompts for better analysis accuracy.")
+    
+    # Confirm with user
+    confirm = typer.confirm("This process may take several minutes. Continue?")
+    if not confirm:
+        console.print("Optimization cancelled.")
+        raise typer.Exit(0)
+    
+    try:
+        import subprocess
+        import sys
+        from pathlib import Path
+        
+        # Get the compilation script path
+        script_path = Path(__file__).parent.parent.parent / "scripts" / "compile_modules.py"
+        
+        if not script_path.exists():
+            console.print(f"[red]Compilation script not found: {script_path}[/red]")
+            raise typer.Exit(1)
+        
+        # Run the compilation script
+        with console.status("[bold green]Compiling modules...") as status:
+            result = subprocess.run([
+                sys.executable, str(script_path)
+            ], capture_output=True, text=True)
+        
+        if result.returncode == 0:
+            console.print("[green]✓ Prompt optimization completed successfully![/green]")
+            console.print("\n[bold]Optimized modules created for:[/bold]")
+            console.print("  • English grammar, content, and citation analysis")
+            console.print("  • German grammar, content, and citation analysis")
+            console.print("\n[blue]Restart VeritaScribe to use the optimized prompts.[/blue]")
+            
+            # Show compilation output if verbose
+            if result.stdout:
+                console.print("\n[dim]Compilation details:[/dim]")
+                console.print(result.stdout)
+        else:
+            console.print("[red]Prompt optimization failed![/red]")
+            if result.stderr:
+                console.print(f"[red]Error: {result.stderr}[/red]")
+            if result.stdout:
+                console.print(f"Output: {result.stdout}")
+            raise typer.Exit(1)
+            
+    except Exception as e:
+        console.print(f"[red]Error during optimization: {str(e)}[/red]")
         raise typer.Exit(1)
 
 
@@ -475,6 +555,14 @@ def _display_analysis_summary(report, quick: bool = False):
         summary_text.append(f"📊 Error rate: {report.error_rate:.2f} per 1,000 words")
     
     summary_text.append(f"⏱️  Processing time: {report.total_processing_time_seconds:.2f}s")
+    
+    # Add token usage and cost information if available
+    if report.token_usage:
+        total_tokens = report.token_usage.get('total_tokens', 0)
+        summary_text.append(f"🔤 Token usage: {total_tokens:,} tokens")
+    
+    if report.estimated_cost is not None and report.estimated_cost > 0:
+        summary_text.append(f"💰 Estimated cost: ${report.estimated_cost:.4f} USD")
     
     summary_panel = Panel(
         "\n".join(summary_text),

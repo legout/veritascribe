@@ -6,6 +6,8 @@ import re
 from typing import List, Optional, Dict, Any, Union
 import dspy
 from pydantic import ValidationError
+from langdetect import detect, LangDetectError
+from pathlib import Path
 
 from .data_models import (
     GrammarCorrectionError, 
@@ -19,6 +21,66 @@ from .data_models import (
 from .config import get_settings
 
 logger = logging.getLogger(__name__)
+
+
+def detect_language(text: str) -> str:
+    """
+    Detect the language of a text block.
+    
+    Args:
+        text: Text to analyze
+        
+    Returns:
+        Language code ('english', 'german', etc.) or 'english' as fallback
+    """
+    if not text or len(text.strip()) < 10:
+        return "english"  # Default fallback
+    
+    try:
+        # Use langdetect to identify language
+        detected = detect(text)
+        
+        # Map ISO codes to our training data keys
+        language_mapping = {
+            'en': 'english',
+            'de': 'german',
+        }
+        
+        return language_mapping.get(detected, 'english')
+        
+    except LangDetectError:
+        logger.warning(f"Language detection failed for text: {text[:50]}...")
+        return "english"  # Fallback to English
+
+
+def try_load_compiled_module(module_name: str, language: str) -> Optional[dspy.Module]:
+    """
+    Try to load a compiled DSPy module for a specific language.
+    
+    Args:
+        module_name: Name of the module (e.g., 'linguistic_analyzer')
+        language: Language code (e.g., 'english', 'german')
+        
+    Returns:
+        Compiled DSPy module if found, None otherwise
+    """
+    try:
+        compiled_dir = Path("compiled_modules")
+        if not compiled_dir.exists():
+            return None
+        
+        module_file = compiled_dir / f"{module_name}_{language}.json"
+        if not module_file.exists():
+            return None
+        
+        # Load the compiled module
+        # Note: This would need to be implemented based on DSPy's module loading API
+        logger.info(f"Found compiled module: {module_file}")
+        return None  # Placeholder - actual loading implementation needed
+        
+    except Exception as e:
+        logger.warning(f"Failed to load compiled module {module_name}_{language}: {e}")
+        return None
 
 
 def safe_json_parse(response_text: str, expected_fields: List[str] = None) -> List[Dict[str, Any]]:
@@ -157,24 +219,27 @@ def extract_json_from_text(text: str) -> Optional[List[Dict[str, Any]]]:
 
 
 class LinguisticAnalysisSignature(dspy.Signature):
-    """DSPy signature for grammar and linguistic analysis."""
+    """DSPy signature for grammar and linguistic analysis with language awareness."""
     
     text_chunk: str = dspy.InputField(description="Text chunk to analyze for grammatical issues")
+    language: str = dspy.InputField(description="Language of the text (e.g., 'english', 'german')", default="english")
     
     grammar_errors: str = dspy.OutputField(
         description="CRITICAL: Return ONLY valid JSON array format. Each error object must have: "
                    "error_type='grammar', severity ('high'|'medium'|'low'), "
                    "original_text, suggested_correction, explanation, grammar_rule (optional), "
                    "confidence_score (0.0-1.0). Return empty array [] if no errors found. "
+                   "Apply language-specific grammar rules based on the specified language. "
                    "Example: [{'error_type':'grammar','severity':'high','original_text':'text','suggested_correction':'corrected','explanation':'reason','confidence_score':0.9}]"
     )
 
 
 class ContentValidationSignature(dspy.Signature):
-    """DSPy signature for content plausibility and logical consistency analysis."""
+    """DSPy signature for content plausibility and logical consistency analysis with language awareness."""
     
     text_chunk: str = dspy.InputField(description="Text chunk to analyze for content plausibility issues")
     context: str = dspy.InputField(description="Additional context about the document type and subject", default="academic thesis")
+    language: str = dspy.InputField(description="Language of the text (e.g., 'english', 'german')", default="english")
     
     content_errors: str = dspy.OutputField(
         description="CRITICAL: Return ONLY valid JSON array format. Each error object must have: "
@@ -182,16 +247,18 @@ class ContentValidationSignature(dspy.Signature):
                    "original_text, suggested_correction, explanation, plausibility_issue, "
                    "requires_fact_check (true|false), confidence_score (0.0-1.0). "
                    "Return empty array [] if no errors found. "
+                   "Consider language-specific academic conventions and cultural context. "
                    "Example: [{'error_type':'content_plausibility','severity':'medium','original_text':'text','suggested_correction':'better','explanation':'reason','requires_fact_check':false,'confidence_score':0.8}]"
     )
 
 
 class CitationAnalysisSignature(dspy.Signature):
-    """DSPy signature for citation format and completeness analysis."""
+    """DSPy signature for citation format and completeness analysis with language awareness."""
     
     text_chunk: str = dspy.InputField(description="Text chunk to analyze for citation issues")
     bibliography: str = dspy.InputField(description="Full bibliography section if available", default="")
     citation_style: str = dspy.InputField(description="Expected citation style (APA, MLA, Chicago, etc.)", default="APA")
+    language: str = dspy.InputField(description="Language of the text (e.g., 'english', 'german')", default="english")
     
     citation_errors: str = dspy.OutputField(
         description="CRITICAL: Return ONLY valid JSON array format. Each error object must have: "
@@ -199,6 +266,7 @@ class CitationAnalysisSignature(dspy.Signature):
                    "original_text, suggested_correction, explanation, "
                    "citation_style_expected, missing_elements (array), confidence_score (0.0-1.0). "
                    "Return empty array [] if no errors found. "
+                   "Apply language-specific citation conventions and academic standards. "
                    "Example: [{'error_type':'citation_format','severity':'high','original_text':'Smith 2020','suggested_correction':'(Smith, 2020)','explanation':'Missing comma in APA format','citation_style_expected':'APA','missing_elements':['comma'],'confidence_score':0.95}]"
     )
 
@@ -211,19 +279,34 @@ class LinguisticAnalyzer(dspy.Module):
         self.analyzer = dspy.ChainOfThought(LinguisticAnalysisSignature)
         self.settings = get_settings()
     
-    def forward(self, text_block: TextBlock) -> List[GrammarCorrectionError]:
+    def forward(self, text_block: TextBlock, language: str = None) -> List[GrammarCorrectionError]:
         """
-        Analyze text block for grammatical issues.
+        Analyze text block for grammatical issues with language awareness.
         
         Args:
             text_block: TextBlock to analyze
+            language: Language of the text (auto-detected if not provided)
             
         Returns:
             List of GrammarCorrectionError objects
         """
         try:
-            # Call DSPy module
-            response = self.analyzer(text_chunk=text_block.content)
+            # Detect language if not provided
+            if language is None:
+                language = detect_language(text_block.content)
+            
+            # Try to load compiled module first
+            compiled_module = try_load_compiled_module("linguistic_analyzer", language)
+            if compiled_module:
+                logger.debug(f"Using compiled module for {language}")
+                # Use compiled module - implementation would depend on DSPy API
+                # For now, fall back to regular module
+            
+            # Call DSPy module with language context
+            response = self.analyzer(
+                text_chunk=text_block.content,
+                language=language
+            )
             
             # Parse JSON response with robust error handling
             errors_data = safe_json_parse(response.grammar_errors, ['error_type', 'severity', 'original_text'])
@@ -250,7 +333,7 @@ class LinguisticAnalyzer(dspy.Module):
                     logger.warning(f"Invalid grammar error format: {e}")
                     continue
             
-            logger.debug(f"Found {len(grammar_errors)} grammar errors in block {text_block.block_index}")
+            logger.debug(f"Found {len(grammar_errors)} grammar errors in block {text_block.block_index} ({language})")
             return grammar_errors
             
         except Exception as e:
@@ -266,22 +349,34 @@ class ContentValidator(dspy.Module):
         self.validator = dspy.ChainOfThought(ContentValidationSignature)
         self.settings = get_settings()
     
-    def forward(self, text_block: TextBlock, context: str = "academic thesis") -> List[ContentPlausibilityError]:
+    def forward(self, text_block: TextBlock, context: str = "academic thesis", language: str = None) -> List[ContentPlausibilityError]:
         """
-        Analyze text block for content plausibility issues.
+        Analyze text block for content plausibility issues with language awareness.
         
         Args:
             text_block: TextBlock to analyze
             context: Additional context about the document
+            language: Language of the text (auto-detected if not provided)
             
         Returns:
             List of ContentPlausibilityError objects
         """
         try:
-            # Call DSPy module
+            # Detect language if not provided
+            if language is None:
+                language = detect_language(text_block.content)
+            
+            # Try to load compiled module first
+            compiled_module = try_load_compiled_module("content_validator", language)
+            if compiled_module:
+                logger.debug(f"Using compiled module for {language}")
+                # Use compiled module - implementation would depend on DSPy API
+            
+            # Call DSPy module with language context
             response = self.validator(
                 text_chunk=text_block.content,
-                context=context
+                context=context,
+                language=language
             )
             
             # Parse JSON response with robust error handling
@@ -309,7 +404,7 @@ class ContentValidator(dspy.Module):
                     logger.warning(f"Invalid content error format: {e}")
                     continue
             
-            logger.debug(f"Found {len(content_errors)} content errors in block {text_block.block_index}")
+            logger.debug(f"Found {len(content_errors)} content errors in block {text_block.block_index} ({language})")
             return content_errors
             
         except Exception as e:
@@ -329,25 +424,38 @@ class CitationChecker(dspy.Module):
         self, 
         text_block: TextBlock, 
         bibliography: str = "", 
-        citation_style: str = "APA"
+        citation_style: str = "APA",
+        language: str = None
     ) -> List[CitationFormatError]:
         """
-        Analyze text block for citation issues.
+        Analyze text block for citation issues with language awareness.
         
         Args:
             text_block: TextBlock to analyze
             bibliography: Full bibliography section if available
             citation_style: Expected citation style
+            language: Language of the text (auto-detected if not provided)
             
         Returns:
             List of CitationFormatError objects
         """
         try:
-            # Call DSPy module
+            # Detect language if not provided
+            if language is None:
+                language = detect_language(text_block.content)
+            
+            # Try to load compiled module first
+            compiled_module = try_load_compiled_module("citation_checker", language)
+            if compiled_module:
+                logger.debug(f"Using compiled module for {language}")
+                # Use compiled module - implementation would depend on DSPy API
+            
+            # Call DSPy module with language context
             response = self.checker(
                 text_chunk=text_block.content,
                 bibliography=bibliography,
-                citation_style=citation_style
+                citation_style=citation_style,
+                language=language
             )
             
             # Parse JSON response with robust error handling
@@ -379,7 +487,7 @@ class CitationChecker(dspy.Module):
                     logger.warning(f"Invalid citation error format: {e}")
                     continue
             
-            logger.debug(f"Found {len(citation_errors)} citation errors in block {text_block.block_index}")
+            logger.debug(f"Found {len(citation_errors)} citation errors in block {text_block.block_index} ({language})")
             return citation_errors
             
         except Exception as e:
@@ -425,10 +533,14 @@ class AnalysisOrchestrator:
         all_errors = []
         
         try:
+            # Detect language for this text block
+            detected_language = detect_language(text_block.content)
+            logger.debug(f"Detected language for block {text_block.block_index}: {detected_language}")
+            
             # Grammar analysis
             if self.linguistic_analyzer:
                 try:
-                    grammar_errors = self.linguistic_analyzer(text_block)
+                    grammar_errors = self.linguistic_analyzer(text_block, language=detected_language)
                     all_errors.extend(grammar_errors)
                 except Exception as e:
                     logger.error(f"Grammar analysis failed for block {text_block.block_index}: {e}")
@@ -436,7 +548,7 @@ class AnalysisOrchestrator:
             # Content validation
             if self.content_validator:
                 try:
-                    content_errors = self.content_validator(text_block, context)
+                    content_errors = self.content_validator(text_block, context, language=detected_language)
                     all_errors.extend(content_errors)
                 except Exception as e:
                     logger.error(f"Content validation failed for block {text_block.block_index}: {e}")
@@ -444,7 +556,7 @@ class AnalysisOrchestrator:
             # Citation checking
             if self.citation_checker:
                 try:
-                    citation_errors = self.citation_checker(text_block, bibliography, citation_style)
+                    citation_errors = self.citation_checker(text_block, bibliography, citation_style, language=detected_language)
                     all_errors.extend(citation_errors)
                 except Exception as e:
                     logger.error(f"Citation checking failed for block {text_block.block_index}: {e}")
