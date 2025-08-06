@@ -141,7 +141,7 @@ class VeritaScribeSettings(BaseSettings):
             "openai": min(self.max_tokens, 4000),  # OpenAI models generally handle larger contexts well
             "openrouter": min(self.max_tokens, 3000),  # More conservative for free/cheaper models
             "anthropic": min(self.max_tokens, 4000),  # Claude handles large contexts well
-            "custom": min(self.max_tokens, 2000)  # Conservative for unknown endpoints
+            "custom": min(self.max_tokens, 4000)  # Conservative for unknown endpoints
         }
         
         # For specific known problematic models, use even lower limits
