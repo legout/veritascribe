@@ -24,7 +24,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          uv sync
+          uv sync --no-dev
 
       - name: Get current version from pyproject.toml
         id: get_version
