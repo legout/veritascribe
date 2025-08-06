@@ -1,0 +1,51 @@
+project:
+  type: website
+  title: "VeritaScribe Documentation"
+  
+website:
+  title: "VeritaScribe"
+  description: "AI-Powered Bachelor Thesis Review Tool"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: installation.qmd
+        text: Installation
+      - href: configuration.qmd
+        text: Configuration
+      - href: usage.qmd
+        text: Usage Guide
+      - href: api-reference.qmd
+        text: API Reference
+      - href: architecture.qmd
+        text: Architecture
+      - href: troubleshooting.qmd
+        text: Troubleshooting
+  sidebar:
+    - section: "Getting Started"
+      contents:
+        - index.qmd
+        - installation.qmd
+        - configuration.qmd
+    - section: "User Guide"
+      contents:
+        - usage.qmd
+        - troubleshooting.qmd
+    - section: "Technical Reference"
+      contents:
+        - api-reference.qmd
+        - architecture.qmd
+
+format:
+  html:
+    theme: cosmo
+    #css: styles.css
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    highlight-style: github
+    code-fold: false
+    code-tools: true
+    
+execute:
+  freeze: auto

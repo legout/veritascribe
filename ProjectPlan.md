@@ -19,7 +19,7 @@ thesis_analyzer/
 ├── pipeline.py           # Orchestration of the analysis workflow
 ├── report_generator.py   # Logic for generating human-readable reports and visualizations
 ├── main.py               # Main execution script and entry point
-└── requirements.txt      # Project dependencies
+└── pyproject.toml        # Project dependencies and metadata (managed by Poetry/PDM)
 ```
 
 ---
@@ -29,9 +29,9 @@ thesis_analyzer/
 1. **Environment Setup:**
     * Create and activate a Python virtual environment to ensure isolated dependency management.
 2. **Dependency Installation:**
-    * Install all required libraries as specified in `requirements.txt`. Key dependencies include `dspy-ai`, `pydantic`, `PyMuPDF`, `python-dotenv`, `openai` (or other LLM client libraries), and `matplotlib` (for visualization).
+    * Manage dependencies using Poetry or PDM, leveraging `pyproject.toml`. Key dependencies include `dspy-ai`, `pydantic`, `PyMuPDF`, `python-dotenv`, `openai` (or other LLM client libraries), `matplotlib` (for visualization), `pydantic-settings`, and `typer` or `click` for CLI.
 3. **Configuration Management (`config.py`):**
-    * Establish a central `config.py` file to manage global settings. This includes LLM API keys (loaded securely from environment variables), the default LLM model to use, configurable thresholds, and paths for input/output files.
+    * Establish a central `config.py` file, ideally using `pydantic-settings`, to manage global settings. This includes LLM API keys (loaded securely from environment variables), the default LLM model to use, configurable thresholds, and paths for input/output files.
     * This module will also handle the initial setup of the DSPy LLM backend.
 
 ---
@@ -122,16 +122,17 @@ thesis_analyzer/
 
 #### **Phase 6: Main Execution Script (`main.py`)**
 
-* **Objective:** Serve as the primary entry point for the entire application, orchestrating the execution flow.
-* **Functionality:**
-    1. Load configuration settings from `config.py`.
-    2. Define the path to the input PDF thesis.
-    3. Optionally, include logic to call `report_generator.create_dummy_pdf` for testing if a real PDF is not provided.
-    4. Invoke the `pipeline.run_analysis_pipeline` function with the PDF path and any relevant thesis metadata.
-    5. Receive the generated `ThesisAnalysisReport` object.
-    6. Call `report_generator.generate_text_report` to save the detailed text report.
-    7. Call `report_generator.visualize_errors` to generate and save graphical summaries.
-    8. Provide clear console output indicating the completion of the analysis and the location of the generated reports and visualizations.
+*   **Objective:** Serve as the primary entry point for the entire application, orchestrating the execution flow, ideally as a robust Command-Line Interface (CLI) using `Typer` or `Click`.
+*   **Functionality:**
+    1.  Load configuration settings from `config.py`.
+    2.  Define the path to the input PDF thesis.
+    3.  Optionally, include logic to call `report_generator.create_dummy_pdf` for testing if a real PDF is not provided.
+    4.  Invoke the `pipeline.run_analysis_pipeline` function with the PDF path and any relevant thesis metadata.
+    5.  Receive the generated `ThesisAnalysisReport` object.
+    6.  Call `report_generator.generate_text_report` to save the detailed text report.
+    7.  Call `report_generator.visualize_errors` to generate and save graphical summaries.
+    8.  Provide clear console output indicating the completion of the analysis and the location of the generated reports and visualizations.
+    9.  Implement CLI arguments for input PDF path, output directory, and other configurable options.
 
 ---
 
@@ -143,7 +144,7 @@ thesis_analyzer/
 * **Customizable Criteria & Rules:** Enhance `config.py` to allow users to define custom evaluation criteria, specify severity thresholds for errors, or enable/disable specific analysis types based on their needs.
 * **Integration with External Tools:** Explore combining LLM analysis with established tools like LanguageTool (via API) for initial linguistic checks, or specialized citation management tools for more rigorous citation validation beyond what an LLM can infer.
 * **DSPy Optimization & Fine-tuning:** Leverage DSPy's advanced features like `dspy.teleprompt.BootstrapFewShot` to automatically generate few-shot examples and fine-tune prompt strategies. This can significantly improve LLM performance and reliability based on human feedback on a small "gold standard" dataset.
-* **Annotated PDF Output:** A highly valuable enhancement would be to use the `bounding_box_coordinates` from the `LocationHint` to directly annotate the original PDF with highlights and comments for each detected error, creating a highly visual and actionable feedback document.
+* **Annotated PDF Output:** A highly valuable enhancement would be to use the `bounding_box_coordinates` from the `LocationHint` to directly annotate the original PDF with highlights and comments for each detected error, creating a highly visual and actionable feedback document. This could be achieved using `PyMuPDF` for reading and `reportlab` for creating the annotation layer. This could be achieved using `PyMuPDF` for reading and `reportlab` for creating the annotation layer.
 * **Web Interface:** For broader usability, consider building a simple web interface (e.g., using Streamlit, Flask, or FastAPI) to allow users to upload PDFs, configure analysis settings, and view interactive reports.
 
 ---

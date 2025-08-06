@@ -1,0 +1,262 @@
+---
+title: "Installation Guide"
+---
+
+# Installation Guide
+
+This guide walks you through installing and setting up VeritaScribe on your system.
+
+## Prerequisites
+
+Before installing VeritaScribe, ensure you have:
+
+- **Python 3.13 or higher**: VeritaScribe requires modern Python features
+- **OpenAI API Key**: Required for LLM-based analysis
+- **uv**: Modern Python package manager (recommended)
+
+## Step 1: Check Python Version
+
+Verify you have Python 3.13 or higher:
+
+```bash
+python --version
+# Should show Python 3.13.x or higher
+```
+
+If you need to install or upgrade Python:
+
+::: {.panel-tabset}
+
+## macOS
+
+```bash
+# Using Homebrew
+brew install python@3.13
+
+# Using pyenv
+pyenv install 3.13.0
+pyenv global 3.13.0
+```
+
+## Ubuntu/Debian
+
+```bash
+# Add deadsnakes PPA for latest Python versions
+sudo add-apt-repository ppa:deadsnakes/ppa
+sudo apt update
+sudo apt install python3.13 python3.13-venv python3.13-pip
+```
+
+## Windows
+
+Download Python 3.13 from [python.org](https://www.python.org/downloads/) or use:
+
+```powershell
+# Using Chocolatey
+choco install python --version=3.13.0
+
+# Using winget
+winget install Python.Python.3.13
+```
+
+:::
+
+## Step 2: Install uv (Recommended)
+
+uv is a fast Python package manager that VeritaScribe uses for dependency management:
+
+::: {.panel-tabset}
+
+## macOS/Linux
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+## Windows
+
+```powershell
+powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+## Alternative (pip)
+
+```bash
+pip install uv
+```
+
+:::
+
+## Step 3: Clone Repository
+
+Clone the VeritaScribe repository:
+
+```bash
+git clone <repository-url>
+cd VeritaScribe
+```
+
+## Step 4: Install Dependencies
+
+Install all required dependencies using uv:
+
+```bash
+uv sync
+```
+
+This will:
+- Create a virtual environment automatically
+- Install all dependencies specified in `pyproject.toml`
+- Set up the project for development
+
+## Step 5: Configure Environment
+
+### Create Environment File
+
+Copy the example environment configuration:
+
+```bash
+cp .env.example .env
+```
+
+### Edit Configuration
+
+Open `.env` in your preferred text editor and add your OpenAI API key:
+
+```bash
+# Required: OpenAI API Configuration
+OPENAI_API_KEY=your_openai_api_key_here
+
+# Optional: Customize other settings as needed
+DEFAULT_MODEL=gpt-4
+MAX_TOKENS=2000
+TEMPERATURE=0.1
+```
+
+::: {.callout-important}
+## OpenAI API Key Required
+
+VeritaScribe requires an OpenAI API key to function. You can obtain one from the [OpenAI Platform](https://platform.openai.com/api-keys).
+
+**Security Note**: Never commit your API key to version control. The `.env` file is already included in `.gitignore`.
+:::
+
+## Step 6: Verify Installation
+
+Test your installation with the built-in system test:
+
+```bash
+uv run python -m veritascribe test
+```
+
+This will verify:
+- ✅ Configuration loading
+- ✅ PDF processing capabilities
+- ✅ LLM connectivity (if API key is configured)
+
+You should see output similar to:
+
+```
+Running VeritaScribe system tests...
+✓ Configuration loading works
+✓ PDF processing works
+✓ Analysis modules work
+
+Test Results: 3/3 passed
+🎉 All tests passed! VeritaScribe is ready to use.
+```
+
+## Step 7: Try the Demo
+
+Run the demo to see VeritaScribe in action:
+
+```bash
+uv run python -m veritascribe demo
+```
+
+This will:
+1. Create a sample thesis PDF
+2. Perform a quick analysis
+3. Display results and save example reports
+
+## Alternative Installation Methods
+
+### Using pip (without uv)
+
+If you prefer to use pip directly:
+
+```bash
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install -e .
+```
+
+### Development Installation
+
+For development work, install with additional dev dependencies:
+
+```bash
+uv sync --dev
+```
+
+## Troubleshooting Installation
+
+### Common Issues
+
+**"uv not found"**
+- Ensure uv is installed and in your PATH
+- Restart your terminal after installation
+- Try the alternative pip installation method
+
+**"Python version not supported"**
+- Verify Python 3.13+ is installed: `python --version`
+- You may need to use `python3.13` explicitly
+- Consider using pyenv to manage Python versions
+
+**"OpenAI API key not configured"**
+- Ensure `.env` file exists in the project root
+- Verify your API key is correct and has credits
+- Check for extra spaces or characters in the key
+
+**"Permission denied" errors**
+- On macOS/Linux, you may need to use `chmod +x` on scripts
+- Ensure you have write permissions in the installation directory
+
+**"SSL Certificate" errors**
+- Update certificates: `pip install --upgrade certifi`
+- Check corporate firewall/proxy settings
+
+### Getting Help
+
+If you continue to experience issues:
+
+1. **Check system compatibility**:
+   ```bash
+   uv run python -m veritascribe config
+   ```
+
+2. **Enable verbose logging**:
+   ```bash
+   uv run python -m veritascribe test --verbose
+   ```
+
+3. **Verify environment**:
+   ```bash
+   uv run python -c "import sys; print(sys.version)"
+   uv run python -c "from veritascribe import config; print('Import successful')"
+   ```
+
+## Next Steps
+
+Now that VeritaScribe is installed:
+
+- [Configure your settings](configuration.qmd) for optimal performance
+- [Learn the basic usage](usage.qmd) with examples
+- Review the [API reference](api-reference.qmd) for advanced usage
+
+---
+
+*Installation complete! You're ready to start analyzing thesis documents with VeritaScribe.*

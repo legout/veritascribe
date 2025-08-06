@@ -1,0 +1,148 @@
+---
+title: "API Reference"
+---
+
+# API Reference
+
+This reference covers VeritaScribe's programmatic interfaces, data models, and internal APIs for developers and advanced users.
+
+## Command Line Interface
+
+### Core Commands
+
+#### `analyze`
+
+Perform comprehensive thesis analysis.
+
+```bash
+uv run python -m veritascribe analyze [OPTIONS] PDF_PATH
+```
+
+**Arguments:**
+- `PDF_PATH` (required): Path to the PDF thesis file
+
+**Options:**
+- `--output, -o TEXT`: Output directory for reports
+- `--citation-style, -c TEXT`: Expected citation style (APA, MLA, Chicago, IEEE, Harvard)
+- `--quick, -q`: Perform quick analysis (first 10 blocks only)
+- `--no-viz`: Skip generating visualization charts
+- `--annotate`: Generate an annotated PDF with highlighted errors
+- `--verbose, -v`: Enable verbose logging
+
+**Exit Codes:**
+- `0`: Success
+- `1`: Error (file not found, analysis failed, etc.)
+
+#### `quick`
+
+Fast analysis of document subset.
+
+```bash
+uv run python -m veritascribe quick [OPTIONS] PDF_PATH
+```
+
+**Arguments:**
+- `PDF_PATH` (required): Path to the PDF thesis file  
+
+**Options:**
+- `--blocks, -b INTEGER`: Number of text blocks to analyze (default: 5)
+
+#### `demo`
+
+Create and analyze sample document.
+
+```bash
+uv run python -m veritascribe demo
+```
+
+No arguments or options. Creates `demo_thesis.pdf` in current directory.
+
+#### `config`
+
+Display current configuration.
+
+```bash
+uv run python -m veritascribe config
+```
+
+Outputs configuration table and API key status.
+
+#### `providers`
+
+List available LLM providers and models.
+
+```bash
+uv run python -m veritascribe providers
+```
+
+#### `optimize-prompts`
+
+Fine-tune analysis prompts using a few-shot learning dataset.
+
+```bash
+uv run python -m veritascribe optimize-prompts
+```
+
+#### `test`
+
+Run system diagnostics.
+
+```bash
+uv run python -m veritascribe test
+```
+
+Tests configuration loading, PDF processing, and LLM connectivity.
+
+## Python API
+
+### Configuration Management
+
+#### `veritascribe.config.VeritaScribeSettings`
+
+Main configuration class using Pydantic Settings.
+
+```python
+from veritascribe.config import VeritaScribeSettings
+
+settings = VeritaScribeSettings(
+    openai_api_key="your-key-here",
+    default_model="gpt-4",
+    max_tokens=2000,
+    temperature=0.1
+)
+```
+
+**Key Fields:**
+
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `llm_provider` | `str` | `"openai"` | LLM provider (openai, openrouter, anthropic, custom) |
+| `openai_api_key` | `Optional[str]` | `None` | OpenAI API key |
+| `openrouter_api_key` | `Optional[str]` | `None` | OpenRouter API key |
+| `anthropic_api_key` | `Optional[str]` | `None` | Anthropic API key |
+| `default_model` | `str` | `"gpt-4"` | LLM model name |
+| `max_tokens` | `int` | `2000` | Max tokens per request |
+| `temperature` | `float` | `0.1` | LLM temperature |
+
+### Data Models
+
+All data models use Pydantic for validation and serialization.
+
+#### `veritascribe.data_models.ThesisAnalysisReport`
+
+Complete analysis report containing all results.
+
+**Key Fields:**
+- `document_name: str`
+- `analysis_timestamp: datetime`
+- `total_pages: int`
+- `total_words: int`
+- `total_text_blocks: int`
+- `analysis_results: List[AnalysisResult]`
+- `total_processing_time_seconds: float`
+- `token_usage: Optional[Dict[str, int]]`
+- `estimated_cost: Optional[float]`
+
+---
+
+*This API reference covers the main interfaces. For implementation details, see the [Architecture Guide](architecture.qmd).* 

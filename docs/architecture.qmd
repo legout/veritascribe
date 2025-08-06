@@ -1,0 +1,82 @@
+---
+title: "Architecture Guide"
+---
+
+# Architecture Guide
+
+VeritaScribe is built on a modular and extensible pipeline architecture, designed to process PDF documents, analyze their content using Large Language Models (LLMs), and generate comprehensive reports. The system leverages modern Python libraries like DSPy for LLM orchestration, Pydantic for data integrity, and PyMuPDF for efficient PDF handling.
+
+## System Overview
+
+The system is composed of several key components that work together in a coordinated workflow.
+
+### Core Components
+
+1.  **CLI (Command Line Interface)** (`main.py`):
+    *   Built with **Typer**, providing a user-friendly command-line interface.
+    *   Handles user commands (`analyze`, `quick`, `demo`, etc.), parses arguments, and initiates the analysis pipeline.
+
+2.  **Configuration Management** (`config.py`):
+    *   Uses **Pydantic-Settings** to manage configuration from environment variables and `.env` files.
+    *   Provides type-safe, centralized settings for LLM providers, API keys, analysis parameters, and processing options.
+    *   Dynamically configures the DSPy environment based on the selected LLM provider.
+
+3.  **PDF Processor** (`pdf_processor.py`):
+    *   Utilizes **PyMuPDF (fitz)** for high-performance PDF parsing.
+    *   Extracts text content along with its layout and location information (bounding boxes), which is crucial for accurate error reporting and annotation.
+    *   Cleans and preprocesses text to handle common PDF artifacts and formatting issues.
+
+4.  **LLM Analysis Modules** (`llm_modules.py`):
+    *   The core of the analysis engine, built with **DSPy (Declarative Self-improving Language Programs)**.
+    *   Consists of specialized modules for different analysis types:
+        *   `LinguisticAnalyzer`: Checks for grammar, spelling, and style errors.
+        *   `ContentValidator`: Assesses logical consistency and content plausibility.
+        *   `CitationChecker`: Verifies citation formats against specified styles (e.g., APA, MLA).
+    *   Each module uses strongly-typed **DSPy Signatures** to ensure structured and predictable interactions with LLMs.
+    *   Supports multi-language analysis by leveraging language detection and language-specific prompts and training data.
+
+5.  **Data Models** (`data_models.py`):
+    *   Employs **Pydantic** models to define clear, validated data structures for the entire application.
+    *   Key models include `TextBlock`, `BaseError` (with subclasses for different error types), and `ThesisAnalysisReport`.
+    *   Ensures data integrity and provides a consistent data flow between components.
+
+6.  **Analysis Pipeline** (`pipeline.py`):
+    *   Orchestrates the end-to-end analysis workflow.
+    *   Coordinates the PDF processor, analysis modules, and report generator.
+    *   Manages the flow of data from raw PDF to the final analysis report.
+    *   Supports both sequential and parallel processing of text blocks for performance optimization, using Python's `concurrent.futures`.
+
+7.  **Report Generator** (`report_generator.py`):
+    *   Generates multiple output formats from the final `ThesisAnalysisReport`.
+    *   Creates detailed **Markdown reports** for human-readable summaries.
+    *   Exports structured **JSON data** for programmatic use.
+    *   Produces **visualizations** (e.g., error distribution charts) using **Matplotlib**.
+    *   Generates **annotated PDFs** with highlighted errors and comments.
+
+### Data and Control Flow
+
+The typical workflow is as follows:
+
+```{mermaid}
+graph TD
+    A[User runs CLI command] --> B{Analysis Pipeline};
+    B --> C[PDF Processor: Extract TextBlocks];
+    C --> D{Analysis Orchestrator};
+    D --> E[Linguistic Analyzer];
+    D --> F[Content Validator];
+    D --> G[Citation Checker];
+    E --> H[LLM API Call];
+    F --> H;
+    G --> H;
+    H --> I[Parse & Validate LLM Response];
+    I --> J(AnalysisResult);
+    J --> K[Aggregate Results];
+    K --> L{ThesisAnalysisReport};
+    L --> M[Report Generator];
+    M --> N[Markdown Report];
+    M --> O[JSON Data];
+    M --> P[Visualizations];
+    M --> Q[Annotated PDF];
+```
+
+This modular design allows for easy extension, such as adding new analysis modules, supporting more output formats, or integrating different LLM providers.

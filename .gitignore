@@ -1,0 +1,7 @@
+.env
+analysis_output/
+**/__pycache__/
+dev/
+analysis_ba_daniel_grundlagen2/
+analysis_ba_daniel_grundlagen*/**
+output/

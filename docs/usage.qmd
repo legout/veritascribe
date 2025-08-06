@@ -1,0 +1,532 @@
+---
+title: "Usage Guide"
+---
+
+# Usage Guide
+
+This comprehensive guide covers all aspects of using VeritaScribe to analyze thesis documents.
+
+## Command Overview
+
+VeritaScribe provides several commands for different use cases:
+
+| Command | Purpose | Use Case |
+|---------|---------|----------|
+| `demo` | Create and analyze sample document | Testing setup |
+| `quick` | Fast analysis of document subset | Quick feedback |
+| `analyze` | Full document analysis | Complete review |
+| `config` | View configuration | Troubleshooting |
+| `providers` | List available LLM providers | Provider setup |
+| `optimize-prompts` | Fine-tune analysis prompts | Accuracy improvement |
+| `test` | System diagnostics | Verify installation |
+
+## Provider Selection
+
+VeritaScribe supports multiple LLM providers. Choose based on your needs:
+
+### View Available Providers
+
+```bash
+uv run python -m veritascribe providers
+```
+
+This shows all supported providers, their models, and configuration examples.
+
+### Provider Recommendations
+
+**For Academic Use:**
+- **OpenAI**: Most reliable, extensive model selection
+- **Anthropic**: Excellent reasoning, safety-focused
+- **OpenRouter**: Access to multiple providers, competitive pricing
+
+**For Cost Optimization:**
+- **OpenRouter**: Free models available (`z-ai/glm-4.5-air:free`)
+- **Local Ollama**: No API costs, privacy-focused
+- **OpenAI gpt-3.5-turbo**: Cheapest commercial option
+
+**For Privacy/Security:**
+- **Local Ollama**: Complete data privacy
+- **Custom endpoints**: Organizational control
+- **Azure OpenAI**: Enterprise compliance
+
+### Quick Provider Setup
+
+```bash
+# OpenAI (standard)
+echo "LLM_PROVIDER=openai" >> .env
+echo "OPENAI_API_KEY=your-key" >> .env
+
+# OpenRouter (100+ models)
+echo "LLM_PROVIDER=openrouter" >> .env  
+echo "OPENROUTER_API_KEY=your-key" >> .env
+echo "DEFAULT_MODEL=anthropic/claude-3.5-sonnet" >> .env
+
+# Anthropic (direct Claude)
+echo "LLM_PROVIDER=anthropic" >> .env
+echo "ANTHROPIC_API_KEY=your-key" >> .env
+
+# Local Ollama (free)
+echo "LLM_PROVIDER=custom" >> .env
+echo "OPENAI_BASE_URL=http://localhost:11434/v1" >> .env
+echo "DEFAULT_MODEL=llama3.1:8b" >> .env
+```
+
+## Getting Started
+
+### 1. Try the Demo
+
+Start with the demo to familiarize yourself with VeritaScribe:
+
+```bash
+uv run python -m veritascribe demo
+```
+
+This command will:
+- Create a sample thesis PDF (`demo_thesis.pdf`)
+- Perform quick analysis if API key is configured
+- Show example output and reports
+
+### 2. Quick Analysis
+
+For rapid feedback on your document:
+
+```bash
+uv run python -m veritascribe quick your_thesis.pdf
+```
+
+Quick analysis:
+- Analyzes first 5 text blocks by default
+- Provides immediate feedback
+- Useful during writing process
+- Lower API costs
+
+**Customize block count:**
+```bash
+uv run python -m veritascribe quick your_thesis.pdf --blocks 10
+```
+
+### 3. Full Analysis
+
+For comprehensive document review:
+
+```bash
+uv run python -m veritascribe analyze your_thesis.pdf
+```
+
+This performs:
+- Complete document analysis
+- All error types detection
+- Detailed reporting
+- Visualization generation
+
+## Command Details
+
+### `analyze` - Full Document Analysis
+
+The primary command for comprehensive thesis analysis.
+
+#### Basic Usage
+
+```bash
+uv run python -m veritascribe analyze thesis.pdf
+```
+
+#### Advanced Options
+
+```bash
+uv run python -m veritascribe analyze thesis.pdf \
+  --output ./results \
+  --citation-style APA \
+  --annotate \
+  --verbose
+```
+
+#### Options Reference
+
+| Option | Short | Description | Default |
+|--------|-------|-------------|---------|
+| `--output` | `-o` | Output directory | `./analysis_output` |
+| `--citation-style` | `-c` | Citation style | `APA` |
+| `--quick` | `-q` | Quick mode (10 blocks) | `false` |
+| `--no-viz` | | Skip visualizations | `false` |
+| `--annotate` | | Generate annotated PDF | `false` |
+| `--verbose` | `-v` | Verbose logging | `false` |
+
+#### Citation Styles Supported
+
+```bash
+# American Psychological Association
+--citation-style APA
+
+# Modern Language Association  
+--citation-style MLA
+
+# Chicago Manual of Style
+--citation-style Chicago
+
+# IEEE format
+--citation-style IEEE
+
+# Harvard referencing
+--citation-style Harvard
+```
+
+#### Example Workflows
+
+**Standard Analysis:**
+```bash
+uv run python -m veritascribe analyze thesis.pdf
+```
+
+**Generate Annotated PDF:**
+```bash
+uv run python -m veritascribe analyze thesis.pdf --annotate
+```
+
+The annotated PDF will contain:
+- Color-coded highlights on problematic text (red/orange/yellow by severity)
+- Detailed sticky note annotations with suggestions and explanations
+- All original document formatting preserved
+
+**Custom Output Location:**
+```bash
+uv run python -m veritascribe analyze thesis.pdf \
+  --output ~/Documents/thesis_review
+```
+
+### `quick` - Fast Analysis
+
+Ideal for iterative writing and quick feedback.
+
+#### Basic Usage
+
+```bash
+uv run python -m veritascribe quick thesis.pdf
+```
+
+#### Customize Analysis Scope
+
+```bash
+# Analyze first 3 blocks
+uv run python -m veritascribe quick thesis.pdf --blocks 3
+
+# Analyze first 15 blocks  
+uv run python -m veritascribe quick thesis.pdf --blocks 15
+```
+
+### `optimize-prompts` - DSPy Prompt Optimization
+
+Fine-tunes the analysis prompts using few-shot learning with bilingual training data for improved accuracy.
+
+```bash
+uv run python -m veritascribe optimize-prompts
+```
+
+#### What This Does
+
+The prompt optimization process:
+
+1. **Trains Language-Specific Modules**: Creates optimized DSPy modules for both English and German
+2. **Uses Curated Training Data**: Leverages hand-crafted examples of grammar, content, and citation errors
+3. **Applies Few-Shot Learning**: Uses DSPy's BootstrapFewShot compilation to improve prompt performance
+4. **Enhances Accuracy**: Results in significantly better error detection and fewer false positives
+
+#### When to Use
+
+- **After Installation**: Run once to set up optimized prompts for better results
+- **When Analysis Quality is Poor**: If you notice many false positives or missed errors
+- **After Updating Training Data**: When you've added new examples to the training dataset
+- **For Research/Academic Use**: When maximum accuracy is more important than processing speed
+
+#### Process Details
+
+```bash
+# The optimization process will:
+# 1. Load bilingual training examples
+# 2. Compile optimized modules for each analysis type
+# 3. Save compiled modules for future use
+# 4. Take 3-5 minutes to complete
+
+uv run python -m veritascribe optimize-prompts
+```
+
+**Note**: This process requires significant LLM API usage as it trains multiple modules. Budget approximately $2-5 in API costs for the full optimization process.
+
+### `demo` - Create Sample Document
+
+Creates and analyzes a demo thesis document for testing and demonstration.
+
+```bash
+uv run python -m veritascribe demo
+```
+
+This command:
+- Creates a sample PDF document (`demo_thesis.pdf`) with intentional errors
+- Runs quick analysis if API key is configured
+- Provides example output to familiarize you with the system
+- Perfect for testing your setup and configuration
+
+### `config` - View Configuration
+
+Displays current configuration settings and provider information.
+
+```bash
+uv run python -m veritascribe config
+```
+
+Shows:
+- Active LLM provider and model
+- API key configuration status
+- Analysis settings (temperature, max tokens, etc.)
+- Recommended models for your provider
+- Configuration validation results
+
+### `providers` - List Available Providers
+
+Shows all supported LLM providers, models, and configuration examples.
+
+```bash
+uv run python -m veritascribe providers
+```
+
+Displays:
+- Available providers (OpenAI, OpenRouter, Anthropic, Custom)
+- Recommended models for each provider
+- Configuration examples
+- Quick setup instructions for each provider
+
+### `test` - Run System Tests
+
+Verifies that all components are working correctly.
+
+```bash
+uv run python -m veritascribe test
+```
+
+Tests:
+- Configuration loading
+- PDF processing functionality
+- Analysis modules (if API key configured)
+- System integration and dependencies
+- Provides diagnostic information for troubleshooting
+
+## Understanding Output
+
+### Console Output
+
+VeritaScribe provides rich console output with progress indicators and summaries:
+
+```
+Starting analysis of: thesis.pdf
+Output directory: ./analysis_output
+
+Analyzing document... ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100%
+
+Analysis Results: thesis.pdf
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│ 📄 Pages: 45                                                                    │
+│ 📝 Words: 12,543                                                               │
+│ 🔍 Text blocks analyzed: 87                                                     │
+│ ⚠️  Total errors: 23                                                            │
+│ 📊 Error rate: 1.83 per 1,000 words                                           │
+│ ⏱️  Processing time: 45.32s                                                     │
+│ 🔤 Token usage: 15,234 tokens                                                    │
+│ 💰 Estimated cost: $0.0457 USD                                                   │
+└─────────────────────────────────────────────────────────────────────────────────┘
+
+Errors by Type
+...
+```
+
+### Generated Files
+
+Each analysis produces several output files:
+
+#### 1. Text Report (`.md`)
+
+Comprehensive Markdown report with summaries, detailed error listings, and cost information.
+
+#### 2. JSON Data Export (`.json`)
+
+Structured data for programmatic access, including all errors, locations, and analysis statistics.
+
+#### 3. Visualizations
+
+Charts and graphs showing error distribution, density, and severity.
+
+#### 4. Annotated PDF (`_annotated.pdf`)
+
+An interactive PDF that transforms your original document into a comprehensive visual review tool.
+
+**What You Get:**
+
+- **Visual Error Highlighting**: Problematic text is highlighted directly on the page using a severity-based color system:
+  - 🔴 **Red Highlights**: High-severity errors requiring immediate attention (grammar mistakes, logical inconsistencies, missing citations)
+  - 🟠 **Orange Highlights**: Medium-severity errors needing improvement (style issues, minor grammar problems, formatting inconsistencies)
+  - 🟡 **Yellow Highlights**: Low-severity suggestions for enhancement (stylistic preferences, optional improvements)
+
+- **Detailed Sticky Note Annotations**: Each error includes a comprehensive sticky note with:
+  ```
+  ERROR: Grammar
+  Severity: High
+  
+  Original: The results shows that our hypothesis
+  Suggested: The results show that our hypothesis
+  
+  Explanation: Subject-verb disagreement: 'results' is plural 
+  and requires the plural verb 'show'
+  
+  Confidence: 95.0%
+  ```
+
+- **Smart Annotation Positioning**: Annotations are automatically positioned to avoid overlaps while maintaining readability
+
+- **Preserves Original Document**: All original formatting, images, and layout are maintained while adding the review layer
+
+**Perfect Use Cases:**
+- **Supervisor Review**: Share annotated PDFs with advisors for targeted feedback discussions
+- **Collaborative Editing**: Team members can see exactly what needs attention
+- **Iterative Writing**: Quickly identify areas needing revision during the writing process
+- **Self-Review**: Visual representation helps you understand error patterns in your writing
+- **Academic Presentations**: Demonstrate quality control processes to committees
+
+**Important Notes:**
+- Annotated PDFs are only generated when errors are found
+- The `--annotate` flag must be used explicitly
+- Annotations preserve the original PDF's formatting and can be viewed in any standard PDF reader
+
+## Multi-Language Document Analysis
+
+VeritaScribe provides intelligent multi-language support with automatic language detection and language-specific analysis.
+
+### Automatic Language Detection
+
+The system automatically detects document language and applies appropriate analysis:
+
+```bash
+# English document - automatically detected and analyzed with English grammar rules
+uv run python -m veritascribe analyze english_thesis.pdf
+
+# German document - automatically detected and analyzed with German grammar rules  
+uv run python -m veritascribe analyze deutsche_abschlussarbeit.pdf
+
+# Mixed-language document - intelligently handles language switching
+uv run python -m veritascribe analyze multilingual_thesis.pdf
+```
+
+### Language-Specific Features
+
+#### English Analysis
+- **Grammar**: Subject-verb agreement, tense consistency, article usage
+- **Academic Style**: Formal writing conventions, passive voice usage
+- **Citations**: APA, MLA, Chicago style formatting
+- **Content**: Logical flow, argument structure, evidence validation
+
+#### German Analysis  
+- **Grammar**: Kasus-Kongruenz (case agreement), Subjekt-Verb-Kongruenz
+- **Academic Style**: German academic writing conventions, complex sentence structure
+- **Citations**: German academic citation styles, bibliography formatting
+- **Content**: German academic argumentation patterns, cultural context awareness
+
+### Optimization for Specific Languages
+
+```bash
+# Run prompt optimization to improve accuracy for both languages
+uv run python -m veritascribe optimize-prompts
+
+# This creates optimized modules for:
+# - English grammar, content, and citation analysis
+# - German grammar, content, and citation analysis
+# - Language detection and switching logic
+```
+
+### Best Practices for Multi-Language Documents
+
+1. **Language Consistency**: Ensure your document maintains consistent language usage
+2. **Cultural Context**: Be aware of different academic writing conventions
+3. **Citation Styles**: Use appropriate citation styles for your document's language
+4. **Optimization**: Run prompt optimization for best results with non-English documents
+
+## Advanced Usage Patterns
+
+### Batch Processing
+
+Process multiple documents:
+
+```bash
+# Create script for batch processing
+cat > batch_analyze.sh << 'EOF'
+#!/bin/bash
+for pdf in *.pdf; do
+  echo "Analyzing $pdf..."
+  uv run python -m veritascribe analyze "$pdf" \
+    --output "./results/$(basename "$pdf" .pdf)"
+done
+EOF
+
+chmod +x batch_analyze.sh
+./batch_analyze.sh
+```
+
+### Iterative Review Process
+
+Workflow for document improvement:
+
+```bash
+# Step 1: Initial quick review
+uv run python -m veritascribe quick draft.pdf --blocks 10
+
+# Step 2: Address major issues, then full analysis with annotation
+uv run python -m veritascribe analyze draft.pdf --output ./review_1 --annotate
+
+# The annotated PDF will visually show all errors with severity-based highlighting
+
+# Step 3: After revisions, re-analyze
+uv run python -m veritascribe analyze revised_draft.pdf --output ./review_2
+
+# Step 4: Compare results
+diff ./review_1/draft_*_data.json ./review_2/revised_draft_*_data.json
+```
+
+### Cost Management Strategies
+
+Optimize API usage for large documents using different providers and models:
+
+```bash
+# Strategy 1: Use free OpenRouter models
+LLM_PROVIDER=openrouter \
+DEFAULT_MODEL=z-ai/glm-4.5-air:free \
+uv run python -m veritascribe analyze large_thesis.pdf
+
+# Strategy 2: Use cheaper OpenAI models
+LLM_PROVIDER=openai \
+DEFAULT_MODEL=gpt-3.5-turbo \
+uv run python -m veritascribe analyze large_thesis.pdf
+
+# Strategy 3: Use local models (no API costs)
+LLM_PROVIDER=custom \
+OPENAI_BASE_URL=http://localhost:11434/v1 \
+DEFAULT_MODEL=llama3.1:8b \
+uv run python -m veritascribe analyze large_thesis.pdf
+```
+
+## Best Practices
+
+### Document Preparation
+
+1. **Use text-based PDFs**: Avoid scanned documents when possible
+2. **Ensure proper formatting**: Well-structured documents analyze better
+3. **Check PDF integrity**: Corrupted files may cause issues
+4. **Remove passwords**: Encrypted PDFs cannot be processed
+
+### Analysis Strategy
+
+1. **Start with quick analysis**: Get overview before full analysis
+2. **Choose appropriate provider**: Match your needs and budget
+3. **Focus on high-priority issues**: Address critical errors first
+4. **Use `optimize-prompts`**: Fine-tune prompts for better accuracy, especially for non-English documents
+5. **Consider document language**: German and other non-English documents benefit significantly from prompt optimization
+
+---
+
+*For troubleshooting common issues, see the [Troubleshooting Guide](troubleshooting.qmd).*
