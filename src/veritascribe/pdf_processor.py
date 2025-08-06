@@ -235,8 +235,21 @@ class PDFProcessor:
         
         # Step 6: Fix common spacing issues
         text = re.sub(r'\s+([.,;:!?])', r'\1', text)  # Remove space before punctuation
-        text = re.sub(r'([.,;:!?])\s*', r'\1 ', text)  # Ensure space after punctuation
         
+        # Protect URLs and email addresses to avoid inserting spaces within them
+        protected = []
+        def _mask(match):
+            protected.append(match.group(0))
+            return f"__PROTECTED_{len(protected)-1}__"
+        url_email_pattern = r'\b(?:https?://\S+|www\.\S+|[\w\.-]+@[\w\.-]+\.\w+)\b'
+        text = re.sub(url_email_pattern, _mask, text)
+
+        # Ensure space after punctuation
+        text = re.sub(r'([.,;:!?])\s*', r'\1 ', text)
+
+        # Restore protected URLs and emails
+        for i, original in enumerate(protected):
+            text = text.replace(f"__PROTECTED_{i}__", original)
         return text.strip()
     
     def _filter_and_clean_blocks(self, text_blocks: List[TextBlock]) -> List[TextBlock]:
