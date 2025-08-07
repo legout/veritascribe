@@ -54,7 +54,7 @@ jobs:
       - name: Build package
         if: steps.check_version.outputs.publish == 'true'
         run: |
-          uv build --sdist --wheel
+          uv build --sdist --wheel --no-dev
 
       - name: Publish to PyPI
         if: steps.check_version.outputs.publish == 'true'

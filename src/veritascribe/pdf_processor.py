@@ -242,12 +242,23 @@ class PDFProcessor:
         url_email_pattern = r'\b(?:https?://\S+|www\.\S+|[\w\.-]+@[\w\.-]+\.\w+)\b'
         text = re.sub(url_email_pattern, _mask, text)
 
-        # Ensure space after punctuation
-        text = re.sub(r'([.,;:!?])\s*', r'\1 ', text)
+        # Ensure proper spacing after punctuation, but not between numbers (e.g., decimals or version numbers)
+        def _ensure_space_after_punct(match):
+            punct = match.group(1)
+            start = match.start(1)
+            end = match.end(1)
+            prev_char = text[start-1] if start > 0 else ''
+            next_char = text[end] if end < len(text) else ''
+            # if punctuation is between two digits, leave it as-is
+            if prev_char.isdigit() and next_char.isdigit():
+                return punct
+            return punct + ' '
+        text = re.sub(r'([.,;:!?])\s*', _ensure_space_after_punct, text)
 
         # Restore protected URLs and emails
         for i, original in enumerate(protected):
             text = text.replace(f"__PROTECTED_{i}__", original)
+
         return text.strip()
     
     def _filter_and_clean_blocks(self, text_blocks: List[TextBlock]) -> List[TextBlock]:

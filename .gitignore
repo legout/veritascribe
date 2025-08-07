@@ -8,3 +8,6 @@ output/
 ENHANCEMENTS.md
 CLAUDE.md
 ProjectPlan.md
+**/dashboard_errors.db
+dashboard/IMPLEMENTATION_SUMMARY.md
+**/.sesskey
