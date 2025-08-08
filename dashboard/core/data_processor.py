@@ -28,7 +28,7 @@ class DataProcessor:
             raise FileNotFoundError(f"Report file not found: {path}")
         
         try:
-            with open(path, 'r', encoding='utf-8') as f:
+            with open(path, 'r',) as f:
                 return json.load(f)
         except json.JSONDecodeError as e:
             raise ValueError(f"Invalid JSON format in {path}: {e}")

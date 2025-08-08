@@ -20,8 +20,12 @@ from core.error_manager import ErrorManager
 from core.data_processor import DataProcessor
 from core.visualizations import *
 from core.models import FilterCriteria, ErrorStatus, ErrorType, Severity, ManagedError
-import panel_material_ui as pmui 
+import panel_material_ui as pmui
 import param
+
+# Import new modules
+from dashboard.panel_app.state.app_state import AppState
+from dashboard.panel_app.services.data_service import DataService
 
 # Enable Panel extensions
 pn.extension("plotly", "tabulator", template="material")
@@ -34,55 +38,35 @@ pn.config.sizing_mode = "stretch_width"
 
 class VeritaScribeDashboard(pn.viewable.Viewer):
     """Main dashboard class implemented as a Panel Viewer with a Page-based layout."""
-    selected_document = param.String(default="", doc="Currently selected document path")
-
-    # Keep params for reactive state; use concrete Python defaults (not _Undefined)
-    current_errors: List[ManagedError] = []
-    filtered_errors: List[ManagedError] = []
-    document_widget = param.Selector(
-        default=None,
-        objects=[],
-        doc="Selector for available documents",
-        precedence=-1  # Ensure it appears before other widgets in the layout
-    )
-    # Note: These param.Selector declarations are kept for param schema but options are provided at widget level
-    status_widget = param.Selector(default=None, objects=[None] + list(ErrorStatus), doc="Selector for error status", precedence=-1)
-    type_widget = param.Selector(default=None, objects=[None] + list(ErrorType), doc="Selector for error type", precedence=-1)
-    severity_widget = param.Selector(default=None, objects=[None] + list(Severity), doc="Selector for error severity", precedence=-1)
     
-
     def __init__(self, **params):
         super().__init__(**params)
-
-        # Core services
-        self.error_manager: ErrorManager = ErrorManager()
-
+        
+        # Initialize app state
+        self.app_state = AppState()
+        
+        # Initialize data service
+        self.error_manager = ErrorManager()
+        self.data_service = DataService(self.error_manager, self.app_state)
+        
         # View/router state
-        self.current_view = "Dashboard"
-
+        self.current_view = "dashboard"
+        
         # Initialize widgets
         self._setup_widgets()
         self._setup_layout()
-
-        # Wire simple navigation (defined below)
-        # May be defined later in class; guard to avoid AttributeError during hot reload
-        if hasattr(self, "_setup_navigation"):
-            self._setup_navigation()
-
+        self._setup_navigation()
+        
         # Load initial data
-        self._load_documents()
-
-        # Initial render (guard if method not yet defined during hot reload)
-        if hasattr(self, "_render_view"):
-            try:
-                self._render_view(self.current_view)  # type: ignore[attr-defined]
-            except Exception:
-                pass
+        self.data_service.load_documents()
+        
+        # Initial render
+        self._render_view(self.current_view)
     
     def _setup_widgets(self):
         """Initialize Panel widgets."""
         # Document selector
-        self.document_select = pmui.Select.from_param(parameter=self.param.document_widget,
+        self.document_select = pmui.Select(
             name="Select Document",
             options={},
             width=300
@@ -242,34 +226,43 @@ class VeritaScribeDashboard(pn.viewable.Viewer):
         )
     
         # Sidebar (safe Card instead of Drawer)
-        self._sidebar = sidebar_content
+        self._sidebar = [sidebar_content]
 
         # Main content area (swapped by router)
+        self._view_content = pn.Column()  # Initialize with empty column
         self._main= [self._view_content]
 
         # Page assembly: Keep Page strictly for header; render body alongside in __panel__
         self.page = pmui.Page(
-            sidebar=self._sidebar, main=self._main, dark_theme=True, toggle_theme=True
+            sidebar=self._sidebar, main=self._main, dark_theme=True
         )
 
     def _load_documents(self):
         """Load available documents."""
-        em: ErrorManager = self.error_manager if isinstance(self.error_manager, ErrorManager) else ErrorManager()
-        documents = em.get_document_list()
+        self.data_service.load_documents()
+        
+        # Update document selector options
+        # Check if document_list has content
+        document_list = self.app_state.document_list
+        # Handle potential undefined values from Param
+        if isinstance(document_list, list) and len(document_list) > 0:
+            try:
+                doc_options = {
+                    f"{doc['document_name']} ({doc['completion_percentage']:.1f}% complete)": doc['document_path']
+                    for doc in document_list
+                }
+                self.document_select.options = doc_options
 
-        if documents:
-            doc_options = {
-                f"{doc['document_name']} ({doc['completion_percentage']:.1f}% complete)": doc['document_path']
-                for doc in documents
-            }
-            self.document_select.options = doc_options
-
-            # Select first document by default
-            if doc_options:
-                first_doc_path = list(doc_options.values())[0]
-                self.document_select.value = first_doc_path
-                if isinstance(first_doc_path, str) and first_doc_path:
-                    self._load_document_data(first_doc_path)
+                # Select first document by default
+                if doc_options:
+                    first_doc_path = list(doc_options.values())[0]
+                    self.document_select.value = first_doc_path
+                    if isinstance(first_doc_path, str) and first_doc_path:
+                        self.data_service.load_errors_for_document(first_doc_path)
+                        self.app_state.selected_document_path = first_doc_path
+            except Exception as e:
+                print(f"Error processing document list: {e}")
+                self.document_select.options = {"No documents available": ""}
         else:
             self.document_select.options = {"No documents available": ""}
     
@@ -277,30 +270,36 @@ class VeritaScribeDashboard(pn.viewable.Viewer):
         """Handle document selection change."""
         new_path = event.new
         if isinstance(new_path, str) and new_path:
-            self._load_document_data(new_path)
+            self.data_service.load_errors_for_document(new_path)
+            self.app_state.selected_document_path = new_path
     
     def _load_document_data(self, document_path: str):
         """Load data for selected document."""
-        em: ErrorManager = self.error_manager if isinstance(self.error_manager, ErrorManager) else ErrorManager()
-        self.current_errors = em.get_errors(document_path)
-        self.filtered_errors = self.current_errors.copy()
-        
-        # Update statistics
-        self._update_statistics(document_path)
-        
-        # Update charts
-        self._update_charts()
-        
-        # Update error table
-        self._update_error_table()
+        # This method is no longer needed as data loading is handled by data service
+        # and state updates are handled by app state
+        pass
     
     def _update_statistics(self, document_path: str):
         """Update statistics display."""
         try:
+            # Use all errors from app state for statistics
+            all_errors = self.app_state.all_errors
             em: ErrorManager = self.error_manager if isinstance(self.error_manager, ErrorManager) else ErrorManager()
-            stats = em.get_progress_stats(document_path)
             documents = em.get_document_list()
             doc_info = next((d for d in documents if d["document_path"] == document_path), {})
+            
+            # Create a mock stats object from app state data
+            class MockStats:
+                def __init__(self, errors):
+                    self.total_errors = len(errors)
+                    self.pending_errors = len([e for e in errors if e.status == ErrorStatus.PENDING])
+                    self.completion_percentage = (
+                        len([e for e in errors if e.status == ErrorStatus.RESOLVED]) / len(errors) * 100
+                        if errors else 100.0
+                    )
+            
+            stats = MockStats(all_errors)
+            
             # Guarded debug logging
             try:
                 print(f"[VS-Debug] _update_statistics: path={document_path}, total_errors={getattr(stats, 'total_errors', None)}, completed={getattr(stats, 'completion_percentage', None)}, pending={getattr(stats, 'pending_errors', None)}, pages={doc_info.get('total_pages', None)}")
@@ -416,7 +415,9 @@ class VeritaScribeDashboard(pn.viewable.Viewer):
     def _update_charts(self):
         """Update visualization charts."""
         try:
-            if not isinstance(self.current_errors, list) or len(self.current_errors) == 0:
+            # Use all errors from app state
+            all_errors = self.app_state.all_errors
+            if not isinstance(all_errors, list) or len(all_errors) == 0:
                 self.charts_pane[:] = [("Overview", pn.pane.HTML("No errors to visualize"))]
                 try:
                     print("[VS-Debug] _update_charts: no current_errors")
@@ -440,10 +441,10 @@ class VeritaScribeDashboard(pn.viewable.Viewer):
             total_pages = doc_info.get("total_pages", 10)
             
             # Create charts
-            summary_chart = create_error_summary_chart(self.current_errors)
-            status_chart = create_status_pie_chart(self.current_errors)
-            heatmap_chart = create_page_heatmap(self.current_errors, total_pages)
-            confidence_chart = create_confidence_histogram(self.current_errors)
+            summary_chart = create_error_summary_chart(all_errors)
+            status_chart = create_status_pie_chart(all_errors)
+            heatmap_chart = create_page_heatmap(all_errors, total_pages)
+            confidence_chart = create_confidence_histogram(all_errors)
             
             em: ErrorManager = self.error_manager if isinstance(self.error_manager, ErrorManager) else ErrorManager()
             stats = em.get_progress_stats(doc_path)
@@ -452,7 +453,7 @@ class VeritaScribeDashboard(pn.viewable.Viewer):
 
             # Guarded debug logging
             try:
-                print(f"[VS-Debug] _update_charts: doc_path={doc_path}, errors={len(self.current_errors)}, pages={total_pages}")
+                print(f"[VS-Debug] _update_charts: doc_path={doc_path}, errors={len(all_errors)}, pages={total_pages}")
             except Exception:
                 pass
             
@@ -511,26 +512,26 @@ class VeritaScribeDashboard(pn.viewable.Viewer):
         if isinstance(st, str) and st.strip():
             criteria.search_text = st.strip()
         
-        # Apply filters
-        doc_path = getattr(self.document_select, "value", None)
-        em: ErrorManager = self.error_manager if isinstance(self.error_manager, ErrorManager) else ErrorManager()
-        self.filtered_errors = em.get_errors(
-            document_path=doc_path if isinstance(doc_path, str) or doc_path is None else None,
-            criteria=criteria
-        )
+        # Update the filter criteria in app state
+        self.app_state.filter_criteria = criteria
         
-        # Update table
+        # Apply filters through data service
+        self.data_service.apply_filters(criteria)
+        
+        # Update table with filtered errors from app state
         self._update_error_table()
     
     def _update_error_table(self):
         """Update the error table with current filtered errors."""
-        if not isinstance(self.filtered_errors, list) or len(self.filtered_errors) == 0:
+        # Use filtered errors from app state
+        filtered_errors = self.app_state.filtered_errors
+        if not isinstance(filtered_errors, list) or len(filtered_errors) == 0:
             self.error_table.value = pd.DataFrame()
             return
-        
+         
         # Convert errors to DataFrame
         data = []
-        for error in self.filtered_errors:
+        for error in filtered_errors:
             data.append({
                 "ID": error.error_id[:8],  # Short ID for display
                 "Status": error.status.value.replace("_", " ").title(),
@@ -601,49 +602,35 @@ class VeritaScribeDashboard(pn.viewable.Viewer):
         if not selected_rows:
             self.status_indicator.object = "⚠️ No errors selected"
             return
-        
+         
         action = self.bulk_action_select.value
         if action == "Select Action...":
             self.status_indicator.object = "⚠️ Please select an action"
             return
-        
+         
         # Get selected error IDs (need to map from display indices to actual error IDs)
         selected_error_ids = []
+        # Use filtered errors from app state
+        filtered_errors = self.app_state.filtered_errors
         # Defensive: ensure filtered_errors is a list before indexing
-        fe = self.filtered_errors if isinstance(self.filtered_errors, list) else []
-        for idx in selected_rows:
-            if isinstance(idx, int) and 0 <= idx < len(fe):
-                selected_error_ids.append(fe[idx].error_id)
-        
-        count = 0
+        if isinstance(filtered_errors, list):
+            for idx in selected_rows:
+                if isinstance(idx, int) and 0 <= idx < len(filtered_errors):
+                    selected_error_ids.append(filtered_errors[idx].error_id)
+         
+        # Prepare updates based on action
+        updates = {}
         if action == "Mark as Resolved":
-            em: ErrorManager = self.error_manager if isinstance(self.error_manager, ErrorManager) else ErrorManager()
-            count = em.bulk_update_errors(
-                selected_error_ids,
-                {"status": ErrorStatus.RESOLVED},
-                "panel_user"
-            )
+            updates = {"status": ErrorStatus.RESOLVED}
         elif action == "Mark as Dismissed":
-            em: ErrorManager = self.error_manager if isinstance(self.error_manager, ErrorManager) else ErrorManager()
-            count = em.bulk_update_errors(
-                selected_error_ids,
-                {"status": ErrorStatus.DISMISSED},
-                "panel_user"
-            )
+            updates = {"status": ErrorStatus.DISMISSED}
         elif action == "Assign to Me":
-            em: ErrorManager = self.error_manager if isinstance(self.error_manager, ErrorManager) else ErrorManager()
-            count = em.bulk_update_errors(
-                selected_error_ids,
-                {"assigned_to": "panel_user", "status": ErrorStatus.IN_PROGRESS},
-                "panel_user"
-            )
-        
-        self.status_indicator.object = f"✅ Updated {count} errors"
-        
-        # Refresh data
-        current_path = getattr(self.document_select, "value", None)
-        if isinstance(current_path, str) and current_path:
-            self._load_document_data(current_path)
+            updates = {"assigned_to": "panel_user", "status": ErrorStatus.IN_PROGRESS}
+         
+        # Perform bulk update through data service
+        if updates:
+            count = self.data_service.perform_bulk_update(selected_error_ids, updates)
+            self.status_indicator.object = f"✅ Updated {count} errors"
     
     def _handle_file_upload(self, event):
         """Handle file upload for import."""
@@ -658,37 +645,18 @@ class VeritaScribeDashboard(pn.viewable.Viewer):
         if not isinstance(self.file_input.value, (bytes, bytearray)):
             self.status_indicator.object = "⚠️ Invalid file content"
             return
-        
+         
         try:
-            # Save uploaded file temporarily
-            import tempfile
-            import json
+            # Import through data service
+            success = self.data_service.import_report(self.file_input.value)
             
-            with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as temp_file:
-                # Write the uploaded content
-                try:
-                    content = self.file_input.value.decode("utf-8")
-                except Exception:
-                    # Fallback if decode fails; write raw bytes decoded with errors ignored
-                    content = self.file_input.value.decode("utf-8", errors="ignore")
-                temp_file.write(content)
-                temp_path = Path(temp_file.name)
-            
-            # Load and convert report
-            report = DataProcessor.load_and_convert_report(temp_path)
-            
-            # Import into database
-            em: ErrorManager = self.error_manager if isinstance(self.error_manager, ErrorManager) else ErrorManager()
-            em.import_analysis_report(report)
-            
-            # Clean up
-            temp_path.unlink()
-            
-            self.status_indicator.object = f"✅ Imported {report.document_name} with {len(report.get_all_errors())} errors"
-            
-            # Refresh document list
-            self._load_documents()
-            
+            if success:
+                # Refresh document list
+                self._load_documents()
+                self.status_indicator.object = "✅ Report imported successfully"
+            else:
+                self.status_indicator.object = "❌ Import failed"
+             
         except Exception as e:
             self.status_indicator.object = f"❌ Import failed: {str(e)}"
     

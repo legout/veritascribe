@@ -1,48 +1,34 @@
 #!/usr/bin/env python3
 """
-Launch FastHTML Dashboard
+Launch FastHTML Dashboard (datastar)
 
-Easy launcher for the FastHTML-based VeritaScribe dashboard.
+Easy launcher for the datastar-based FastHTML VeritaScribe dashboard.
 """
 
+import uvicorn
 import sys
-import subprocess
-import os
 from pathlib import Path
 
 def main():
-    """Launch the FastHTML dashboard."""
-    print("🚀 Starting VeritaScribe FastHTML Dashboard...")
+    print("🚀 Starting VeritaScribe FastHTML Dashboard (datastar)...")
     print("📍 Dashboard will be available at: http://localhost:8000")
     print("🔄 Hot reload enabled - changes will be reflected automatically")
     print("⏹️  Press Ctrl+C to stop the server\n")
-    
-    # Change to the fasthtml_app directory
-    app_dir = Path(__file__).parent / "fasthtml_app"
-    
-    # Check if required packages are installed
-    try:
-        import fasthtml
-        import plotly
-        import pandas
-    except ImportError as e:
-        print(f"❌ Missing required package: {e}")
-        print("💡 Install with: pip install -r dashboard/requirements.txt")
-        sys.exit(1)
-    
-    try:
-        # Change to the app directory and run
-        os.chdir(app_dir)
-        subprocess.run([
-            sys.executable, 
-            "app.py"
-        ])
-    except KeyboardInterrupt:
-        print("\n👋 FastHTML Dashboard stopped")
-    except Exception as e:
-        print(f"❌ Error starting dashboard: {e}")
-        sys.exit(1)
 
+    # Add the project root to the Python path
+    project_root = Path(__file__).parent.parent
+    sys.path.insert(0, str(project_root))
+
+    # Specify the application to run (ASGI app callable)
+    app_module = "dashboard.datastar_app.app:app"
+
+    uvicorn.run(
+        app_module,
+        host="0.0.0.0",
+        port=8000,
+        reload=True,
+        reload_dirs=[str(project_root / "dashboard")]
+    )
 
 if __name__ == "__main__":
     main()
